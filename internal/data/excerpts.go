@@ -90,6 +90,14 @@ func (e ExcerptModel) Update(excerpt *Excerpt) error {
 	defer cancel()
 
 	_, err := e.DB.ExecContext(ctx, query, args...)
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return ErrEditConflict
+		default:
+			return err
+		}
+	}
 
-	return err
+	return nil
 }
