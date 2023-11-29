@@ -29,7 +29,7 @@ func ValidateExcerpt(v *validator.Validator, excerpt *Excerpt) {
 	v.Check(excerpt.Text != "", "text", "must be provided")
 }
 
-func (e ExcerptModel) Insert(excerpt Excerpt) error {
+func (e ExcerptModel) Insert(excerpt *Excerpt) error {
 	query := `
 		INSERT INTO excerpts (author, work, text)
 		VALUES ($1, $2, $3)`
