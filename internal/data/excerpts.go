@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"errors"
 	"time"
+
+	"mylesmoylan.net/internal/validator"
 )
 
 type Excerpt struct {
@@ -19,8 +21,12 @@ type ExcerptModel struct {
 	DB *sql.DB
 }
 
-func ValidateExcerpt() {
-	// ...
+func ValidateExcerpt(v *validator.Validator, excerpt *Excerpt) {
+	v.Check(excerpt.Author != "", "author", "must be provided")
+	
+	v.Check(excerpt.Work != "", "work", "must be provided")
+
+	v.Check(excerpt.Text != "", "text", "must be provided")
 }
 
 func (e ExcerptModel) Insert(excerpt Excerpt) error {
