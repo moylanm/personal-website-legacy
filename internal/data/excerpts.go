@@ -77,3 +77,19 @@ func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
 
 	return &excerpt, nil
 }
+
+func (e ExcerptModel) Update(excerpt *Excerpt) error {
+	query := `
+		UPDATE excerpts
+		SET author = $1, work = $2, text = $3
+		WHERE id = $4`
+
+	args := []any{excerpt.Author, excerpt.Work, excerpt.Text, excerpt.ID}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	_, err := e.DB.ExecContext(ctx, query, args...)
+
+	return err
+}
