@@ -12,7 +12,7 @@ func (app *application) createExcerptHandler(w http.ResponseWriter, r *http.Requ
 	var input struct {
 		Author string
 		Work   string
-		Body string
+		Body   string
 	}
 
 	err := app.readJSON(w, r, &input)
