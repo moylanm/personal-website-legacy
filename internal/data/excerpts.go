@@ -12,12 +12,12 @@ import (
 )
 
 type Excerpt struct {
-	ID	      int64	 	`json:"-"`
+	ID        int64     `json:"-"`
 	CreatedAt time.Time `json:"-"`
-	Author	  string    `json:"author"`
-	Work	  string    `json:"work"`
-	Text	  string    `json:"text"`
-	Tags	  []string  `json:"tags,omitempty"`
+	Author    string    `json:"author"`
+	Work      string    `json:"work"`
+	Text      string    `json:"text"`
+	Tags      []string  `json:"tags,omitempty"`
 }
 
 type ExcerptModel struct {
@@ -26,7 +26,7 @@ type ExcerptModel struct {
 
 func ValidateExcerpt(v *validator.Validator, excerpt *Excerpt) {
 	v.Check(excerpt.Author != "", "author", "must be provided")
-	
+
 	v.Check(excerpt.Work != "", "work", "must be provided")
 
 	v.Check(excerpt.Text != "", "text", "must be provided")
@@ -179,7 +179,7 @@ func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]*
 		excerpts = append(excerpts, &excerpt)
 	}
 
-	if err  = rows.Err(); err != nil {
+	if err = rows.Err(); err != nil {
 		return nil, Metadata{}, err
 	}
 
