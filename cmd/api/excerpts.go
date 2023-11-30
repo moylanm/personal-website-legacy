@@ -12,7 +12,7 @@ func (app *application) createExcerptHandler(w http.ResponseWriter, r *http.Requ
 	var input struct {
 		Author string
 		Work   string
-		Text   string
+		Body string
 	}
 
 	err := app.readJSON(w, r, &input)
@@ -24,7 +24,7 @@ func (app *application) createExcerptHandler(w http.ResponseWriter, r *http.Requ
 	excerpt := &data.Excerpt{
 		Author: input.Author,
 		Work:   input.Work,
-		Text:   input.Text,
+		Body:   input.Body,
 	}
 
 	v := validator.New()
@@ -91,7 +91,7 @@ func (app *application) updateExcerptHandler(w http.ResponseWriter, r *http.Requ
 	var input struct {
 		Author *string `json:"author"`
 		Work   *string `json:"work"`
-		Text   *string `json:"text"`
+		Body   *string `json:"body"`
 	}
 
 	err = app.readJSON(w, r, &input)
@@ -106,8 +106,8 @@ func (app *application) updateExcerptHandler(w http.ResponseWriter, r *http.Requ
 	if input.Work != nil {
 		excerpt.Work = *input.Work
 	}
-	if input.Text != nil {
-		excerpt.Text = *input.Text
+	if input.Body != nil {
+		excerpt.Body = *input.Body
 	}
 
 	v := validator.New()

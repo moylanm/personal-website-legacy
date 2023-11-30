@@ -16,7 +16,7 @@ type Excerpt struct {
 	CreatedAt time.Time `json:"-"`
 	Author    string    `json:"author"`
 	Work      string    `json:"work"`
-	Text      string    `json:"text"`
+	Body	  string    `json:"body"`
 	Tags      []string  `json:"tags,omitempty"`
 }
 
@@ -29,17 +29,17 @@ func ValidateExcerpt(v *validator.Validator, excerpt *Excerpt) {
 
 	v.Check(excerpt.Work != "", "work", "must be provided")
 
-	v.Check(excerpt.Text != "", "text", "must be provided")
+	v.Check(excerpt.Body != "", "body", "must be provided")
 
 	v.Check(validator.Unique(excerpt.Tags), "tags", "must not contain duplicate values")
 }
 
 func (e ExcerptModel) Insert(excerpt *Excerpt) error {
 	query := `
-		INSERT INTO excerpts (author, work, text, tags)
+		INSERT INTO excerpts (author, work, body, tags)
 		VALUES ($1, $2, $3, $4)`
 
-	args := []any{excerpt.Author, excerpt.Work, excerpt.Text, pq.Array(excerpt.Tags)}
+	args := []any{excerpt.Author, excerpt.Work, excerpt.Body, pq.Array(excerpt.Tags)}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -55,7 +55,7 @@ func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
 	}
 
 	query := `
-		SELECT id, created_at, author, work, text, tags
+		SELECT id, created_at, author, work, body, tags
 		FROM excerpts
 		WHERE id = $1`
 
@@ -69,7 +69,7 @@ func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
 		&excerpt.CreatedAt,
 		&excerpt.Author,
 		&excerpt.Work,
-		&excerpt.Text,
+		&excerpt.Body,
 		pq.Array(&excerpt.Tags),
 	)
 	if err != nil {
@@ -87,10 +87,10 @@ func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
 func (e ExcerptModel) Update(excerpt *Excerpt) error {
 	query := `
 		UPDATE excerpts
-		SET author = $1, work = $2, text = $3, tags = $4
+		SET author = $1, work = $2, body = $3, tags = $4
 		WHERE id = $5`
 
-	args := []any{excerpt.Author, excerpt.Work, excerpt.Text, pq.Array(excerpt.Tags), excerpt.ID}
+	args := []any{excerpt.Author, excerpt.Work, excerpt.Body, pq.Array(excerpt.Tags), excerpt.ID}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -139,7 +139,7 @@ func (e ExcerptModel) Delete(id int64) error {
 
 func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]*Excerpt, Metadata, error) {
 	query := fmt.Sprintf(`
-		SELECT count(*) OVER(), id, created_at, author, work, text, tags
+		SELECT count(*) OVER(), id, created_at, author, work, body, tags
 		FROM excerpts
 		WHERE (to_tsvector('simple', author) @@ plainto_tsquery('simple', $1) OR $1 = '')
 		AND (tags @> $2 OR $2 = '{}')
@@ -169,7 +169,7 @@ func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]*
 			&excerpt.CreatedAt,
 			&excerpt.Author,
 			&excerpt.Work,
-			&excerpt.Text,
+			&excerpt.Body,
 			pq.Array(&excerpt.Tags),
 		)
 		if err != nil {
