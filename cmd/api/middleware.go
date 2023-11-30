@@ -78,7 +78,7 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 	})
 }
 
-func (app *application) authenticate(next http.Handler) http.Handler {
+func (app *application) authenticate(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		username, password, ok := r.BasicAuth()
 		if !ok || subtle.ConstantTimeCompare([]byte(app.config.admin.username), []byte(username)) != 1 || subtle.ConstantTimeCompare([]byte(app.config.admin.password), []byte(password)) != 1 {
