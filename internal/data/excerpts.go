@@ -167,10 +167,10 @@ func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]*
 			&totalRecords,
 			&excerpt.ID,
 			&excerpt.CreatedAt,
-			&excerpt.Author
+			&excerpt.Author,
 			&excerpt.Work,
 			&excerpt.Text,
-			pq.Array(&excerpt.Tags)
+			pq.Array(&excerpt.Tags),
 		)
 		if err != nil {
 			return nil, Metadata{}, err
