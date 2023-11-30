@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/lib/pq"
@@ -134,4 +135,55 @@ func (e ExcerptModel) Delete(id int64) error {
 	}
 
 	return nil
+}
+
+func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]*Excerpt, Metadata, error) {
+	query := fmt.Sprintf(`
+		SELECT count(*) OVER(), id, created_at, author, work, text, tags
+		FROM excerpts
+		WHERE (to_tsvector('simple', author) @@ plainto_tsquery('simple', $1) OR $1 = '')
+		AND (tags @> $2 OR $2 = '{}')
+		ORDER BY %s %s, id ASC
+		LIMIT $3 OFFSET $4`, filters.sortColumn(), filters.sortDirection())
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	args := []any{author, pq.Array(tags), filters.limit(), filters.offset()}
+
+	rows, err := e.DB.QueryContext(ctx, query, args...)
+	if err != nil {
+		return nil, Metadata{}, err
+	}
+	defer rows.Close()
+
+	totalRecords := 0
+	excerpts := []*Excerpt{}
+
+	for rows.Next() {
+		var excerpt Excerpt
+
+		err := rows.Scan(
+			&totalRecords,
+			&excerpt.ID,
+			&excerpt.CreatedAt,
+			&excerpt.Author
+			&excerpt.Work,
+			&excerpt.Text,
+			pq.Array(&excerpt.Tags)
+		)
+		if err != nil {
+			return nil, Metadata{}, err
+		}
+
+		excerpts = append(excerpts, &excerpt)
+	}
+
+	if err  = rows.Err(); err != nil {
+		return nil, Metadata{}, err
+	}
+
+	metadata := calculateMetadata(totalRecords, filters.Page, filters.PageSize)
+
+	return excerpts, metadata, nil
 }
