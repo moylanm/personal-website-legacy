@@ -40,7 +40,7 @@ func (app *application) createExcerptHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusCreated, nil, nil)
+	err = app.writeJSON(w, http.StatusCreated, envelope{"message": "excerpt successfully created"}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
@@ -127,7 +127,31 @@ func (app *application) updateExcerptHandler(w http.ResponseWriter, r *http.Requ
 		}
 	}
 
-	err = app.writeJSON(w, http.StatusOK, nil, nil)
+	err = app.writeJSON(w, http.StatusOK, envelope{"message": "excerpt successfully updated"}, nil)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+}
+
+func (app *application) deleteExcerptHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := app.readIDParam(r)
+	if err != nil {
+		app.notFoundResponse(w, r)
+		return
+	}
+
+	err = app.models.Excerpts.Delete(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, data.ErrRecordNotFound):
+			app.notFoundResponse(w, r)
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
+		return
+	}
+
+	err = app.writeJSON(w, http.StatusOK, envelope{"message": "excerpt successfully deleted"}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
