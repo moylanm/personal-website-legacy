@@ -14,9 +14,9 @@ import (
 type Excerpt struct {
 	ID        int64     `json:"-"`
 	CreatedAt time.Time `json:"-"`
-	Author    string    `json:"author"`
-	Work      string    `json:"work"`
-	Body	  string    `json:"body"`
+	Author    string    `json:"author,omitempty"`
+	Work      string    `json:"work,omitempty"`
+	Body      string    `json:"body,omitempty"`
 	Tags      []string  `json:"tags,omitempty"`
 }
 
