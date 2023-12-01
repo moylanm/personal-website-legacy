@@ -41,6 +41,12 @@ db/migrations/up: confirm
 	@printf 'Running up migrations...\n'
 	@migrate -path ./migrations -database ${DB_DSN} up
 
+# db/migrations/down apply all down database migrations
+.PHONY: db/migrations/down
+db/migrations/down:
+	@printf 'Running down migrations...\n'
+	@migrate -path ./migrations -database ${DB_DSN} down
+
 # ==================================================================================== #
 # QUALITY CONTROL
 # ==================================================================================== #
