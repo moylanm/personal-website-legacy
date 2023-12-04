@@ -2,6 +2,6 @@
   email contact@mylesmoylan.net
 }
 
-146.190.175.246 {
+mylesmoylan.net {
   reverse_proxy localhost:4000
 }
