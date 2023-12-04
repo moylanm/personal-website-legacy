@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+	"mylesmoylan.net/ui"
 )
 
 func (app *application) routes() http.Handler {
@@ -11,6 +12,10 @@ func (app *application) routes() http.Handler {
 
 	router.NotFound = http.HandlerFunc(app.notFoundResponse)
 	router.MethodNotAllowed = http.HandlerFunc(app.methodNotAllowedResponse)
+
+	fileServer := http.FileServer(http.FS(ui.Files))
+
+	router.Handler(http.MethodGet, "/static/*filepath", fileServer)
 
 	router.HandlerFunc(http.MethodGet, "/healthcheck", app.healthcheckHandler)
 
