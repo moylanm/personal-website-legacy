@@ -190,3 +190,35 @@ func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]*
 
 	return excerpts, metadata, nil
 }
+
+func (e *ExcerptModel) Latest() ([]Excerpt, error) {
+	query := `
+		SELECT id, author, work, created_at
+		FROM excerpts
+		ORDER BY id DESC LIMIT 5`
+
+	rows, err := e.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var excerpts []Excerpt
+
+	for rows.Next() {
+		var e Excerpt
+
+		err = rows.Scan(&e.ID, &e.Author, &e.Work, &e.CreatedAt)
+		if err != nil {
+			return nil, err
+		}
+
+		excerpts = append(excerpts, e)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return excerpts, nil
+}
