@@ -66,10 +66,10 @@ func (app *application) showExcerptHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"excerpt": excerpt}, nil)
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-	}
+	data := app.newTemplateData()
+	data.Excerpt = *excerpt
+
+	app.render(w, r, http.StatusOK, "view.tmpl", data)
 }
 
 func (app *application) updateExcerptHandler(w http.ResponseWriter, r *http.Request) {
