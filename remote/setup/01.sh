@@ -68,7 +68,7 @@ sudo -i -u postgres psql -d website -c "CREATE ROLE myles WITH LOGIN PASSWORD '$
 
 # Add a DSN for connecting to the greenlight database to the system-wide environment 
 # variables in the /etc/environment file.
-echo "WEBSITE_DB_DSN='postgres://website:${DB_PASSWORD}@localhost/website'" >> /etc/environment
+echo "WEBSITE_DB_DSN='postgres://myles:${DB_PASSWORD}@localhost/website'" >> /etc/environment
 
 # Install Caddy (see https://caddyserver.com/docs/install#debian-ubuntu-raspbian).
 apt install -y debian-keyring debian-archive-keyring apt-transport-https
