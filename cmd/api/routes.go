@@ -19,11 +19,13 @@ func (app *application) routes() http.Handler {
 
 	router.HandlerFunc(http.MethodGet, "/healthcheck", app.healthcheckHandler)
 
-	router.HandlerFunc(http.MethodGet, "/excerpts", app.listExcerptsHandler)
-	router.HandlerFunc(http.MethodPost, "/excerpts", app.authenticate(app.createExcerptHandler))
-	router.HandlerFunc(http.MethodGet, "/excerpts/:id", app.showExcerptHandler)
-	router.HandlerFunc(http.MethodPatch, "/excerpts/:id", app.authenticate(app.updateExcerptHandler))
-	router.HandlerFunc(http.MethodDelete, "/excerpts/:id", app.authenticate(app.deleteExcerptHandler))
+	router.HandlerFunc(http.MethodGet, "/", app.home)
+
+	router.HandlerFunc(http.MethodGet, "/excerpts", app.listExcerpts)
+	router.HandlerFunc(http.MethodPost, "/excerpts", app.authenticate(app.createExcerpt))
+	router.HandlerFunc(http.MethodGet, "/excerpts/:id", app.showExcerpt)
+	router.HandlerFunc(http.MethodPatch, "/excerpts/:id", app.authenticate(app.updateExcerpt))
+	router.HandlerFunc(http.MethodDelete, "/excerpts/:id", app.authenticate(app.deleteExcerpt))
 
 	return app.recoverPanic(app.rateLimit(router))
 }

@@ -8,7 +8,20 @@ import (
 	"mylesmoylan.net/internal/validator"
 )
 
-func (app *application) createExcerptHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) home(w http.ResponseWriter, r *http.Request) {
+	excerpts, err := app.models.Excerpts.Latest()
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	data := app.newTemplateData()
+	data.Excerpts = excerpts
+
+	app.render(w, r, http.StatusOK, "home.tmpl", data)
+}
+
+func (app *application) createExcerpt(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Author string
 		Work   string
@@ -48,7 +61,7 @@ func (app *application) createExcerptHandler(w http.ResponseWriter, r *http.Requ
 	}
 }
 
-func (app *application) showExcerptHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) showExcerpt(w http.ResponseWriter, r *http.Request) {
 	id, err := app.readIDParam(r)
 	if err != nil {
 		app.notFoundResponse(w, r)
@@ -72,7 +85,7 @@ func (app *application) showExcerptHandler(w http.ResponseWriter, r *http.Reques
 	app.render(w, r, http.StatusOK, "view.tmpl", data)
 }
 
-func (app *application) updateExcerptHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) updateExcerpt(w http.ResponseWriter, r *http.Request) {
 	id, err := app.readIDParam(r)
 	if err != nil {
 		app.notFoundResponse(w, r)
@@ -139,7 +152,7 @@ func (app *application) updateExcerptHandler(w http.ResponseWriter, r *http.Requ
 	}
 }
 
-func (app *application) deleteExcerptHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) deleteExcerpt(w http.ResponseWriter, r *http.Request) {
 	id, err := app.readIDParam(r)
 	if err != nil {
 		app.notFoundResponse(w, r)
@@ -163,7 +176,7 @@ func (app *application) deleteExcerptHandler(w http.ResponseWriter, r *http.Requ
 	}
 }
 
-func (app *application) listExcerptsHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Author string
 		Tags   []string
