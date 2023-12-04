@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"flag"
+	"html/template"
 	"log/slog"
 	"os"
 	"time"
@@ -34,9 +35,10 @@ type config struct {
 }
 
 type application struct {
-	config config
-	logger *slog.Logger
-	models data.Models
+	config        config
+	logger        *slog.Logger
+	models        data.Models
+	templateCache map[string]*template.Template
 }
 
 func main() {
@@ -71,10 +73,17 @@ func main() {
 
 	logger.Info("database connection pool established")
 
+	templateCache, err := newTemplateCache()
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
+
 	app := &application{
-		config: cfg,
-		logger: logger,
-		models: data.NewModels(db),
+		config:        cfg,
+		logger:        logger,
+		models:        data.NewModels(db),
+		templateCache: templateCache,
 	}
 
 	err = app.serve()
