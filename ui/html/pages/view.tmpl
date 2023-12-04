@@ -1,0 +1,15 @@
+{{define "title"}}Excerpt #{{.Excerpt.ID}}{{end}}
+
+{{define "main"}}
+	{{with .Excerpt}}
+	<div class='excerpt'>
+		<div class='metadata'>
+			<strong>{{.Author}}</strong>
+			<br>
+			<strong>{{.Work}}</strong>
+			<hr />
+		</div>
+		<div class='body'>{{.Body}}</div>
+	</div>
+	{{end}}
+{{end}}
