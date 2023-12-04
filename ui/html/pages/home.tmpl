@@ -1,0 +1,21 @@
+{{define "title"}}Home{{end}}
+
+{{define "main"}}
+	<h2>Latest Excerpts</h2>
+	{{if .Excerpts}}
+	<table>
+		<tr>
+			<th>Author &#38; Work</th>
+			<th>Created</th>
+		</tr>
+		{{range .Excerpts}}
+		<tr>
+			<td><a href='/excerpts/{{.ID}}'>{{.Author}} | {{.Work}}</a></td>
+			<td>{{humanDate .CreatedAt}}</td>
+		</tr>
+		{{end}}
+	</table>
+	{{else}}
+		<p>There's nothing to see here... yet!</p>
+	{{end}}
+{{end}}
