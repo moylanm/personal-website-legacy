@@ -12,7 +12,7 @@ import (
 )
 
 type Excerpt struct {
-	ID        int64     `json:"-"`
+	ID        int64     `json:"id,omitempty"`
 	CreatedAt time.Time `json:"-"`
 	Author    string    `json:"author,omitempty"`
 	Work      string    `json:"work,omitempty"`
