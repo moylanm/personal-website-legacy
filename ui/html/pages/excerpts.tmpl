@@ -1,0 +1,23 @@
+{{define "title"}}Excerpts{{end}}
+
+{{define "main"}}
+	{{if .Excerpts}}
+		{{range .Excerpts}}
+			<div class='excerpt'>
+				<div class='metadata'>
+					<strong>{{.Author}}</strong>
+					<br>
+					<strong>{{.Work}}</strong>
+				</div>
+				<hr />
+				<div class='body'>{{.Body}}</div>
+			</div>
+			{{if ne .ID 1}}
+				<br>
+				<br>
+			{{end}}
+		{{end}}
+	{{else}}
+		<p>There's nothing to see here... yet!</p>
+	{{end}}
+{{end}}
