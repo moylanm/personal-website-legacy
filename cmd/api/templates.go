@@ -14,6 +14,7 @@ type templateData struct {
 	CurrentYear int
 	Excerpt     data.Excerpt
 	Excerpts    []data.Excerpt
+	Metadata    data.Metadata
 }
 
 func humanDate(t time.Time) string {
