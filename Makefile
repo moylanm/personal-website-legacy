@@ -95,7 +95,7 @@ production/connect:
 
 ## production/deploy/api: deploy the api to production
 .PHONY: production/deploy/api
-production/deploy/api:
+production/deploy/api: build/api
 	rsync -P ./bin/linux_amd64/api myles@${production_host_ip}:~
 	rsync -rP --delete ./migrations myles@${production_host_ip}:~
 	rsync -P ./remote/production/api.service myles@${production_host_ip}:~
