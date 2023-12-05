@@ -140,7 +140,49 @@ func (e ExcerptModel) Delete(id int64) error {
 	return nil
 }
 
-func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]Excerpt, Metadata, error) {
+func (e ExcerptModel) GetAll() ([]Excerpt, error) {
+	query := `
+		SELECT id, created_at, author, work, body, tags
+		FROM excerpts
+		ORDER BY id ASC`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	rows, err := e.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	excerpts := []Excerpt{}
+
+	for rows.Next() {
+		var excerpt Excerpt
+
+		err := rows.Scan(
+			&excerpt.ID,
+			&excerpt.CreatedAt,
+			&excerpt.Author,
+			&excerpt.Work,
+			&excerpt.Body,
+			pq.Array(&excerpt.Tags),
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		excerpts = append(excerpts, excerpt)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return excerpts, nil
+}
+
+func (e ExcerptModel) GetAllFiltered(author string, tags []string, filters Filters) ([]Excerpt, Metadata, error) {
 	query := fmt.Sprintf(`
 		SELECT count(*) OVER(), id, created_at, author, work, body, tags
 		FROM excerpts
