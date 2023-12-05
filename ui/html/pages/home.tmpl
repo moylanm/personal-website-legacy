@@ -10,7 +10,7 @@
 		</tr>
 		{{range .Excerpts}}
 		<tr>
-			<td><a href='/excerpts/{{.ID}}'>{{.Author}} | {{.Work}}</a></td>
+			<td><a href='/excerpts/{{.ID}}'>{{.Author}} — {{.Work}}</a></td>
 			<td>{{humanDate .CreatedAt}}</td>
 		</tr>
 		{{end}}
