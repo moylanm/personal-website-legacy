@@ -210,8 +210,9 @@ func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"excerpts": excerpts, "metadata": metadata}, nil)
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-	}
+	data := app.newTemplateData()
+	data.Excerpts = excerpts
+	data.Metadata = metadata
+
+	app.render(w, r, http.StatusOK, "excerpts.tmpl", data)
 }
