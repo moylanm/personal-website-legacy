@@ -140,7 +140,7 @@ func (e ExcerptModel) Delete(id int64) error {
 	return nil
 }
 
-func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]*Excerpt, Metadata, error) {
+func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]Excerpt, Metadata, error) {
 	query := fmt.Sprintf(`
 		SELECT count(*) OVER(), id, created_at, author, work, body, tags
 		FROM excerpts
@@ -161,7 +161,7 @@ func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]*
 	defer rows.Close()
 
 	totalRecords := 0
-	excerpts := []*Excerpt{}
+	excerpts := []Excerpt{}
 
 	for rows.Next() {
 		var excerpt Excerpt
@@ -179,7 +179,7 @@ func (e ExcerptModel) GetAll(author string, tags []string, filters Filters) ([]*
 			return nil, Metadata{}, err
 		}
 
-		excerpts = append(excerpts, &excerpt)
+		excerpts = append(excerpts, excerpt)
 	}
 
 	if err = rows.Err(); err != nil {
