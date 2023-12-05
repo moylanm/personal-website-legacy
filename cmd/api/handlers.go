@@ -216,3 +216,16 @@ func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 
 	app.render(w, r, http.StatusOK, "excerpts.tmpl", data)
 }
+
+func (app *application) listExcerptsJSON(w http.ResponseWriter, r *http.Request) {
+	excerpts, err := app.models.Excerpts.GetAll()
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	err = app.writeJSON(w, http.StatusOK, envelope{"excerpts": excerpts}, nil)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+}
