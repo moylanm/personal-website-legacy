@@ -204,7 +204,7 @@ func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	excerpts, metadata, err := app.models.Excerpts.GetAll(input.Author, input.Tags, input.Filters)
+	excerpts, metadata, err := app.models.Excerpts.GetAllFiltered(input.Author, input.Tags, input.Filters)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
