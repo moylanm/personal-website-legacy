@@ -20,7 +20,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodGet, "/healthcheck", app.healthcheckHandler)
 
 	router.HandlerFunc(http.MethodGet, "/", app.home)
-
+	router.HandlerFunc(http.MethodGet, "/about", app.about)
 	router.HandlerFunc(http.MethodGet, "/excerpts", app.listExcerpts)
 	router.HandlerFunc(http.MethodPost, "/excerpts", app.authenticate(app.createExcerpt))
 	router.HandlerFunc(http.MethodGet, "/excerpts/:id", app.showExcerpt)
