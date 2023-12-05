@@ -21,8 +21,8 @@ func (app *application) routes() http.Handler {
 
 	router.HandlerFunc(http.MethodGet, "/", app.home)
 	router.HandlerFunc(http.MethodGet, "/about", app.about)
+	router.HandlerFunc(http.MethodGet, "/json/excerpts", app.authenticate(app.listJsonExcerpts))
 	router.HandlerFunc(http.MethodGet, "/excerpts", app.listExcerpts)
-	router.HandlerFunc(http.MethodGet, "/excerpts/json", app.authenticate(app.listExcerptsJSON))
 	router.HandlerFunc(http.MethodPost, "/excerpts", app.authenticate(app.createExcerpt))
 	router.HandlerFunc(http.MethodGet, "/excerpts/:id", app.showExcerpt)
 	router.HandlerFunc(http.MethodPatch, "/excerpts/:id", app.authenticate(app.updateExcerpt))
