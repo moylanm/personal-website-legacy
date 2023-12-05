@@ -43,7 +43,7 @@ func (app *application) createExcerpt(w http.ResponseWriter, r *http.Request) {
 	excerpt := &data.Excerpt{
 		Author: input.Author,
 		Work:   input.Work,
-		Tags:	input.Tags,
+		Tags:   input.Tags,
 		Body:   input.Body,
 	}
 

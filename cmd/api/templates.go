@@ -11,9 +11,9 @@ import (
 )
 
 type templateData struct {
-	CurrentYear		int
-	Excerpt			data.Excerpt
-	Excerpts		[]data.Excerpt
+	CurrentYear int
+	Excerpt     data.Excerpt
+	Excerpts    []data.Excerpt
 }
 
 func humanDate(t time.Time) string {
