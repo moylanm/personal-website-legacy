@@ -99,17 +99,13 @@ nav a {
     display: inline-block;
 }
 
-nav div {
+nav span:first-child {
     float: left;
 }
 
-nav div:last-child {
-    text-align: right;
-}
-
-nav div:last-child a {
-    margin-left: 1.5em;
-    margin-right: 0;
+nav span:last-child {
+    float: right;
+    vertical-align: middle;
 }
 
 nav a.live {
@@ -135,6 +131,7 @@ nav a.live:after {
     -moz-transform: rotate(45deg);
     -webkit-transform: rotate(-45deg);
 }
+
 
 textarea {
     padding: 18px;
