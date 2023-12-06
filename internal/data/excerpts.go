@@ -144,7 +144,7 @@ func (e ExcerptModel) GetAll() ([]Excerpt, error) {
 	query := `
 		SELECT id, created_at, author, work, body, tags
 		FROM excerpts
-		ORDER BY id ASC`
+		ORDER BY id DESC`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
