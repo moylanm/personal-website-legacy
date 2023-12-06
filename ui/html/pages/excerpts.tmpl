@@ -6,9 +6,11 @@
 		{{range .Excerpts}}
 			<div class='excerpt'>
 				<div class='metadata'>
-					<strong>{{.Author}}</strong>
-					<br>
-					<strong>{{.Work}}</strong>
+					<a href='/excerpts/{{.ID}}'>
+						<strong>{{.Author}}</strong>
+						<br>
+						<strong>{{.Work}}</strong>
+					</a>
 				</div>
 				<hr />
 				<div class='body'>{{.Body}}</div>

@@ -163,6 +163,10 @@ textarea {
     float: right;
 }
 
+.excerpt .metadata a strong {
+    color: #62CB31;
+}
+
 .excerpt .metadata strong {
     color: #34495E;
 }
