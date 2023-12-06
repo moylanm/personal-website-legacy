@@ -233,13 +233,16 @@ func (e ExcerptModel) GetAllFiltered(author string, tags []string, filters Filte
 	return excerpts, metadata, nil
 }
 
-func (e *ExcerptModel) Latest() ([]Excerpt, error) {
+func (e *ExcerptModel) Latest(limit int) ([]Excerpt, error) {
 	query := `
 		SELECT id, author, work, created_at
 		FROM excerpts
-		ORDER BY id DESC LIMIT 5`
+		ORDER BY id DESC LIMIT $1`
 
-	rows, err := e.DB.Query(query)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	rows, err := e.DB.QueryContext(ctx, query, limit)
 	if err != nil {
 		return nil, err
 	}
