@@ -9,7 +9,7 @@ import (
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	excerpts, err := app.models.Excerpts.Latest()
+	excerpts, err := app.models.Excerpts.Latest(10)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
