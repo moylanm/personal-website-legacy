@@ -109,7 +109,7 @@ func (app *application) updateExcerpt(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var input struct {
-		ID	   *int64	 `json:"id"`
+		ID     *int64    `json:"id"`
 		Author *string   `json:"author"`
 		Work   *string   `json:"work"`
 		Tags   *[]string `json:"tags"`
