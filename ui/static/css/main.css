@@ -139,18 +139,19 @@ textarea {
     height: 266px;
 }
 
-.excerpt {
+
+.text-box {
     background-color: #FFFFFF;
     border: 1px solid #E4E5E7;
     border-radius: 3px;
 }
 
-.excerpt .body {
+.text-box .body {
     padding: 18px;
     white-space: pre-wrap;
 }
 
-.excerpt .metadata {
+.text-box .metadata {
     background-color: #F7F9FA;
     color: #6A6C6F;
     padding: 0.75em 18px;
@@ -158,15 +159,15 @@ textarea {
     text-align: center;
 }
 
-.excerpt .metadata span {
+.text-box .metadata span {
     float: right;
 }
 
-.excerpt .metadata a strong {
+.text-box .metadata a strong {
     color: #62CB31;
 }
 
-.excerpt .metadata strong {
+.text-box .metadata strong {
     color: #34495E;
 }
 
