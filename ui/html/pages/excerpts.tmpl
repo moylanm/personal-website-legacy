@@ -2,6 +2,25 @@
 
 {{define "main"}}
 	{{if .Excerpts}}
+		<form action='/excerpts' method='GET'>
+			<div>
+				<label>Sort:</label>
+				<input type='radio' name='sort' value='-id' {{if (eq .Metadata.Sort "-id")}}checked{{end}}> Descending
+				<input type='radio' name='sort' value='id' {{if (eq .Metadata.Sort "id")}}checked{{end}}> Ascending
+			</div>
+			<div>
+				<label>Author:</label>
+				<select name='author'>
+					{{range .Metadata.Authors}}
+						<option value='{{.}}' {{if (eq $.Metadata.SelectedAuthor .)}}selected{{end}}>{{.}}</option>
+					{{end}}
+				</select>
+			</div>
+			<div>
+				<input type='submit' value='Filter excerpts'>
+			</div>
+		</form>
+		<br>
 		<h2>Here are excerpts from my reading that I found interesting.</h2>
 		{{range .Excerpts}}
 			<div class='text-box'>
