@@ -174,6 +174,25 @@ form label {
     margin-bottom: 9px;
 }
 
+form div:last-child a {
+    background-color: #62CB31;
+    border-radius: 3px;
+    color: #FFFFFF;
+    padding: 11px 14px;
+    border: none;
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 14px;
+    font-weight: 700;
+}
+
+form div:last-child a:hover {
+    background-color: #4EB722;
+    color: #FFFFFF;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 textarea {
     padding: 18px;
     width: 100%;
