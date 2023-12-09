@@ -190,7 +190,7 @@ func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 	input.Filters.Page = app.readInt(qs, "page", 1, v)
 	input.Filters.PageSize = app.readInt(qs, "page_size", 10, v)
 	input.Filters.Sort = app.readString(qs, "sort", "-id")
-	input.Filters.SortSafeList = []string{"id", "author", "work", "-id", "-author", "-work"}
+	input.Filters.SortSafeList = []string{"id", "-id"}
 
 	if data.ValidateFilters(v, input.Filters); !v.Valid() {
 		app.failedValidationResponse(w, r, v.Errors)
