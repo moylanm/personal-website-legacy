@@ -5,8 +5,8 @@
 		<form action='/excerpts' method='GET'>
 			<div>
 				<label>Sort:</label>
-				<input type='radio' name='sort' value='-id' {{if (eq .Metadata.Sort "-id")}}checked{{end}}> Descending
-				<input type='radio' name='sort' value='id' {{if (eq .Metadata.Sort "id")}}checked{{end}}> Ascending
+				<input type='radio' name='sort' value='-id' {{if (eq .Metadata.Sort "-id")}}checked{{end}}> Newest First
+				<input type='radio' name='sort' value='id' {{if (eq .Metadata.Sort "id")}}checked{{end}}> Oldest First
 			</div>
 			<div>
 				<label>Author:</label>
