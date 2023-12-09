@@ -11,7 +11,7 @@
 			<div>
 				<label>Author:</label>
 				<select name='author'>
-						<option value=''>All</option>
+						<option value=''>Any</option>
 					{{range .Metadata.Authors}}
 						<option value='{{.}}' {{if (eq $.Metadata.SelectedAuthor .)}}selected{{end}}>{{.}}</option>
 					{{end}}
