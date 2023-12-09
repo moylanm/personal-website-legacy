@@ -30,7 +30,6 @@ func (app *application) createExcerpt(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Author string
 		Work   string
-		Tags   []string
 		Body   string
 	}
 
@@ -43,7 +42,6 @@ func (app *application) createExcerpt(w http.ResponseWriter, r *http.Request) {
 	excerpt := &data.Excerpt{
 		Author: input.Author,
 		Work:   input.Work,
-		Tags:   input.Tags,
 		Body:   input.Body,
 	}
 
@@ -112,7 +110,6 @@ func (app *application) updateExcerpt(w http.ResponseWriter, r *http.Request) {
 		ID     *int64    `json:"id"`
 		Author *string   `json:"author"`
 		Work   *string   `json:"work"`
-		Tags   *[]string `json:"tags"`
 		Body   *string   `json:"body"`
 	}
 
@@ -127,9 +124,6 @@ func (app *application) updateExcerpt(w http.ResponseWriter, r *http.Request) {
 	}
 	if input.Work != nil {
 		excerpt.Work = *input.Work
-	}
-	if input.Tags != nil {
-		excerpt.Tags = *input.Tags
 	}
 	if input.Body != nil {
 		excerpt.Body = *input.Body
@@ -185,7 +179,6 @@ func (app *application) deleteExcerpt(w http.ResponseWriter, r *http.Request) {
 func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Author string
-		Tags   []string
 		data.Filters
 	}
 
@@ -194,7 +187,6 @@ func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 	qs := r.URL.Query()
 
 	input.Author = app.readString(qs, "author", "")
-	input.Tags = app.readCSV(qs, "tags", []string{})
 	input.Filters.Page = app.readInt(qs, "page", 1, v)
 	input.Filters.PageSize = app.readInt(qs, "page_size", 10, v)
 	input.Filters.Sort = app.readString(qs, "sort", "-id")
@@ -205,7 +197,7 @@ func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	excerpts, metadata, err := app.models.Excerpts.GetAllFiltered(input.Author, input.Tags, input.Filters)
+	excerpts, metadata, err := app.models.Excerpts.GetAllFiltered(input.Author, input.Filters)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return

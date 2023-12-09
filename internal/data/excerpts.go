@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/lib/pq"
 	"mylesmoylan.net/internal/validator"
 )
 
@@ -17,7 +16,6 @@ type Excerpt struct {
 	Author    string    `json:"author,omitempty"`
 	Work      string    `json:"work,omitempty"`
 	Body      string    `json:"body,omitempty"`
-	Tags      []string  `json:"tags,omitempty"`
 }
 
 type ExcerptModel struct {
@@ -30,19 +28,14 @@ func ValidateExcerpt(v *validator.Validator, excerpt *Excerpt) {
 	v.Check(excerpt.Work != "", "work", "must be provided")
 
 	v.Check(excerpt.Body != "", "body", "must be provided")
-
-	v.Check(excerpt.Tags != nil, "tags", "must be provided")
-	v.Check(len(excerpt.Tags) >= 1, "tags", "must contain at least one tag")
-	v.Check(len(excerpt.Tags) <= 5, "tags", "must not contain more than 5 tags")
-	v.Check(validator.Unique(excerpt.Tags), "tags", "must not contain duplicate values")
 }
 
 func (e ExcerptModel) Insert(excerpt *Excerpt) error {
 	query := `
-		INSERT INTO excerpts (author, work, body, tags)
+		INSERT INTO excerpts (author, work, body)
 		VALUES ($1, $2, $3, $4)`
 
-	args := []any{excerpt.Author, excerpt.Work, excerpt.Body, pq.Array(excerpt.Tags)}
+	args := []any{excerpt.Author, excerpt.Work, excerpt.Body}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -58,7 +51,7 @@ func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
 	}
 
 	query := `
-		SELECT id, created_at, author, work, body, tags
+		SELECT id, created_at, author, work, body
 		FROM excerpts
 		WHERE id = $1`
 
@@ -73,7 +66,6 @@ func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
 		&excerpt.Author,
 		&excerpt.Work,
 		&excerpt.Body,
-		pq.Array(&excerpt.Tags),
 	)
 	if err != nil {
 		switch {
@@ -90,10 +82,10 @@ func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
 func (e ExcerptModel) Update(excerpt *Excerpt) error {
 	query := `
 		UPDATE excerpts
-		SET author = $1, work = $2, body = $3, tags = $4
+		SET author = $1, work = $2, body = $3
 		WHERE id = $5`
 
-	args := []any{excerpt.Author, excerpt.Work, excerpt.Body, pq.Array(excerpt.Tags), excerpt.ID}
+	args := []any{excerpt.Author, excerpt.Work, excerpt.Body, excerpt.ID}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -142,7 +134,7 @@ func (e ExcerptModel) Delete(id int64) error {
 
 func (e ExcerptModel) GetAll() ([]Excerpt, error) {
 	query := `
-		SELECT id, created_at, author, work, body, tags
+		SELECT id, created_at, author, work, body
 		FROM excerpts
 		ORDER BY id DESC`
 
@@ -166,7 +158,6 @@ func (e ExcerptModel) GetAll() ([]Excerpt, error) {
 			&excerpt.Author,
 			&excerpt.Work,
 			&excerpt.Body,
-			pq.Array(&excerpt.Tags),
 		)
 		if err != nil {
 			return nil, err
@@ -182,14 +173,13 @@ func (e ExcerptModel) GetAll() ([]Excerpt, error) {
 	return excerpts, nil
 }
 
-func (e ExcerptModel) GetAllFiltered(author string, tags []string, filters Filters) ([]Excerpt, Metadata, error) {
+func (e ExcerptModel) GetAllFiltered(author string, filters Filters) ([]Excerpt, Metadata, error) {
 	mainQuery := fmt.Sprintf(`
-		SELECT count(*) OVER(), id, created_at, author, work, body, tags
+		SELECT count(*) OVER(), id, created_at, author, work, body
 		FROM excerpts
 		WHERE (to_tsvector('simple', author) @@ plainto_tsquery('simple', $1) OR $1 = '')
-		AND (tags @> $2 OR $2 = '{}')
 		ORDER BY %s %s, id ASC
-		LIMIT $3 OFFSET $4`, filters.sortColumn(), filters.sortDirection())
+		LIMIT $2 OFFSET $3`, filters.sortColumn(), filters.sortDirection())
 
 	authorQuery := `
 		SELECT DISTINCT author
@@ -198,7 +188,7 @@ func (e ExcerptModel) GetAllFiltered(author string, tags []string, filters Filte
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	args := []any{author, pq.Array(tags), filters.limit(), filters.offset()}
+	args := []any{author, filters.limit(), filters.offset()}
 
 	mainRows, err := e.DB.QueryContext(ctx, mainQuery, args...)
 	if err != nil {
@@ -219,7 +209,6 @@ func (e ExcerptModel) GetAllFiltered(author string, tags []string, filters Filte
 			&excerpt.Author,
 			&excerpt.Work,
 			&excerpt.Body,
-			pq.Array(&excerpt.Tags),
 		)
 		if err != nil {
 			return nil, Metadata{}, err
@@ -252,6 +241,10 @@ func (e ExcerptModel) GetAllFiltered(author string, tags []string, filters Filte
 		}
 
 		uniqueAuthors = append(uniqueAuthors, author)
+	}
+
+	if err = authorRows.Err(); err != nil {
+		return nil, Metadata{}, err
 	}
 
 	metadata := calculateMetadata(totalRecords, author, uniqueAuthors, filters)
