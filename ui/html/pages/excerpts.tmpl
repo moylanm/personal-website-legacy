@@ -25,7 +25,7 @@
 						<option value='{{.}}' {{if (eq $.Metadata.CurrentPage .)}}selected{{end}}>{{.}}</option>
 					{{end}}
 				</select>
-				<label>Page Size:</label>
+				<label style='margin-left: 10px;'>Page Size:</label>
 				<select name='page_size'>
 					{{range pageSizes}}
 						<option value='{{.}}' {{if (eq $.Metadata.PageSize .)}}selected{{end}}>{{.}}</option>
