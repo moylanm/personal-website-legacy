@@ -2,6 +2,7 @@
 
 {{define "main"}}
 	{{if .Excerpts}}
+		<h2>Here are excerpts from my reading that I found interesting.</h2>
 		<form action='/excerpts' method='GET'>
 			<div>
 				<label>Sort:</label>
@@ -21,8 +22,6 @@
 				<input type='submit' value='Filter excerpts'>
 			</div>
 		</form>
-		<br>
-		<h2>Here are excerpts from my reading that I found interesting.</h2>
 		{{range .Excerpts}}
 			<div class='text-box'>
 				<div class='metadata'>
