@@ -183,7 +183,7 @@ func (e ExcerptModel) GetAll() ([]Excerpt, error) {
 }
 
 func (e ExcerptModel) GetAllFiltered(author string, tags []string, filters Filters) ([]Excerpt, Metadata, error) {
-	query := fmt.Sprintf(`
+	mainQuery := fmt.Sprintf(`
 		SELECT count(*) OVER(), id, created_at, author, work, body, tags
 		FROM excerpts
 		WHERE (to_tsvector('simple', author) @@ plainto_tsquery('simple', $1) OR $1 = '')
@@ -191,24 +191,28 @@ func (e ExcerptModel) GetAllFiltered(author string, tags []string, filters Filte
 		ORDER BY %s %s, id ASC
 		LIMIT $3 OFFSET $4`, filters.sortColumn(), filters.sortDirection())
 
+	authorQuery := `
+		SELECT DISTINCT author
+		FROM excerpts`
+
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	args := []any{author, pq.Array(tags), filters.limit(), filters.offset()}
 
-	rows, err := e.DB.QueryContext(ctx, query, args...)
+	mainRows, err := e.DB.QueryContext(ctx, mainQuery, args...)
 	if err != nil {
 		return nil, Metadata{}, err
 	}
-	defer rows.Close()
+	defer mainRows.Close()
 
 	totalRecords := 0
 	excerpts := []Excerpt{}
 
-	for rows.Next() {
+	for mainRows.Next() {
 		var excerpt Excerpt
 
-		err := rows.Scan(
+		err := mainRows.Scan(
 			&totalRecords,
 			&excerpt.ID,
 			&excerpt.CreatedAt,
@@ -224,11 +228,33 @@ func (e ExcerptModel) GetAllFiltered(author string, tags []string, filters Filte
 		excerpts = append(excerpts, excerpt)
 	}
 
-	if err = rows.Err(); err != nil {
+	if err = mainRows.Err(); err != nil {
 		return nil, Metadata{}, err
 	}
 
-	metadata := calculateMetadata(totalRecords, filters.Page, filters.PageSize)
+	ctx, cancel = context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	authorRows, err := e.DB.QueryContext(ctx, authorQuery)
+	if err != nil {
+		return nil, Metadata{}, err
+	}
+	defer authorRows.Close()
+
+	var uniqueAuthors []string
+
+	for authorRows.Next() {
+		var author string
+
+		err := authorRows.Scan(&author)
+		if err != nil {
+			return nil, Metadata{}, err
+		}
+
+		uniqueAuthors = append(uniqueAuthors, author)
+	}
+
+	metadata := calculateMetadata(totalRecords, author, uniqueAuthors, filters)
 
 	return excerpts, metadata, nil
 }
