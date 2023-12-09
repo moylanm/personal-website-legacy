@@ -49,23 +49,29 @@ func ValidateFilters(v *validator.Validator, f Filters) {
 }
 
 type Metadata struct {
-	CurrentPage  int `json:"current_page,omitempty"`
-	PageSize     int `json:"page_size,omitempty"`
-	FirstPage    int `json:"first_page,omitempty"`
-	LastPage     int `json:"last_page,omitempty"`
-	TotalRecords int `json:"total_records,omitempty"`
+	Sort           string   `json:"sort,omitempty"`
+	SelectedAuthor string   `json:"selected_author,omitempty"`
+	Authors        []string `json:"authors,omitempty"`
+	CurrentPage    int      `json:"current_page,omitempty"`
+	PageSize       int      `json:"page_size,omitempty"`
+	FirstPage      int      `json:"first_page,omitempty"`
+	LastPage       int      `json:"last_page,omitempty"`
+	TotalRecords   int      `json:"total_records,omitempty"`
 }
 
-func calculateMetadata(totalRecords, page, pageSize int) Metadata {
+func calculateMetadata(totalRecords int, selectedAuthor string, authors []string, filters Filters) Metadata {
 	if totalRecords == 0 {
 		return Metadata{}
 	}
 
 	return Metadata{
-		CurrentPage:  page,
-		PageSize:     pageSize,
-		FirstPage:    1,
-		LastPage:     int(math.Ceil(float64(totalRecords) / float64(pageSize))),
-		TotalRecords: totalRecords,
+		Sort:           filters.Sort,
+		SelectedAuthor: selectedAuthor,
+		Authors:        authors,
+		CurrentPage:    filters.Page,
+		PageSize:       filters.PageSize,
+		FirstPage:      1,
+		LastPage:       int(math.Ceil(float64(totalRecords) / float64(filters.PageSize))),
+		TotalRecords:   totalRecords,
 	}
 }
