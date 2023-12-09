@@ -33,7 +33,7 @@ func ValidateExcerpt(v *validator.Validator, excerpt *Excerpt) {
 func (e ExcerptModel) Insert(excerpt *Excerpt) error {
 	query := `
 		INSERT INTO excerpts (author, work, body)
-		VALUES ($1, $2, $3, $4)`
+		VALUES ($1, $2, $3)`
 
 	args := []any{excerpt.Author, excerpt.Work, excerpt.Body}
 
@@ -83,7 +83,7 @@ func (e ExcerptModel) Update(excerpt *Excerpt) error {
 	query := `
 		UPDATE excerpts
 		SET author = $1, work = $2, body = $3
-		WHERE id = $5`
+		WHERE id = $4`
 
 	args := []any{excerpt.Author, excerpt.Work, excerpt.Body, excerpt.ID}
 
