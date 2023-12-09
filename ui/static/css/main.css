@@ -150,6 +150,11 @@ a.button:hover, input[type="submit"]:hover {
     text-decoration: none;
 }
 
+form {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 form div {
     margin-bottom: 18px;
 }
