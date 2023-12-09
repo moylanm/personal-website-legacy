@@ -19,6 +19,20 @@
 				</select>
 			</div>
 			<div>
+				<label>Page:</label>
+				<select name='page'>
+					{{range pageRange .Metadata.LastPage}}
+						<option value='{{.}}' {{if (eq $.Metadata.CurrentPage .)}}selected{{end}}>{{.}}</option>
+					{{end}}
+				</select>
+				<label>Page Size:</label>
+				<select name='page_size'>
+					{{range pageSizes}}
+						<option value='{{.}}' {{if (eq $.Metadata.PageSize .)}}selected{{end}}>{{.}}</option>
+					{{end}}
+				</select>
+			</div>
+			<div>
 				<input type='submit' value='Filter excerpts'>
 			</div>
 		</form>
