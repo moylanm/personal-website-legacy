@@ -39,7 +39,7 @@ func pageRange(last int) []int {
 }
 
 func pageSizes() []int {
-	return []int{5, 10, 25, 50, 75, 100}
+	return []int{5, 10, 25, 50}
 }
 
 var functions = template.FuncMap{
