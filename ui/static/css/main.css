@@ -139,7 +139,7 @@ a.button, input[type="submit"] {
     padding: 18px 27px;
     border: none;
     display: inline-block;
-    margin-top: 18px;
+    margin-top: 8px;
     font-weight: 700;
 }
 
@@ -156,14 +156,15 @@ form {
 }
 
 form div {
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 }
 
-form div:last-child {
-    border-top: 1px dashed #E4E5E7;
-}
 
 form input[type="radio"] {
+    margin-left: 18px;
+}
+
+form select {
     margin-left: 18px;
 }
 
