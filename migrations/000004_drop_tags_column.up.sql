@@ -1,0 +1,1 @@
+ALTER TABLE excerpts DROP COLUMN IF EXISTS tags;

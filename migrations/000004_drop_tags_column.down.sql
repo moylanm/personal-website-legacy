@@ -1,0 +1,1 @@
+ALTER TABLE excerpts ADD COLUMN IF NOT EXISTS tags;
