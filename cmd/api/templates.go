@@ -30,8 +30,22 @@ func humanDate(t time.Time) string {
 	return t.In(loc).Format("02 Jan 2006 at 15:04")
 }
 
+func pageRange(last int) []int {
+	r := make([]int, last)
+	for i := range r {
+		r[i] = i + 1
+	}
+	return r
+}
+
+func pageSizes() []int {
+	return []int{5, 10, 25, 50, 75, 100}
+}
+
 var functions = template.FuncMap{
 	"humanDate": humanDate,
+	"pageRange": pageRange,
+	"pageSizes": pageSizes,
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
