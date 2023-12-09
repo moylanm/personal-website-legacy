@@ -178,8 +178,7 @@ func (e ExcerptModel) GetAllFiltered(author string, filters Filters) ([]Excerpt,
 		SELECT count(*) OVER(), id, created_at, author, work, body
 		FROM excerpts
 		WHERE (to_tsvector('simple', author) @@ plainto_tsquery('simple', $1) OR $1 = '')
-		ORDER BY %s %s, id ASC
-		LIMIT $2 OFFSET $3`, filters.sortColumn(), filters.sortDirection())
+		ORDER BY %s %s, id ASC`, filters.sortColumn(), filters.sortDirection())
 
 	authorQuery := `
 		SELECT DISTINCT author
@@ -188,9 +187,7 @@ func (e ExcerptModel) GetAllFiltered(author string, filters Filters) ([]Excerpt,
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	args := []any{author, filters.limit(), filters.offset()}
-
-	mainRows, err := e.DB.QueryContext(ctx, mainQuery, args...)
+	mainRows, err := e.DB.QueryContext(ctx, mainQuery, author)
 	if err != nil {
 		return nil, Metadata{}, err
 	}

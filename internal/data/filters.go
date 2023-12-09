@@ -1,15 +1,12 @@
 package data
 
 import (
-	"math"
 	"strings"
 
 	"mylesmoylan.net/internal/validator"
 )
 
 type Filters struct {
-	Page         int
-	PageSize     int
 	Sort         string
 	SortSafeList []string
 }
@@ -32,19 +29,7 @@ func (f Filters) sortDirection() string {
 	return "ASC"
 }
 
-func (f Filters) limit() int {
-	return f.PageSize
-}
-
-func (f Filters) offset() int {
-	return (f.Page - 1) * f.PageSize
-}
-
 func ValidateFilters(v *validator.Validator, f Filters) {
-	v.Check(f.Page > 0, "page", "must be greater than zero")
-	v.Check(f.Page <= 10_000_000, "page", "must be a maximum of 10 million")
-	v.Check(f.PageSize > 0, "page_size", "must be greater than zero")
-	v.Check(f.PageSize <= 100, "page_size", "must be a maximum of 100")
 	v.Check(validator.PermittedValue(f.Sort, f.SortSafeList...), "sort", "invalid sort value")
 }
 
@@ -68,10 +53,6 @@ func calculateMetadata(totalRecords int, selectedAuthor string, authors []string
 		Sort:           filters.Sort,
 		SelectedAuthor: selectedAuthor,
 		Authors:        authors,
-		CurrentPage:    filters.Page,
-		PageSize:       filters.PageSize,
-		FirstPage:      1,
-		LastPage:       int(math.Ceil(float64(totalRecords) / float64(filters.PageSize))),
 		TotalRecords:   totalRecords,
 	}
 }
