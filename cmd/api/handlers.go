@@ -187,6 +187,8 @@ func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 	qs := r.URL.Query()
 
 	input.Author = app.readString(qs, "author", "")
+	input.Filters.Page = app.readInt(qs, "page", 1, v)
+	input.Filters.PageSize = app.readInt(qs, "page_size", 20, v)
 	input.Filters.Sort = app.readString(qs, "sort", "-id")
 	input.Filters.SortSafeList = []string{"id", "author", "work", "-id", "-author", "-work"}
 
