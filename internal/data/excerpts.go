@@ -237,7 +237,6 @@ func (e *ExcerptModel) getFiltered(author string, filters Filters) (int, []Excer
 		ORDER BY %s %s, id ASC
 		LIMIT $2 OFFSET $3`, filters.sortColumn(), filters.sortDirection())
 
-
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 

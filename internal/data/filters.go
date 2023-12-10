@@ -8,8 +8,8 @@ import (
 )
 
 type Filters struct {
-	Page		 int
-	PageSize	 int
+	Page         int
+	PageSize     int
 	Sort         string
 	SortSafeList []string
 }

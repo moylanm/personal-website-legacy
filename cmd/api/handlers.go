@@ -107,10 +107,10 @@ func (app *application) updateExcerpt(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var input struct {
-		ID     *int64    `json:"id"`
-		Author *string   `json:"author"`
-		Work   *string   `json:"work"`
-		Body   *string   `json:"body"`
+		ID     *int64  `json:"id"`
+		Author *string `json:"author"`
+		Work   *string `json:"work"`
+		Body   *string `json:"body"`
 	}
 
 	err = app.readJSON(w, r, &input)
