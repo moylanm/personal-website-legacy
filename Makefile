@@ -79,7 +79,6 @@ vendor:
 .PHONY: build/api
 build/api:
 	@printf 'Building cmd/api...\n'
-	go build -ldflags='-s -w' -o=./bin/api ./cmd/api
 	GOOS=linux GOARCH=amd64 go build -ldflags='-s -w' -o=./bin/linux_amd64/api ./cmd/api
 
 # ==================================================================================== #
