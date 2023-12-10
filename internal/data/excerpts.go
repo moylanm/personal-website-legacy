@@ -310,4 +310,3 @@ func (e *ExcerptModel) getUniqueAuthors() ([]string, error) {
 
 	return uniqueAuthors, nil
 }
-
