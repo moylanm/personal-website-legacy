@@ -173,121 +173,6 @@ func (e ExcerptModel) GetAll() ([]Excerpt, error) {
 	return excerpts, nil
 }
 
-func (e ExcerptModel) GetAllFiltered(author string, filters Filters) ([]Excerpt, Metadata, error) {
-	mainQuery := fmt.Sprintf(`
-		SELECT count(*) OVER(), id, created_at, author, work, body
-		FROM excerpts
-		WHERE (to_tsvector('simple', author) @@ plainto_tsquery('simple', $1) OR $1 = '')
-		ORDER BY %s %s, id ASC
-		LIMIT $2 OFFSET $3`, filters.sortColumn(), filters.sortDirection())
-
-	authorQuery := `
-		SELECT DISTINCT author
-		FROM excerpts`
-
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	args := []any{author, filters.limit(), filters.offset()}
-
-	mainRows, err := e.DB.QueryContext(ctx, mainQuery, args...)
-	if err != nil {
-		return nil, Metadata{}, err
-	}
-	defer mainRows.Close()
-
-	totalRecords := 0
-	excerpts := []Excerpt{}
-
-	for mainRows.Next() {
-		var excerpt Excerpt
-
-		err := mainRows.Scan(
-			&totalRecords,
-			&excerpt.ID,
-			&excerpt.CreatedAt,
-			&excerpt.Author,
-			&excerpt.Work,
-			&excerpt.Body,
-		)
-		if err != nil {
-			return nil, Metadata{}, err
-		}
-
-		excerpts = append(excerpts, excerpt)
-	}
-
-	if err = mainRows.Err(); err != nil {
-		return nil, Metadata{}, err
-	}
-
-	if totalRecords == 0 {
-		filters.Page = 1
-		args = []any{author, filters.limit(), filters.offset()}
-
-		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-		defer cancel()
-
-		mainRows, err = e.DB.QueryContext(ctx, mainQuery, args...)
-		if err != nil {
-			return nil, Metadata{}, err
-		}
-		defer mainRows.Close()
-
-		for mainRows.Next() {
-			var excerpt Excerpt
-
-			err := mainRows.Scan(
-				&totalRecords,
-				&excerpt.ID,
-				&excerpt.CreatedAt,
-				&excerpt.Author,
-				&excerpt.Work,
-				&excerpt.Body,
-			)
-			if err != nil {
-				return nil, Metadata{}, err
-			}
-
-			excerpts = append(excerpts, excerpt)
-		}
-
-		if err = mainRows.Err(); err != nil {
-			return nil, Metadata{}, err
-		}
-	}
-
-	ctx, cancel = context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	authorRows, err := e.DB.QueryContext(ctx, authorQuery)
-	if err != nil {
-		return nil, Metadata{}, err
-	}
-	defer authorRows.Close()
-
-	var uniqueAuthors []string
-
-	for authorRows.Next() {
-		var author string
-
-		err := authorRows.Scan(&author)
-		if err != nil {
-			return nil, Metadata{}, err
-		}
-
-		uniqueAuthors = append(uniqueAuthors, author)
-	}
-
-	if err = authorRows.Err(); err != nil {
-		return nil, Metadata{}, err
-	}
-
-	metadata := calculateMetadata(totalRecords, filters.Page, filters.PageSize, author, uniqueAuthors, filters)
-
-	return excerpts, metadata, nil
-}
-
 func (e *ExcerptModel) Latest(limit int) ([]Excerpt, error) {
 	query := `
 		SELECT id, author, work, created_at
@@ -322,3 +207,107 @@ func (e *ExcerptModel) Latest(limit int) ([]Excerpt, error) {
 
 	return excerpts, nil
 }
+
+func (e ExcerptModel) GetAllFiltered(author string, filters Filters) ([]Excerpt, Metadata, error) {
+	totalRecords, excerpts, err := e.getFiltered(author, filters)
+	if err != nil {
+		return nil, Metadata{}, err
+	}
+
+	if totalRecords == 0 {
+		filters.Page = 1
+		totalRecords, excerpts, err = e.getFiltered(author, filters)
+	}
+
+	uniqueAuthors, err := e.getUniqueAuthors()
+	if err != nil {
+		return nil, Metadata{}, err
+	}
+
+	metadata := calculateMetadata(totalRecords, filters.Page, filters.PageSize, author, uniqueAuthors, filters)
+
+	return excerpts, metadata, nil
+}
+
+func (e *ExcerptModel) getFiltered(author string, filters Filters) (int, []Excerpt, error) {
+	query := fmt.Sprintf(`
+		SELECT count(*) OVER(), id, created_at, author, work, body
+		FROM excerpts
+		WHERE (to_tsvector('simple', author) @@ plainto_tsquery('simple', $1) OR $1 = '')
+		ORDER BY %s %s, id ASC
+		LIMIT $2 OFFSET $3`, filters.sortColumn(), filters.sortDirection())
+
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	args := []any{author, filters.limit(), filters.offset()}
+
+	rows, err := e.DB.QueryContext(ctx, query, args...)
+	if err != nil {
+		return 0, nil, err
+	}
+	defer rows.Close()
+
+	totalRecords := 0
+	excerpts := []Excerpt{}
+
+	for rows.Next() {
+		var excerpt Excerpt
+
+		err := rows.Scan(
+			&totalRecords,
+			&excerpt.ID,
+			&excerpt.CreatedAt,
+			&excerpt.Author,
+			&excerpt.Work,
+			&excerpt.Body,
+		)
+		if err != nil {
+			return 0, nil, err
+		}
+
+		excerpts = append(excerpts, excerpt)
+	}
+
+	if err = rows.Err(); err != nil {
+		return 0, nil, err
+	}
+
+	return totalRecords, excerpts, nil
+}
+
+func (e *ExcerptModel) getUniqueAuthors() ([]string, error) {
+	query := `
+		SELECT DISTINCT author
+		FROM excerpts`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	rows, err := e.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var uniqueAuthors []string
+
+	for rows.Next() {
+		var author string
+
+		err := rows.Scan(&author)
+		if err != nil {
+			return nil, err
+		}
+
+		uniqueAuthors = append(uniqueAuthors, author)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return uniqueAuthors, nil
+}
+
