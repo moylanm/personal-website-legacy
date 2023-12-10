@@ -221,6 +221,42 @@ func (e ExcerptModel) GetAllFiltered(author string, filters Filters) ([]Excerpt,
 		return nil, Metadata{}, err
 	}
 
+	if totalRecords == 0 {
+		filters.Page = 1
+		args = []any{author, filters.limit(), filters.offset()}
+
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		defer cancel()
+
+		mainRows, err = e.DB.QueryContext(ctx, mainQuery, args...)
+		if err != nil {
+			return nil, Metadata{}, err
+		}
+		defer mainRows.Close()
+
+		for mainRows.Next() {
+			var excerpt Excerpt
+
+			err := mainRows.Scan(
+				&totalRecords,
+				&excerpt.ID,
+				&excerpt.CreatedAt,
+				&excerpt.Author,
+				&excerpt.Work,
+				&excerpt.Body,
+			)
+			if err != nil {
+				return nil, Metadata{}, err
+			}
+
+			excerpts = append(excerpts, excerpt)
+		}
+
+		if err = mainRows.Err(); err != nil {
+			return nil, Metadata{}, err
+		}
+	}
+
 	ctx, cancel = context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
