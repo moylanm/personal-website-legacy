@@ -217,6 +217,9 @@ func (e ExcerptModel) GetAllFiltered(author string, filters Filters) ([]Excerpt,
 	if totalRecords == 0 {
 		filters.Page = 1
 		totalRecords, excerpts, err = e.getFiltered(author, filters)
+		if err != nil {
+			return nil, Metadata{}, err
+		}
 	}
 
 	uniqueAuthors, err := e.getUniqueAuthors()
