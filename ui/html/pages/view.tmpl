@@ -9,7 +9,7 @@
 			<strong>{{.Work}}</strong>
 		</div>
 		<hr />
-		<div class='body'>{{.Body}}</div>
+		<div class='body'>{{markdownToHTML .Body}}</div>
 	</div>
 	{{end}}
 {{end}}
