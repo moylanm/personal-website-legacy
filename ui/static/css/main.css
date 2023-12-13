@@ -271,7 +271,7 @@ footer {
     scroll-behavior: smooth;
 }
 
-.stt {
+.rtt {
     opacity: 0.65;
     position: fixed;
     bottom: 20px;
@@ -285,18 +285,18 @@ footer {
 }
 
 @media (hover: hover) {
-    .stt:hover {
+    .rtt:hover {
         opacity: 1;
     }
 }
 
 @media (hover: none) {
-    .stt:active {
+    .rtt:active {
         opacity: 1;
     }
 }
 
-.stt img {
+.rtt img {
     object-fit: scale-down;
     max-width: 100%;
     height: auto;
