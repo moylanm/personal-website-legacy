@@ -284,8 +284,16 @@ footer {
     border-radius: 50%;
 }
 
-.stt:hover {
-    opacity: 1;
+@media (hover: hover) {
+    .stt:hover {
+        opacity: 1;
+    }
+}
+
+@media (hover: none) {
+    .stt:active {
+        opacity: 1;
+    }
 }
 
 .stt img {
