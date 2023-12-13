@@ -108,30 +108,6 @@ nav span:last-child {
     vertical-align: middle;
 }
 
-nav a.live {
-    color: #34495E;
-    cursor: default;
-}
-
-nav a.live:hover {
-    text-decoration: none;
-}
-
-nav a.live:after {
-    content: '';
-    display: block;
-    position: relative;
-    left: calc(50% - 7px);
-    top: 9px;
-    width: 14px;
-    height: 14px;
-    background: #F7F9FA;
-    border-left: 1px solid #E4E5E7;
-    border-bottom: 1px solid #E4E5E7;
-    -moz-transform: rotate(45deg);
-    -webkit-transform: rotate(-45deg);
-}
-
 a.button, input[type="submit"] {
     background-color: #62CB31;
     border-radius: 3px;
