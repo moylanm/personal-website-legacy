@@ -209,6 +209,10 @@ textarea {
     white-space: pre-wrap;
 }
 
+.text-box .body p {
+    padding-bottom: 0;
+}
+
 .text-box .metadata {
     background-color: #F7F9FA;
     color: #6A6C6F;
