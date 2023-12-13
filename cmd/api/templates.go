@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"io/fs"
 	"path/filepath"
 	"time"
 
+	"github.com/russross/blackfriday/v2"
 	"mylesmoylan.net/internal/data"
 	"mylesmoylan.net/ui"
 )
@@ -42,10 +44,16 @@ func pageSizes() []int {
 	return []int{5, 10, 25, 50}
 }
 
+func markdownToHTML(args ...interface{}) template.HTML {
+	s := blackfriday.Run([]byte(fmt.Sprintf("%s", args...)))
+	return template.HTML(s)
+}
+
 var functions = template.FuncMap{
-	"humanDate": humanDate,
-	"pageRange": pageRange,
-	"pageSizes": pageSizes,
+	"humanDate":      humanDate,
+	"pageRange":      pageRange,
+	"pageSizes":      pageSizes,
+	"markdownToHTML": markdownToHTML,
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
