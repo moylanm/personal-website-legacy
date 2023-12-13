@@ -45,8 +45,8 @@ func pageSizes() []int {
 }
 
 func markdownToHTML(args ...interface{}) template.HTML {
-	s := blackfriday.Run([]byte(fmt.Sprintf("%s", args...)))
-	return template.HTML(s)
+	markdown := blackfriday.Run([]byte(fmt.Sprintf("%s", args...)))
+	return template.HTML(markdown)
 }
 
 var functions = template.FuncMap{
