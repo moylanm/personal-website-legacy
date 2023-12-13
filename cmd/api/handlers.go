@@ -58,7 +58,7 @@ func (app *application) createExcerpt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusCreated, envelope{"message": "excerpt successfully created"}, nil)
+	err = app.writeJSON(w, http.StatusCreated, envelope{"message": "excerpt successfully created"})
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
@@ -146,7 +146,7 @@ func (app *application) updateExcerpt(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"message": "excerpt successfully updated"}, nil)
+	err = app.writeJSON(w, http.StatusOK, envelope{"message": "excerpt successfully updated"})
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
@@ -170,7 +170,7 @@ func (app *application) deleteExcerpt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"message": "excerpt successfully deleted"}, nil)
+	err = app.writeJSON(w, http.StatusOK, envelope{"message": "excerpt successfully deleted"})
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
@@ -217,7 +217,7 @@ func (app *application) listJsonExcerpts(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"excerpts": excerpts}, nil)
+	err = app.writeJSON(w, http.StatusOK, envelope{"excerpts": excerpts})
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
