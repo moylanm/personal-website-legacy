@@ -11,3 +11,5 @@ require (
 	github.com/tomasen/realip v0.0.0-20180522021738-f0c99a92ddce
 	golang.org/x/time v0.5.0
 )
+
+require github.com/russross/blackfriday/v2 v2.1.0
