@@ -56,7 +56,6 @@ type Metadata struct {
 	PageSize       int      `json:"page_size,omitempty"`
 	FirstPage      int      `json:"first_page,omitempty"`
 	LastPage       int      `json:"last_page,omitempty"`
-	TotalRecords   int      `json:"total_records,omitempty"`
 }
 
 func calculateMetadata(totalRecords, page, pageSize int, selectedAuthor string, authors []string, filters Filters) Metadata {
@@ -72,6 +71,5 @@ func calculateMetadata(totalRecords, page, pageSize int, selectedAuthor string, 
 		PageSize:       pageSize,
 		FirstPage:      1,
 		LastPage:       int(math.Ceil(float64(totalRecords) / float64(pageSize))),
-		TotalRecords:   totalRecords,
 	}
 }
