@@ -37,6 +37,7 @@
 				<a href='/excerpts'>Reset</a>
 			</div>
 		</form>
+		<a href='#' class='rtt' title='Scroll to top'><img src='static/img/arrow.png'/></a>
 		{{range .Excerpts}}
 			<div class='text-box'>
 				<div class='metadata'>
@@ -51,7 +52,6 @@
 			</div>
 			<br>
 		{{end}}
-		<a href='#' class='rtt'>Return To Top</a>
 	{{else}}
 		<p>There's nothing to see here... yet!</p>
 	{{end}}

@@ -272,7 +272,19 @@ footer {
 }
 
 .rtt {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: fixed;
+    bottom: 20px;
+    float: right;
+    right: 5.5%;
+    padding: 5px;
+    padding-bottom: 0px;
+    background-color: #FFFFFF;
+    border: 2px solid #62CB31;
+    border-radius: 50%;
+}
+
+.rtt img {
+    object-fit: scale-down;
+    max-width: 100%;
+    height: auto;
 }
