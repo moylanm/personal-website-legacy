@@ -23,7 +23,7 @@ header, nav, main, footer {
 
 main {
     margin-top: 54px;
-    margin-bottom: 54px;
+    margin-bottom: 32px;
     min-height: calc(100vh - 345px);
     overflow: auto;
 }
@@ -265,4 +265,14 @@ footer {
     height: 60px;
     color: #6A6C6F;
     text-align: center;
+}
+
+:root {
+    scroll-behavior: smooth;
+}
+
+.rtt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
