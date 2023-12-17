@@ -49,11 +49,21 @@ func markdownToHTML(args ...interface{}) template.HTML {
 	return template.HTML(markdown)
 }
 
+func inc(num int) int {
+	return num + 1;
+}
+
+func dec(num int) int {
+	return num - 1;
+}
+
 var functions = template.FuncMap{
 	"humanDate":      humanDate,
 	"pageRange":      pageRange,
 	"pageSizes":      pageSizes,
 	"markdownToHTML": markdownToHTML,
+	"inc":			  inc,
+	"dec":			  dec,
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {

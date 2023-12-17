@@ -40,6 +40,14 @@
 			</div>
 		</form>
 		<a href='#' class='rtt' title='Return to top'><img src='static/img/arrow.png'/></a>
+		<div class='arrows'>
+			{{if (gt .Metadata.CurrentPage 1)}}
+				<a href='/excerpts?sort={{.Metadata.Sort}}&author={{.Metadata.SelectedAuthor}}&page={{dec .Metadata.CurrentPage}}&page_size={{.Metadata.PageSize}}' class='left-arrow' title='Previous page'><img src='static/img/left-arrow.png'></a>
+			{{end}}
+			{{if (lt .Metadata.CurrentPage .Metadata.LastPage)}}
+				<a href='/excerpts?sort={{.Metadata.Sort}}&author={{.Metadata.SelectedAuthor}}&page={{inc .Metadata.CurrentPage}}&page_size={{.Metadata.PageSize}}' class='right-arrow' title='Next page'><img src='static/img/right-arrow.png'></a>
+			{{end}}
+		</div>
 		{{range .Excerpts}}
 			<div class='text-box'>
 				<div class='metadata'>
@@ -54,6 +62,14 @@
 			</div>
 			<br>
 		{{end}}
+		<div class='arrows'>
+			{{if (gt .Metadata.CurrentPage 1)}}
+				<a href='/excerpts?sort={{.Metadata.Sort}}&author={{.Metadata.SelectedAuthor}}&page={{dec .Metadata.CurrentPage}}&page_size={{.Metadata.PageSize}}' class='left-arrow' title='Previous page'><img src='static/img/left-arrow.png'></a>
+			{{end}}
+			{{if (lt .Metadata.CurrentPage .Metadata.LastPage)}}
+				<a href='/excerpts?sort={{.Metadata.Sort}}&author={{.Metadata.SelectedAuthor}}&page={{inc .Metadata.CurrentPage}}&page_size={{.Metadata.PageSize}}' class='right-arrow' title='Next page'><img src='static/img/right-arrow.png'></a>
+			{{end}}
+		</div>
 	{{else}}
 		<p>There's nothing to see here... yet!</p>
 	{{end}}
