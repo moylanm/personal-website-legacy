@@ -3,30 +3,30 @@ package main
 import (
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 	"mylesmoylan.net/ui"
 )
 
 func (app *application) routes() http.Handler {
-	router := httprouter.New()
+	router := mux.NewRouter()
 
-	router.NotFound = http.HandlerFunc(app.notFoundResponse)
-	router.MethodNotAllowed = http.HandlerFunc(app.methodNotAllowedResponse)
+	router.NotFoundHandler = http.HandlerFunc(app.notFoundResponse)
+	router.MethodNotAllowedHandler = http.HandlerFunc(app.methodNotAllowedResponse)
 
 	fileServer := http.FileServer(http.FS(ui.Files))
 
-	router.Handler(http.MethodGet, "/static/*filepath", fileServer)
+	router.PathPrefix("/static/").Handler(fileServer)
 
-	router.HandlerFunc(http.MethodGet, "/healthcheck", app.healthcheckHandler)
+	router.HandleFunc("/healthcheck", app.healthcheckHandler).Methods(http.MethodGet)
 
-	router.HandlerFunc(http.MethodGet, "/", app.home)
-	router.HandlerFunc(http.MethodGet, "/about", app.about)
-	router.HandlerFunc(http.MethodGet, "/json/excerpts", app.authenticate(app.listJsonExcerpts))
-	router.HandlerFunc(http.MethodGet, "/excerpts", app.listExcerpts)
-	router.HandlerFunc(http.MethodPost, "/excerpts", app.authenticate(app.createExcerpt))
-	router.HandlerFunc(http.MethodGet, "/excerpts/:id", app.showExcerpt)
-	router.HandlerFunc(http.MethodPatch, "/excerpts/:id", app.authenticate(app.updateExcerpt))
-	router.HandlerFunc(http.MethodDelete, "/excerpts/:id", app.authenticate(app.deleteExcerpt))
+	router.HandleFunc("/excerpts/{id:[0-9]+}", app.authenticate(app.deleteExcerpt)).Methods(http.MethodDelete)
+	router.HandleFunc("/excerpts/{id:[0-9]+}", app.authenticate(app.updateExcerpt)).Methods(http.MethodPatch)
+	router.HandleFunc("/excerpts/{id:[0-9]+}", app.showExcerpt).Methods(http.MethodGet)
+	router.HandleFunc("/excerpts/json", app.authenticate(app.listExcerptsJson)).Methods(http.MethodGet)
+	router.HandleFunc("/excerpts", app.authenticate(app.createExcerpt)).Methods(http.MethodPost)
+	router.HandleFunc("/excerpts", app.listExcerpts).Methods(http.MethodGet)
+	router.HandleFunc("/about", app.about).Methods(http.MethodGet)
+	router.HandleFunc("/", app.home).Methods(http.MethodGet)
 
 	return app.recoverPanic(app.rateLimit(router))
 }

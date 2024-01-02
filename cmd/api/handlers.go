@@ -210,7 +210,7 @@ func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, http.StatusOK, "excerpts.tmpl", data)
 }
 
-func (app *application) listJsonExcerpts(w http.ResponseWriter, r *http.Request) {
+func (app *application) listExcerptsJson(w http.ResponseWriter, r *http.Request) {
 	excerpts, err := app.models.Excerpts.GetAll()
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
