@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 func (app *application) logError(r *http.Request, err error) {
@@ -17,11 +18,19 @@ func (app *application) logError(r *http.Request, err error) {
 func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, status int, message any) {
 	env := envelope{"error": message}
 
-	err := app.writeJSON(w, status, env)
-	if err != nil {
-		app.logError(r, err)
-		w.WriteHeader(500)
+	if strings.HasPrefix(r.Header.Get("Accept"), "text/html") {
+		data := app.newTemplateData()
+		data.StatusCode = status
+		data.ErrorMessage = message
+		app.render(w, r, status, "error.tmpl", data)
+	} else {
+		err := app.writeJSON(w, status, env)
+		if err != nil {
+			app.logError(r, err)
+			w.WriteHeader(500)
+		}
 	}
+
 }
 
 func (app *application) serverErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
