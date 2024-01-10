@@ -17,9 +17,9 @@ func (app *application) routes() http.Handler {
 	router.PathPrefix("/static/").Handler(fileServer)
 
 	excerptsPath := "/excerpts/{id:[0-9]+}"
+	router.HandleFunc(excerptsPath, app.showExcerpt).Methods(http.MethodGet)
 	router.HandleFunc(excerptsPath, app.authenticate(app.deleteExcerpt)).Methods(http.MethodDelete)
 	router.HandleFunc(excerptsPath, app.authenticate(app.updateExcerpt)).Methods(http.MethodPatch)
-	router.HandleFunc(excerptsPath, app.showExcerpt).Methods(http.MethodGet)
 	router.HandleFunc("/excerpts/json", app.authenticate(app.listExcerptsJson)).Methods(http.MethodGet)
 	router.HandleFunc("/excerpts", app.authenticate(app.createExcerpt)).Methods(http.MethodPost)
 	router.HandleFunc("/excerpts", app.listExcerpts).Methods(http.MethodGet)
