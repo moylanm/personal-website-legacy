@@ -3,6 +3,11 @@
 {{define "main"}}
 	{{if .Excerpts}}
 		<h2>Here are excerpts from my reading that I thought were worth sharing...</h2>
+		
+		<div id='app'></div>
+		<script src='static/js/App.js'></script>
+
+		<noscript>
 		<form action='/excerpts' method='GET'>
 			<div>
 				<label>Sort:</label>
@@ -70,6 +75,7 @@
 				<a href='/excerpts?sort={{.Metadata.Sort}}&author={{.Metadata.SelectedAuthor}}&page={{inc .Metadata.CurrentPage}}&page_size={{.Metadata.PageSize}}' class='right-arrow' title='Next page'><img src='static/img/right-arrow.png'></a>
 			{{end}}
 		</div>
+		</noscript>
 	{{else}}
 		<p>There's nothing to see here... yet!</p>
 	{{end}}
