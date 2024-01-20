@@ -77,7 +77,7 @@ vendor:
 
 ## build/api: build the cmd/api application
 .PHONY: build/api
-build/api:
+build/api: build/frontend
 	@printf 'Building cmd/api...\n'
 	GOOS=linux GOARCH=amd64 go build -ldflags='-s -w' -o=./bin/linux_amd64/api ./cmd/api
 
