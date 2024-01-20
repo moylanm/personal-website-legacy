@@ -21,7 +21,7 @@ confirm:
 
 ## run/api: run the cmd/api application
 .PHONY: run/api
-run/api:
+run/api: build/frontend
 	@go run ./cmd/api -db-dsn=${DB_DSN} -admin-username=${ADMIN_USERNAME} -admin-password=${ADMIN_PASSWORD}
 
 ## db/psql: connect to the database using psql
@@ -80,6 +80,12 @@ vendor:
 build/api:
 	@printf 'Building cmd/api...\n'
 	GOOS=linux GOARCH=amd64 go build -ldflags='-s -w' -o=./bin/linux_amd64/api ./cmd/api
+
+## build/frontend: build the frontend javascript
+.PHONY: build/frontend
+build/frontend:
+	@printf 'Building static js...\n'
+	@npm run build
 
 # ==================================================================================== #
 # PRODUCTION
