@@ -126,6 +126,7 @@ const App = () => {
     if (state.excerpts.length === 0) return;
 
     const randomIndex = Math.floor(Math.random() * state.excerpts.length);
+
     dispatch({
       type: 'SET_RANDOM_EXCERPT',
       payload: state.excerpts[randomIndex]
