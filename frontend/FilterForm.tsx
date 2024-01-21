@@ -24,10 +24,12 @@ const FilterForm: React.FC<FormProps> = ({
       <label>Sort By:</label>
       <label>
         <input type='radio' value='newest' onChange={onSortChange} checked={selectedSortOrder === 'newest'} />
+        <div className='divider' />
         Newest
       </label>
       <label>
         <input type='radio' value='oldest' onChange={onSortChange} checked={selectedSortOrder === 'oldest'} />
+        <div className='divider' />
         Oldest
       </label>
     </div>
