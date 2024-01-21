@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
+import List from './List';
+import FilterForm from './FilterForm';
 
 const BASE_API_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
 
@@ -14,7 +15,8 @@ type Excerpt = {
 type Excerpts = Excerpt[];
 
 const App = () => {
-  const [excerpts, setExcerpts] = useState([]);
+  const [excerpts, setExcerpts] = useState<Excerpts>([]);
+  const [selectedAuthor, setSelectedAuthor] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,50 +44,30 @@ const App = () => {
     return <div>Loading...</div>;
   }
 
+  const handleAuthorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedAuthor(event.target.value);
+  }
+
+  const uniqueAuthors = Array.from(new Set(excerpts.map(excerpt => excerpt.author)));
+  const filteredExcerpts = selectedAuthor 
+    ? excerpts.filter(excerpt => excerpt.author === selectedAuthor) 
+    : excerpts;
+
   return (
     <>
-      <List excerpts={excerpts} />
+      <FilterForm
+        selectedAuthor={selectedAuthor}
+        uniqueAuthors={uniqueAuthors}
+        onAuthorChange={handleAuthorChange}
+      />  
+      <List excerpts={filteredExcerpts} />
     </>
   );
 }
 
-type ListProps = {
-  excerpts: Excerpts;
-};
-
-const List: React.FC<ListProps> = ({ excerpts }) => {
-  const listItems = excerpts.map((excerpt) => 
-    <Item 
-      key={excerpt.id}
-      excerpt={excerpt}
-    />
-  );
-  return listItems;
-}
-
-type ItemProps = {
-  excerpt: Excerpt;
-};
-
-const Item: React.FC<ItemProps> = ({ excerpt }) => {
-  return (
-    <>
-      <div className='text-box'>
-        <div className='metadata'>
-          <a href={'/excerpts/' + excerpt.id}>
-            <strong>{excerpt.author}</strong>
-            <br />
-            <strong>{excerpt.work}</strong>
-          </a>
-        </div>
-        <hr />
-        <div className='body'>
-          <ReactMarkdown>{excerpt.body}</ReactMarkdown>
-        </div>
-      </div>
-      <br />
-    </>
-  );
+export {
+  Excerpt,
+  Excerpts,
 }
 
 export default App
