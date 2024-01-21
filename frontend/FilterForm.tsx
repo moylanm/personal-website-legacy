@@ -43,9 +43,9 @@ const FilterForm: React.FC<FormProps> = ({
       </select>
     </div>
     <div>
-      <button type='button' onClick={onReset}>Reset</button>
-      <div className='divider' />
       <button type='button' onClick={onRandomClick}>Random Excerpt</button>
+      <div className='divider' />
+      <button type='button' onClick={onReset}>Reset</button>
     </div>
   </form>
 );
