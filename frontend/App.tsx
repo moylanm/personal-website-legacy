@@ -101,7 +101,7 @@ const App = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
-        dispatch({ type: 'SET_LOADING', payload: false});
+        dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
 
@@ -139,26 +139,26 @@ const App = () => {
     });
   }
 
-  const uniqueAuthors = Array.from(new Set(excerpts.map(excerpt => excerpt.author)));
+  const uniqueAuthors = Array.from(new Set(state.excerpts.map(excerpt => excerpt.author)));
   
   const sortedAndFilteredExcerpts = (): Excerpt[] => {
-    if (randomExcerpt) return [randomExcerpt];
+    if (state.randomExcerpt) return [state.randomExcerpt];
 
-    return excerpts
-      .filter(excerpt => !selectedAuthor || excerpt.author === selectedAuthor)
-      .sort((a, b) => sortOrder === 'oldest' ? a.id - b.id : b.id - a.id);
+    return state.excerpts
+      .filter(excerpt => !state.selectedAuthor || excerpt.author === state.selectedAuthor)
+      .sort((a, b) => state.sortOrder === 'oldest' ? a.id - b.id : b.id - a.id);
   };
 
-  if (isLoading) {
+  if (state.isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
       <FilterForm
-        selectedSortOrder={sortOrder}
+        selectedSortOrder={state.sortOrder}
         onSortChange={handleSortChange}
-        selectedAuthor={selectedAuthor}
+        selectedAuthor={state.selectedAuthor}
         uniqueAuthors={uniqueAuthors}
         onAuthorChange={handleAuthorChange}
         onRandomClick={handleRandomClick}
@@ -171,7 +171,6 @@ const App = () => {
 
 export {
   Excerpt,
-  Excerpts,
 }
 
 export default App
