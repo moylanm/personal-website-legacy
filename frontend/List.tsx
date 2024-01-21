@@ -1,19 +1,18 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Excerpt, Excerpts } from './App';
+import { Excerpt } from './App';
 
 type ListProps = {
-  excerpts: Excerpts;
+  excerpts: Excerpt[];
 };
 
 const List: React.FC<ListProps> = ({ excerpts }) => {
-  const listItems = excerpts.map((excerpt) => 
+  return excerpts.map((excerpt) => 
     <Item 
       key={excerpt.id}
       excerpt={excerpt}
     />
   );
-  return listItems;
 }
 
 type ItemProps = {
