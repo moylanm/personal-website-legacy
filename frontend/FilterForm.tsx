@@ -1,7 +1,7 @@
 import React from 'react';
 
 type FormProps = {
-  selectedSortOrder: string;
+  selectedSortOrder: boolean;
   selectedAuthor: string;
   uniqueAuthors: string[];
   onSortChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -23,12 +23,12 @@ const FilterForm: React.FC<FormProps> = ({
     <div>
       <label>Sort By:</label>
       <label>
-        <input type='radio' value='newest' onChange={onSortChange} checked={selectedSortOrder === 'newest'} />
+        <input type='radio' value='newest' onChange={onSortChange} checked={!selectedSortOrder} />
         <div className='divider' />
         Newest
       </label>
       <label>
-        <input type='radio' value='oldest' onChange={onSortChange} checked={selectedSortOrder === 'oldest'} />
+        <input type='radio' value='oldest' onChange={onSortChange} checked={selectedSortOrder} />
         <div className='divider' />
         Oldest
       </label>

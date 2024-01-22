@@ -14,7 +14,8 @@ type Excerpt = {
 
 type AppState = {
   excerpts: Excerpt[];
-  sortOrder: string;
+  uniqueAuthors: string[];
+  reverseSort: boolean;
   selectedAuthor: string;
   randomExcerpt: Excerpt | null;
   isLoading: boolean;
@@ -22,7 +23,7 @@ type AppState = {
 
 type Action = 
   | { type: 'SET_EXCERPTS'; payload: Excerpt[] }
-  | { type: 'SET_SORT_ORDER'; payload: string }
+  | { type: 'SET_SORT_ORDER'; payload: boolean }
   | { type: 'SET_SELECTED_AUTHOR'; payload: string }
   | { type: 'SET_RANDOM_EXCERPT'; payload: Excerpt | null }
   | { type: 'SET_RESET', payload: null }
@@ -30,7 +31,8 @@ type Action =
 
 const initialState: AppState = {
   excerpts: [],
-  sortOrder: 'newest',
+  uniqueAuthors: [],
+  reverseSort: false,
   selectedAuthor: '',
   randomExcerpt: null,
   isLoading: true
@@ -39,14 +41,16 @@ const initialState: AppState = {
 const reducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
     case 'SET_EXCERPTS':
+      const uniqueAuthors = Array.from(new Set(action.payload.map(excerpt => excerpt.author)));
       return {
         ...state,
-        excerpts: action.payload
+        excerpts: action.payload,
+        uniqueAuthors: uniqueAuthors
       };
     case 'SET_SORT_ORDER':
       return {
         ...state,
-        sortOrder: action.payload,
+        reverseSort: action.payload,
         randomExcerpt: null
       };
     case 'SET_SELECTED_AUTHOR':
@@ -59,13 +63,13 @@ const reducer = (state: AppState, action: Action): AppState => {
       return {
         ...state,
         randomExcerpt: action.payload,
-        sortOrder: 'newest',
+        reverseSort: false,
         selectedAuthor: ''
       };
     case 'SET_RESET':
       return {
         ...state,
-        sortOrder: 'newest',
+        reverseSort: false,
         selectedAuthor: '',
         randomExcerpt: null
       };
@@ -111,7 +115,7 @@ const App = () => {
   const handleSortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: 'SET_SORT_ORDER',
-      payload: event.target.value
+      payload: event.target.value === 'oldest'
     });
   }
 
@@ -147,7 +151,7 @@ const App = () => {
 
     return state.excerpts
       .filter(excerpt => !state.selectedAuthor || excerpt.author === state.selectedAuthor)
-      .sort((a, b) => state.sortOrder === 'oldest' ? a.id - b.id : b.id - a.id);
+      .sort((a, b) => state.reverseSort ? a.id - b.id : b.id - a.id);
   };
 
   if (state.isLoading) {
@@ -157,7 +161,7 @@ const App = () => {
   return (
     <>
       <FilterForm
-        selectedSortOrder={state.sortOrder}
+        selectedSortOrder={state.reverseSort}
         onSortChange={handleSortChange}
         selectedAuthor={state.selectedAuthor}
         uniqueAuthors={uniqueAuthors}
