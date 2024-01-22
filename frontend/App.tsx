@@ -88,7 +88,6 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: 'SET_LOADING', payload: true })
       try {
         const response = await axios.get(`${BASE_API_ENDPOINT}`);
         dispatch({
@@ -143,8 +142,6 @@ const App = () => {
       payload: null
     });
   }
-
-  const uniqueAuthors = Array.from(new Set(state.excerpts.map(excerpt => excerpt.author)));
   
   const sortedAndFilteredExcerpts = (): Excerpt[] => {
     if (state.randomExcerpt) return [state.randomExcerpt];
@@ -164,7 +161,7 @@ const App = () => {
         selectedSortOrder={state.reverseSort}
         onSortChange={handleSortChange}
         selectedAuthor={state.selectedAuthor}
-        uniqueAuthors={uniqueAuthors}
+        uniqueAuthors={state.uniqueAuthors}
         onAuthorChange={handleAuthorChange}
         onRandomClick={handleRandomClick}
         onReset={handleReset}
