@@ -26,7 +26,7 @@ type Action =
   | { type: 'SET_SORT_ORDER'; payload: boolean }
   | { type: 'SET_SELECTED_AUTHOR'; payload: string }
   | { type: 'SET_RANDOM_EXCERPT'; payload: Excerpt | null }
-  | { type: 'SET_RESET', payload: null }
+  | { type: 'SET_RESET' }
   | { type: 'SET_LOADING'; payload: boolean };
 
 const initialState: AppState = {
@@ -138,8 +138,7 @@ const App = () => {
 
   const handleReset = () => {
     dispatch({
-      type: 'SET_RESET',
-      payload: null
+      type: 'SET_RESET'
     });
   }
   
