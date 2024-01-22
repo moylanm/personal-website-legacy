@@ -22,7 +22,7 @@ type AppState = {
 }
 
 type Action = 
-  | { type: 'SET_EXCERPTS'; payload: Excerpt[] }
+  | { type: 'LOAD_EXCERPTS_AND_AUTHORS'; payload: Excerpt[] }
   | { type: 'SET_SORT_ORDER'; payload: boolean }
   | { type: 'SET_SELECTED_AUTHOR'; payload: string }
   | { type: 'SET_RANDOM_EXCERPT'; payload: Excerpt | null }
@@ -40,7 +40,7 @@ const initialState: AppState = {
 
 const reducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
-    case 'SET_EXCERPTS':
+    case 'LOAD_EXCERPTS_AND_AUTHORS':
       const uniqueAuthors = Array.from(new Set(action.payload.map(excerpt => excerpt.author)));
       return {
         ...state,
@@ -91,7 +91,7 @@ const App = () => {
       try {
         const response = await axios.get(`${BASE_API_ENDPOINT}`);
         dispatch({
-          type: 'SET_EXCERPTS',
+          type: 'LOAD_EXCERPTS_AND_AUTHORS',
           payload: response.data['excerpts'].map((item: Excerpt): Excerpt => {
             return {
               id: item.id,
