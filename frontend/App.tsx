@@ -151,7 +151,7 @@ const App = () => {
   };
 
   if (state.isLoading) {
-    return <div>Loading...</div>;
+    return <div className='load-message'>Loading...</div>;
   }
 
   return (

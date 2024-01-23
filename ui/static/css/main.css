@@ -290,3 +290,9 @@ footer {
 .arrows .right-arrow {
     float: right;
 }
+
+.load-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
