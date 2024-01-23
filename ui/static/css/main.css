@@ -6,7 +6,7 @@
     font-family: "Merriweather", monospace;
 }
 
-html, body {
+html,.excerpt-body {
     height: 100%;
 }
 
@@ -127,12 +127,6 @@ button:hover, a.button:hover, input[type="submit"]:hover {
     text-decoration: none;
 }
 
-.divider {
-    width: 5px;
-    height: auto;
-    display: inline-block;
-}
-
 form {
     margin-left: 10px;
     margin-right: 10px;
@@ -181,17 +175,24 @@ textarea {
     height: 266px;
 }
 
-.text-box {
+.divider {
+    width: 5px;
+    height: auto;
+    display: inline-block;
+}
+
+.excerpt-item {
     background-color: #FFFFFF;
     border: 1px solid #E4E5E7;
     border-radius: 3px;
+    margin-bottom: 30px;
 }
 
-.text-box .body {
+.excerpt-item .excerpt-body {
     white-space: pre-wrap;
 }
 
-.text-box .metadata {
+.excerpt-item .excerpt-metadata {
     background-color: #F7F9FA;
     color: #6A6C6F;
     padding: 0.75em 18px;
@@ -199,15 +200,15 @@ textarea {
     text-align: center;
 }
 
-.text-box .metadata span {
+.excerpt-item .excerpt-metadata span {
     float: right;
 }
 
-.text-box .metadata a strong {
+.excerpt-item .excerpt-metadata a strong {
     color: #62CB31;
 }
 
-.text-box .metadata strong {
+.excerpt-item .excerpt-metadata strong {
     color: #34495E;
 }
 
