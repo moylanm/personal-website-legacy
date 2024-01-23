@@ -1,18 +1,13 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Excerpt } from './App';
+import { Excerpt } from './types';
 
 type ListProps = {
   excerpts: Excerpt[];
 };
 
 const List: React.FC<ListProps> = ({ excerpts }) => {
-  return excerpts.map((excerpt) => 
-    <Item 
-      key={excerpt.id}
-      excerpt={excerpt}
-    />
-  );
+  return excerpts.map((excerpt) => <Item key={excerpt.id} excerpt={excerpt}/>);
 }
 
 type ItemProps = {
@@ -21,22 +16,19 @@ type ItemProps = {
 
 const Item: React.FC<ItemProps> = ({ excerpt }) => {
   return (
-    <>
-      <div className='text-box'>
-        <div className='metadata'>
-          <a href={'/excerpts/' + excerpt.id}>
-            <strong>{excerpt.author}</strong>
-            <br />
-            <strong>{excerpt.work}</strong>
-          </a>
-        </div>
-        <hr />
-        <div className='body'>
-          <ReactMarkdown>{excerpt.body}</ReactMarkdown>
-        </div>
+    <article className='excerpt-item'>
+      <header className='excerpt-metadata'>
+        <a href={'/excerpts/' + excerpt.id} aria-label={`Read an excerpt from ${excerpt.work} by ${excerpt.author}`}>
+          <strong>{excerpt.author}</strong>
+          <br />
+          <strong>{excerpt.work}</strong>
+        </a>
+      </header>
+      <hr />
+      <div className='excerpt-body'>
+        <ReactMarkdown>{excerpt.body}</ReactMarkdown>
       </div>
-      <br />
-    </>
+    </article>
   );
 }
 
