@@ -2,14 +2,14 @@
 
 {{define "main"}}
 	{{with .Excerpt}}
-	<div class='text-box'>
-		<div class='metadata'>
+	<article class='excerpt-item'>
+		<header class='excerpt-metadata'>
 			<strong>{{.Author}}</strong>
 			<br>
 			<strong>{{.Work}}</strong>
-		</div>
+		</header>
 		<hr />
-		<div class='body'>{{markdownToHTML .Body}}</div>
-	</div>
+		<div class='excerpt-body'>{{markdownToHTML .Body}}</div>
+	</article>
 	{{end}}
 {{end}}

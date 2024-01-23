@@ -64,11 +64,6 @@ p {
     padding: 1em;
 }
 
-textarea {
-    font-size: 18px;
-    font-family: "Roboto", monospace;
-}
-
 header {
     background-size: 100% 6px;
     background-repeat: no-repeat;
