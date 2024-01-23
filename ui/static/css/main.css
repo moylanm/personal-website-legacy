@@ -291,7 +291,7 @@ footer {
     float: right;
 }
 
-.load-message {
+.message {
     display: flex;
     align-items: center;
     justify-content: center;
