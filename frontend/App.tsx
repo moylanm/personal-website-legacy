@@ -19,6 +19,7 @@ type AppState = {
   selectedAuthor: string;
   randomExcerpt: Excerpt | null;
   isLoading: boolean;
+  isError: boolean;
 }
 
 type Action = 
@@ -27,7 +28,8 @@ type Action =
   | { type: 'SET_SELECTED_AUTHOR'; payload: string }
   | { type: 'SET_RANDOM_EXCERPT'; payload: Excerpt | null }
   | { type: 'SET_RESET' }
-  | { type: 'SET_LOADING'; payload: boolean };
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'SET_ERROR'; payload: boolean }
 
 const initialState: AppState = {
   excerpts: [],
@@ -35,7 +37,8 @@ const initialState: AppState = {
   reverseSort: false,
   selectedAuthor: '',
   randomExcerpt: null,
-  isLoading: true
+  isLoading: true,
+  isError: false
 };
 
 const reducer = (state: AppState, action: Action): AppState => {
@@ -78,6 +81,11 @@ const reducer = (state: AppState, action: Action): AppState => {
         ...state,
         isLoading: action.payload
       };
+    case 'SET_ERROR':
+      return {
+        ...state,
+        isError: action.payload
+      };
     default:
       return state;
   }
@@ -102,7 +110,7 @@ const App = () => {
           })
         });
       } catch (error) {
-        console.error('Error fetching data:', error);
+        dispatch({ type: 'SET_ERROR', payload: true});
       } finally {
         dispatch({ type: 'SET_LOADING', payload: false });
       }
@@ -150,8 +158,12 @@ const App = () => {
       .sort((a, b) => state.reverseSort ? a.id - b.id : b.id - a.id);
   };
 
+  if (state.isError) {
+    return <div className='message'>There was an error...</div>
+  }
+
   if (state.isLoading) {
-    return <div className='load-message'>Loading...</div>;
+    return <div className='message'>Loading...</div>;
   }
 
   return (
