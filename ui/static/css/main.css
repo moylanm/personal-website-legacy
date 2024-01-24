@@ -121,6 +121,10 @@ button:hover, a.button:hover, input[type="submit"]:hover {
     text-decoration: none;
 }
 
+fieldset {
+    border: 0;
+}
+
 form {
     margin-left: 10px;
     margin-right: 10px;
