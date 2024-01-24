@@ -7,7 +7,7 @@ type ListProps = {
 };
 
 const List: React.FC<ListProps> = ({ excerpts }) => {
-  return excerpts.map((excerpt) => <Item key={excerpt.id} excerpt={excerpt}/>);
+  return excerpts.map((excerpt) => <Item key={excerpt.id} excerpt={excerpt} />);
 }
 
 type ItemProps = {
@@ -18,7 +18,7 @@ const Item: React.FC<ItemProps> = ({ excerpt }) => {
   return (
     <article className='excerpt-item'>
       <header className='excerpt-metadata'>
-        <a href={'/excerpts/' + excerpt.id} aria-label={`Read an excerpt from ${excerpt.work} by ${excerpt.author}`}>
+        <a href={`/excerpts/${excerpt.id}`} aria-label={`Read an excerpt from ${excerpt.work} by ${excerpt.author}`}>
           <strong>{excerpt.author}</strong>
           <br />
           <strong>{excerpt.work}</strong>

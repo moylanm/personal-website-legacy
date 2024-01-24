@@ -23,7 +23,7 @@ export enum ActionType {
   SetReset = 'SET_RESET',
   SetLoading = 'SET_LOADING',
   SetError = 'SET_ERROR'
-}
+};
 
 export type Action = 
   | { type: ActionType.LoadExcerptsAndAuthors; payload: Excerpt[] }

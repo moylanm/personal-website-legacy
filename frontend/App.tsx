@@ -32,8 +32,8 @@ const App = () => {
           console.log('Request canceled:', error.message);
         } else {
           console.error('Error fetching data:', error);
-          dispatch({ type: ActionType.SetError, payload: true });
         }
+        dispatch({ type: ActionType.SetError, payload: true });
       } finally {
         dispatch({ type: ActionType.SetLoading, payload: false });
       }

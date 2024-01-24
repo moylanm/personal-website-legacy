@@ -33,12 +33,12 @@ const FilterForm: React.FC<FormProps> = ({
   onReset
 }) => (
   <form>
-    <div>
+    <fieldset>
       <label>Sort By:</label>
       <RadioButton value='newest' checked={!selectedSortOrder} onChange={onSortChange} label='Newest' />
       <RadioButton value='oldest' checked={selectedSortOrder} onChange={onSortChange} label='Oldest' />
-    </div>
-    <div>
+    </fieldset>
+    <fieldset>
       <label htmlFor='authorSelect'>Author:</label>
       <select id='authorSelect' value={selectedAuthor} onChange={onAuthorChange}>
         <option value=''>Any</option>
@@ -48,7 +48,7 @@ const FilterForm: React.FC<FormProps> = ({
           </option>
         ))}
       </select>
-    </div>
+    </fieldset>
     <div>
       <button type='button' onClick={onRandomClick} aria-label='Select a random excerpt'>Random Excerpt</button>
       <div className='divider' />
