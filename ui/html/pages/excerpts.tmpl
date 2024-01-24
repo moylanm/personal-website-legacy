@@ -10,11 +10,11 @@
 		<noscript>
 		<form action='/excerpts' method='GET'>
 			<div>
-				<label>Sort:</label>
+				<label>Sort By:</label>
 				<input type='radio' id='r1' name='sort' value='-id' {{if (eq .Metadata.Sort "-id")}}checked{{end}}>
-				<label for='r1'>Newest First</label>
+				<label for='r1'>Newest</label>
 				<input type='radio' id='r2' name='sort' value='id' {{if (eq .Metadata.Sort "id")}}checked{{end}}>
-				<label for='r2'>Oldest First</label>
+				<label for='r2'>Oldest</label>
 			</div>
 			<div>
 				<label>Author:</label>
@@ -54,17 +54,17 @@
 			{{end}}
 		</div>
 		{{range .Excerpts}}
-			<div class='text-box'>
-				<div class='metadata'>
+			<article class='excerpt-item'>
+				<header class='excerpt-metadata'>
 					<a href='/excerpts/{{.ID}}'>
 						<strong>{{.Author}}</strong>
 						<br>
 						<strong>{{.Work}}</strong>
 					</a>
-				</div>
+				</header>
 				<hr />
-				<div class='body'>{{markdownToHTML .Body}}</div>
-			</div>
+				<div class='excerpt-body'>{{markdownToHTML .Body}}</div>
+			</article>
 			<br>
 		{{end}}
 		<div class='arrows'>
