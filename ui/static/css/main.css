@@ -83,7 +83,7 @@ nav {
     padding-top: 17px;
     padding-bottom: 15px;
     background: #F7F9FA;
-    height: 60px;
+    height: 30px;
     color: #6A6C6F;
 }
 
@@ -170,6 +170,7 @@ textarea {
 }
 
 .divider {
+    box-sizing: border-box;
     width: 5px;
     height: auto;
     display: inline-block;
@@ -180,10 +181,6 @@ textarea {
     border: 1px solid #E4E5E7;
     border-radius: 3px;
     margin-bottom: 30px;
-}
-
-.excerpt-item .excerpt-body {
-    white-space: pre-wrap;
 }
 
 .excerpt-item .excerpt-metadata {
@@ -235,7 +232,7 @@ footer {
     padding-top: 17px;
     padding-bottom: 15px;
     background: #F7F9FA;
-    height: 60px;
+    height: 30px;
     color: #6A6C6F;
     text-align: center;
 }
