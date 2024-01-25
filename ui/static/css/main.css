@@ -287,7 +287,14 @@ footer {
     float: right;
 }
 
-.message {
+.loading-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-message {
+    color: red;
     display: flex;
     align-items: center;
     justify-content: center;
