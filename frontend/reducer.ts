@@ -17,7 +17,9 @@ export const reducer = (state: AppState, action: Action): AppState => {
       return {
         ...state,
         excerpts: action.payload,
-        uniqueAuthors
+        uniqueAuthors,
+        isLoading: false,
+        isError: false
       };
     case ActionType.SetSortOrder:
       return {
@@ -38,13 +40,6 @@ export const reducer = (state: AppState, action: Action): AppState => {
         reverseSort: false,
         selectedAuthor: ''
       };
-    case ActionType.SetReset:
-      return {
-        ...state,
-        reverseSort: false,
-        selectedAuthor: '',
-        randomExcerpt: null
-      };
     case ActionType.SetLoading:
       return {
         ...state,
@@ -54,6 +49,13 @@ export const reducer = (state: AppState, action: Action): AppState => {
       return {
         ...state,
         isError: action.payload
+      };
+    case ActionType.Reset:
+      return {
+        ...state,
+        reverseSort: false,
+        selectedAuthor: '',
+        randomExcerpt: null
       };
     default:
       return state;

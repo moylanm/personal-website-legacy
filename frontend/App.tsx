@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useReducer} from 'react';
+import React, {useCallback, useEffect, useMemo, useReducer} from 'react';
 import axios from 'axios';
 import List from './List';
 import FilterForm from './FilterForm';
@@ -32,8 +32,8 @@ const App = () => {
           console.log('Request canceled:', error.message);
         } else {
           console.error('Error fetching data:', error);
+          dispatch({ type: ActionType.SetError, payload: true });
         }
-        dispatch({ type: ActionType.SetError, payload: true });
       } finally {
         dispatch({ type: ActionType.SetLoading, payload: false });
       }
@@ -46,21 +46,21 @@ const App = () => {
     };
   }, [])
 
-  const handleSortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSortChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: ActionType.SetSortOrder,
       payload: event.target.value === 'oldest'
     });
-  }
+  }, []);
 
-  const handleAuthorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleAuthorChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch({
       type: ActionType.SetSelectedAuthor,
       payload: event.target.value
     });
-  }
+  }, []);
 
-  const handleRandomClick = () => {
+  const handleRandomClick = useCallback(() => {
     if (state.excerpts.length === 0) return;
 
     const randomIndex = Math.floor(Math.random() * state.excerpts.length);
@@ -69,13 +69,13 @@ const App = () => {
       type: ActionType.SetRandomExcerpt,
       payload: state.excerpts[randomIndex]
     });
-  }
+  }, [state.excerpts]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     dispatch({
-      type: ActionType.SetReset
+      type: ActionType.Reset
     });
-  }
+  }, []);
   
   const sortedAndFilteredExcerpts = useMemo(() => {
     if (state.randomExcerpt) return [state.randomExcerpt];
@@ -86,11 +86,11 @@ const App = () => {
   }, [state.excerpts, state.randomExcerpt, state.selectedAuthor, state.reverseSort]);
 
   if (state.isError) {
-    return <div className='message'>There was an error...</div>
+    return <div className='error-message'>There was an error fetching the excerpts. Please try again later.</div>
   }
 
   if (state.isLoading) {
-    return <div className='message'>Loading...</div>;
+    return <div className='loading-message'>Excerpts are loading, please wait...</div>;
   }
 
   return (
