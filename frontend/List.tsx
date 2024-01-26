@@ -1,13 +1,43 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Excerpt } from './types';
+
+const CHUNK_SIZE = 7;
 
 type ListProps = {
   excerpts: Excerpt[];
 };
 
 const List: React.FC<ListProps> = ({ excerpts }) => {
-  return excerpts.map((excerpt) => <Item key={excerpt.id} excerpt={excerpt} />);
+  const [displayCount, setDisplayCount] = useState(CHUNK_SIZE);
+  const loadMoreRef = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setDisplayCount(prevCount => Math.min(prevCount + CHUNK_SIZE, excerpts.length));
+      }
+    }, {
+      rootMargin: '100px'
+    });
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <>
+      {excerpts.slice(0, displayCount).map((excerpt) => <Item key={excerpt.id} excerpt={excerpt} />)}
+      {displayCount < excerpts.length && <div ref={loadMoreRef} className='loading-message'>Loading more...</div>}
+    </>
+  );
 }
 
 type ItemProps = {
