@@ -13,11 +13,10 @@ export const initialState: AppState = {
 export const reducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
     case ActionType.LoadExcerptsAndAuthors:
-      const uniqueAuthors = Array.from(new Set(action.payload.map(excerpt => excerpt.author)));
       return {
         ...state,
         excerpts: action.payload,
-        uniqueAuthors,
+        uniqueAuthors: [...new Set(action.payload.map(excerpt => excerpt.author))],
         isLoading: false,
         isError: false
       };
