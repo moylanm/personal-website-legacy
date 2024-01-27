@@ -25,8 +25,13 @@ export enum ActionType {
   Reset = 'RESET',
 }
 
+type ExcerptsAndAuthorsPayload = {
+  excerpts: Excerpt[];
+  uniqueAuthors: string[];
+};
+
 export type Action = 
-  | { type: ActionType.LoadExcerptsAndAuthors; payload: Excerpt[] }
+  | { type: ActionType.LoadExcerptsAndAuthors; payload: ExcerptsAndAuthorsPayload }
   | { type: ActionType.SetSortOrder; payload: boolean }
   | { type: ActionType.SetSelectedAuthor; payload: string }
   | { type: ActionType.SetRandomExcerpt; payload: Excerpt | null }

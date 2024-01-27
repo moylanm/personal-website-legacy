@@ -30,7 +30,7 @@ const List: React.FC<ListProps> = ({ excerpts }) => {
         observer.unobserve(loadMoreRef.current);
       }
     };
-  }, []);
+  }, [excerpts]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useReducer} from 'react';
+import React, {useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import axios from 'axios';
 import List from './List';
 import FilterForm from './FilterForm';
@@ -9,6 +9,7 @@ const BASE_API_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [resetKey, setResetKey] = useState(0);
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -18,14 +19,19 @@ const App = () => {
         const response = await axios.get(`${BASE_API_ENDPOINT}`, {
           cancelToken: source.token
         });
+
+        const excerpts = response.data['excerpts'].map((excerpt: Excerpt): Excerpt => ({
+          id: excerpt.id,
+          author: excerpt.author,
+          work: excerpt.work,
+          body: excerpt.body
+        }));
+
+        const uniqueAuthors = [...new Set<string>(excerpts.map((excerpt: Excerpt) => excerpt.author))];
+
         dispatch({
           type: ActionType.LoadExcerptsAndAuthors,
-          payload: response.data['excerpts'].map((item: Excerpt): Excerpt => ({
-            id: item.id,
-            author: item.author,
-            work: item.work,
-            body: item.body
-          }))
+          payload: { excerpts, uniqueAuthors }
         });
       } catch (error) {
         if (axios.isCancel(error)) {
@@ -51,14 +57,14 @@ const App = () => {
       type: ActionType.SetSortOrder,
       payload: event.target.value === 'oldest'
     });
-  }, []);
+  }, [dispatch]);
 
   const handleAuthorChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch({
       type: ActionType.SetSelectedAuthor,
       payload: event.target.value
     });
-  }, []);
+  }, [dispatch]);
 
   const handleRandomClick = useCallback(() => {
     if (state.excerpts.length === 0) return;
@@ -69,12 +75,11 @@ const App = () => {
       type: ActionType.SetRandomExcerpt,
       payload: state.excerpts[randomIndex]
     });
-  }, [state.excerpts]);
+  }, [state.excerpts, dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch({
-      type: ActionType.Reset
-    });
+    dispatch({ type: ActionType.Reset });
+    setResetKey(prevKey => prevKey + 1);
   }, []);
   
   const sortedAndFilteredExcerpts = useMemo(() => {
@@ -86,11 +91,11 @@ const App = () => {
   }, [state.excerpts, state.randomExcerpt, state.selectedAuthor, state.reverseSort]);
 
   if (state.isError) {
-    return <div className='error-message'>There was an error fetching the excerpts. Please try again later.</div>
+    return <div className='error-message'>There was an error fetching the excerpts. Please try again later.</div>;
   }
 
   if (state.isLoading) {
-    return <div className='loading-message'>Excerpts are loading, please wait...</div>;
+    return <div className='loading-message'>Loading...</div>;
   }
 
   return (
@@ -104,7 +109,7 @@ const App = () => {
         onRandomClick={handleRandomClick}
         onReset={handleReset}
       />  
-      <List excerpts={sortedAndFilteredExcerpts} />
+      <List key={resetKey} excerpts={sortedAndFilteredExcerpts} />
     </>
   );
 }

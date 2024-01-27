@@ -15,8 +15,8 @@ export const reducer = (state: AppState, action: Action): AppState => {
     case ActionType.LoadExcerptsAndAuthors:
       return {
         ...state,
-        excerpts: action.payload,
-        uniqueAuthors: [...new Set(action.payload.map(excerpt => excerpt.author))],
+        excerpts: action.payload.excerpts,
+        uniqueAuthors: action.payload.uniqueAuthors,
         isLoading: false,
         isError: false
       };
@@ -54,7 +54,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
         ...state,
         reverseSort: false,
         selectedAuthor: '',
-        randomExcerpt: null
+        randomExcerpt: null,
       };
     default:
       return state;
