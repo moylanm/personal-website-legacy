@@ -1,5 +1,25 @@
 import React from 'react';
 
+type RadioButtonProps = {
+  value: string;
+  checked: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+}
+
+const RadioButton: React.FC<RadioButtonProps> = ({
+  value,
+  checked,
+  onChange, 
+  label
+}) => (
+  <label>
+    <input type="radio" value={value} onChange={onChange} checked={checked} id={value} />
+    <div className='divider' />
+    {label}
+  </label>
+);
+
 type FormProps = {
   selectedSortOrder: boolean;
   selectedAuthor: string;
@@ -9,19 +29,6 @@ type FormProps = {
   onRandomClick: () => void;
   onReset: () => void;
 };
-
-const RadioButton: React.FC<{
-  value: string;
-  checked: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-}> = ({ value, checked, onChange, label }) => (
-  <label>
-    <input type="radio" value={value} onChange={onChange} checked={checked} id={value} />
-    <div className='divider' />
-    {label}
-  </label>
-);
 
 const FilterForm: React.FC<FormProps> = ({
   selectedSortOrder,

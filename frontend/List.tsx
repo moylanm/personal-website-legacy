@@ -4,11 +4,7 @@ import { Excerpt } from './types';
 
 const CHUNK_SIZE = 7;
 
-type ListProps = {
-  excerpts: Excerpt[];
-};
-
-const List: React.FC<ListProps> = ({ excerpts }) => {
+const List: React.FC<{excerpts: Excerpt[]}> = ({ excerpts }) => {
   const [displayCount, setDisplayCount] = useState(CHUNK_SIZE);
   const loadMoreRef = useRef(null)
 
@@ -40,11 +36,7 @@ const List: React.FC<ListProps> = ({ excerpts }) => {
   );
 }
 
-type ItemProps = {
-  excerpt: Excerpt;
-};
-
-const Item: React.FC<ItemProps> = ({ excerpt }) => {
+const Item: React.FC<{excerpt: Excerpt}> = ({ excerpt }) => {
   return (
     <article className='excerpt-item'>
       <header className='excerpt-metadata'>
