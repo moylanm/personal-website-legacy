@@ -57,14 +57,14 @@ const App = () => {
       type: ActionType.SetSortOrder,
       payload: event.target.value === 'oldest'
     });
-  }, [dispatch]);
+  }, []);
 
   const handleAuthorChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch({
       type: ActionType.SetSelectedAuthor,
       payload: event.target.value
     });
-  }, [dispatch]);
+  }, []);
 
   const handleRandomClick = useCallback(() => {
     if (state.excerpts.length === 0) return;
@@ -75,7 +75,7 @@ const App = () => {
       type: ActionType.SetRandomExcerpt,
       payload: state.excerpts[randomIndex]
     });
-  }, [state.excerpts, dispatch]);
+  }, [state.excerpts]);
 
   const handleReset = useCallback(() => {
     dispatch({ type: ActionType.Reset });
