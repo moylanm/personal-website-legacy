@@ -13,13 +13,13 @@ export const initialState: AppState = {
 
 export const reducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
-    case ActionType.ExcerptFetchInit:
+    case ActionType.ExcerptsFetchInit:
       return {
         ...state,
         isLoading: true,
         isError: false
       };
-    case ActionType.ExcerptFetchSuccess:
+    case ActionType.ExcerptsFetchSuccess:
       return {
         ...state,
         excerpts: action.payload.excerpts,
@@ -27,7 +27,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
         isLoading: false,
         isError: false
       };
-    case ActionType.ExcerptFetchFailure:
+    case ActionType.ExcerptsFetchFailure:
       return {
         ...state,
         isLoading: false,

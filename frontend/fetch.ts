@@ -11,7 +11,7 @@ const fetchExcerpts = (
     const source = axios.CancelToken.source();
 
     const fetchData = async () => {
-      dispatch({ type: ActionType.ExcerptFetchInit });
+      dispatch({ type: ActionType.ExcerptsFetchInit });
 
       try {
         const response = await axios.get(`${BASE_API_ENDPOINT}`, {
@@ -28,7 +28,7 @@ const fetchExcerpts = (
         const uniqueAuthors = [...new Set<string>(excerpts.map((excerpt: Excerpt) => excerpt.author))];
 
         dispatch({
-          type: ActionType.ExcerptFetchSuccess,
+          type: ActionType.ExcerptsFetchSuccess,
           payload: { excerpts, uniqueAuthors }
         });
       } catch (error) {
@@ -38,7 +38,7 @@ const fetchExcerpts = (
           console.error('Error fetching data:', error);
         }
 
-        dispatch({ type: ActionType.ExcerptFetchFailure });
+        dispatch({ type: ActionType.ExcerptsFetchFailure });
       }
     };
 
