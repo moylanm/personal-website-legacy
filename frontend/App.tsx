@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo, useReducer } from 'react';
 import List from './List';
 import FilterForm from './FilterForm';
-import fetchExcerpts from './fetch';
+import useFetchExcerpts from './useFetchExcerpts';
 import { reducer, initialState } from './reducer';
 import { ActionType } from './types';
 
@@ -9,7 +9,7 @@ import { ActionType } from './types';
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  fetchExcerpts(dispatch);
+  useFetchExcerpts(dispatch);
 
   const handleSortChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -54,7 +54,7 @@ const App = () => {
   }, [state.excerpts, state.randomExcerpt, state.selectedAuthor, state.reverseSort]);
 
   if (state.isError) {
-    return <div className='error-message'>There was an error fetching the excerpts. Please try again later.</div>;
+    return <div className='error-message'>{state.errorMessage}</div>;
   }
 
   if (state.isLoading) {

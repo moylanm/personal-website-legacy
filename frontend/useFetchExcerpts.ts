@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import axios from "axios";
-import { Action, ActionType, Excerpt } from "./types";
+import { Action, ActionType } from "./types";
+import { extractUniqueAuthors, transformExcerptData } from "./dataTransformUtils";
 
 const BASE_API_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
 
-const fetchExcerpts = (
+const useFetchExcerpts = (
   dispatch: React.Dispatch<Action>
 ) => {
   useEffect(() => {
@@ -18,27 +19,26 @@ const fetchExcerpts = (
           cancelToken: source.token
         });
 
-        const excerpts = response.data['excerpts'].map((excerpt: Excerpt): Excerpt => ({
-          id: excerpt.id,
-          author: excerpt.author,
-          work: excerpt.work,
-          body: excerpt.body
-        }));
-
-        const uniqueAuthors = [...new Set<string>(excerpts.map((excerpt: Excerpt) => excerpt.author))];
+        const excerpts = transformExcerptData(response.data['excerpts']);
+        const uniqueAuthors = extractUniqueAuthors(excerpts);
 
         dispatch({
           type: ActionType.ExcerptsFetchSuccess,
           payload: { excerpts, uniqueAuthors }
         });
       } catch (error) {
-        if (axios.isCancel(error)) {
-          console.log('Request canceled:', error.message);
-        } else {
-          console.error('Error fetching data:', error);
+        let errorMessage = 'Failed to fetch data.';
+
+        if (error.response) {
+          errorMessage = `Error ${error.response.status}: ${error.response.statusText}`;
+        } else if (error.request) {
+          errorMessage = 'Network error. Please try again.'
         }
 
-        dispatch({ type: ActionType.ExcerptsFetchFailure });
+        dispatch({
+          type: ActionType.ExcerptsFetchFailure,
+          payload: errorMessage
+        });
       }
     };
 
@@ -50,4 +50,4 @@ const fetchExcerpts = (
   }, [])
 };
 
-export default fetchExcerpts;
+export default useFetchExcerpts;

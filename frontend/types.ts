@@ -13,6 +13,7 @@ export type AppState = {
   randomExcerpt: Excerpt | null;
   resetKey: number;
   isLoading: boolean;
+  errorMessage: string;
   isError: boolean;
 };
 
@@ -29,7 +30,7 @@ export enum ActionType {
 export type Action = 
   | { type: ActionType.ExcerptsFetchInit }
   | { type: ActionType.ExcerptsFetchSuccess; payload: { excerpts: Excerpt[]; uniqueAuthors: string[] } }
-  | { type: ActionType.ExcerptsFetchFailure }
+  | { type: ActionType.ExcerptsFetchFailure; payload: string }
   | { type: ActionType.SetSortOrder; payload: boolean }
   | { type: ActionType.SetSelectedAuthor; payload: string }
   | { type: ActionType.SetRandomExcerpt; payload: Excerpt | null }

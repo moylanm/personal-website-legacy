@@ -8,6 +8,7 @@ export const initialState: AppState = {
   randomExcerpt: null,
   resetKey: 0,
   isLoading: false,
+  errorMessage: '',
   isError: false
 };
 
@@ -30,6 +31,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
     case ActionType.ExcerptsFetchFailure:
       return {
         ...state,
+        errorMessage: action.payload,
         isLoading: false,
         isError: true
       };
