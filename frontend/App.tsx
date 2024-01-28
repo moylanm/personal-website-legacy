@@ -85,9 +85,9 @@ const App = () => {
   const sortedAndFilteredExcerpts = useMemo(() => {
     if (state.randomExcerpt) return [state.randomExcerpt];
 
-    const filteredExcerpts = state.excerpts.filter(excerpt =>
-      !state.selectedAuthor || excerpt.author === state.selectedAuthor
-    );
+    const filteredExcerpts = state.selectedAuthor
+      ? state.excerpts.filter(excerpt => excerpt.author === state.selectedAuthor)
+      : [...state.excerpts];
 
     return state.reverseSort ? filteredExcerpts.reverse() : filteredExcerpts;
   }, [state.excerpts, state.randomExcerpt, state.selectedAuthor, state.reverseSort]);
