@@ -89,11 +89,7 @@ const App = () => {
       !state.selectedAuthor || excerpt.author === state.selectedAuthor
     );
 
-    if (state.reverseSort) {
-      return [...filteredExcerpts].sort((a, b) => a.id - b.id);
-    } else {
-      return filteredExcerpts;
-    }
+    return state.reverseSort ? filteredExcerpts.reverse() : filteredExcerpts;
   }, [state.excerpts, state.randomExcerpt, state.selectedAuthor, state.reverseSort]);
 
   if (state.isError) {
@@ -109,8 +105,8 @@ const App = () => {
       <FilterForm
         selectedSortOrder={state.reverseSort}
         onSortChange={handleSortChange}
-        selectedAuthor={state.selectedAuthor}
         uniqueAuthors={state.uniqueAuthors}
+        selectedAuthor={state.selectedAuthor}
         onAuthorChange={handleAuthorChange}
         onRandomClick={handleRandomClick}
         onReset={handleReset}
