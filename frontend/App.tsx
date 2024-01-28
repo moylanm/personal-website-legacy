@@ -9,7 +9,6 @@ const BASE_API_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [resetKey, setResetKey] = useState(0);
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -78,9 +77,11 @@ const App = () => {
   }, [state.excerpts]);
 
   const handleReset = useCallback(() => {
-    dispatch({ type: ActionType.Reset });
-    setResetKey(prevKey => prevKey + 1);
-  }, []);
+    dispatch({
+      type: ActionType.Reset,
+      payload: state.resetKey + 1
+    });
+  }, [state.resetKey]);
   
   const sortedAndFilteredExcerpts = useMemo(() => {
     if (state.randomExcerpt) return [state.randomExcerpt];
@@ -111,7 +112,7 @@ const App = () => {
         onRandomClick={handleRandomClick}
         onReset={handleReset}
       />  
-      <List key={resetKey} excerpts={sortedAndFilteredExcerpts} />
+      <List key={state.resetKey} excerpts={sortedAndFilteredExcerpts} />
     </>
   );
 }

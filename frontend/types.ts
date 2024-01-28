@@ -11,6 +11,7 @@ export type AppState = {
   reverseSort: boolean;
   selectedAuthor: string;
   randomExcerpt: Excerpt | null;
+  resetKey: number;
   isLoading: boolean;
   isError: boolean;
 };
@@ -37,5 +38,5 @@ export type Action =
   | { type: ActionType.SetRandomExcerpt; payload: Excerpt | null }
   | { type: ActionType.SetLoading; payload: boolean }
   | { type: ActionType.SetError; payload: boolean }
-  | { type: ActionType.Reset };
+  | { type: ActionType.Reset; payload: number };
 

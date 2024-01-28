@@ -6,6 +6,7 @@ export const initialState: AppState = {
   reverseSort: false,
   selectedAuthor: '',
   randomExcerpt: null,
+  resetKey: 0,
   isLoading: true,
   isError: false
 };
@@ -52,9 +53,10 @@ export const reducer = (state: AppState, action: Action): AppState => {
     case ActionType.Reset:
       return {
         ...state,
+        resetKey: action.payload,
         reverseSort: false,
         selectedAuthor: '',
-        randomExcerpt: null,
+        randomExcerpt: null
       };
     default:
       return state;
