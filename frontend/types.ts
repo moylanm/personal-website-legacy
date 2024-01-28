@@ -17,26 +17,21 @@ export type AppState = {
 };
 
 export enum ActionType {
-  LoadExcerptsAndAuthors = 'LOAD_EXCERPTS_AND_AUTHORS',
+  ExcerptFetchInit = 'EXCERPT_FETCH_INIT',
+  ExcerptFetchSuccess = 'EXCERPT_FETCH_SUCCESS',
+  ExcerptFetchFailure = 'EXCERPT_FETCH_FAILURE',
   SetSortOrder = 'SET_SORT_ORDER',
   SetSelectedAuthor = 'SET_SELECTED_AUTHOR',
   SetRandomExcerpt = 'SET_RANDOM_EXCERPT',
-  SetLoading = 'SET_LOADING',
-  SetError = 'SET_ERROR',
   Reset = 'RESET',
 }
 
-type ExcerptsAndAuthorsPayload = {
-  excerpts: Excerpt[];
-  uniqueAuthors: string[];
-};
-
 export type Action = 
-  | { type: ActionType.LoadExcerptsAndAuthors; payload: ExcerptsAndAuthorsPayload }
+  | { type: ActionType.ExcerptFetchInit }
+  | { type: ActionType.ExcerptFetchSuccess; payload: { excerpts: Excerpt[]; uniqueAuthors: string[] } }
+  | { type: ActionType.ExcerptFetchFailure }
   | { type: ActionType.SetSortOrder; payload: boolean }
   | { type: ActionType.SetSelectedAuthor; payload: string }
   | { type: ActionType.SetRandomExcerpt; payload: Excerpt | null }
-  | { type: ActionType.SetLoading; payload: boolean }
-  | { type: ActionType.SetError; payload: boolean }
   | { type: ActionType.Reset; payload: number };
 

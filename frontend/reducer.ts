@@ -7,19 +7,31 @@ export const initialState: AppState = {
   selectedAuthor: '',
   randomExcerpt: null,
   resetKey: 0,
-  isLoading: true,
+  isLoading: false,
   isError: false
 };
 
 export const reducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
-    case ActionType.LoadExcerptsAndAuthors:
+    case ActionType.ExcerptFetchInit:
+      return {
+        ...state,
+        isLoading: true,
+        isError: false
+      };
+    case ActionType.ExcerptFetchSuccess:
       return {
         ...state,
         excerpts: action.payload.excerpts,
         uniqueAuthors: action.payload.uniqueAuthors,
         isLoading: false,
         isError: false
+      };
+    case ActionType.ExcerptFetchFailure:
+      return {
+        ...state,
+        isLoading: false,
+        isError: true
       };
     case ActionType.SetSortOrder:
       return {
@@ -39,16 +51,6 @@ export const reducer = (state: AppState, action: Action): AppState => {
         randomExcerpt: action.payload,
         reverseSort: false,
         selectedAuthor: ''
-      };
-    case ActionType.SetLoading:
-      return {
-        ...state,
-        isLoading: action.payload
-      };
-    case ActionType.SetError:
-      return {
-        ...state,
-        isError: action.payload
       };
     case ActionType.Reset:
       return {

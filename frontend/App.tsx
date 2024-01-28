@@ -14,6 +14,9 @@ const App = () => {
     const source = axios.CancelToken.source();
 
     const fetchData = async () => {
+
+      dispatch({ type: ActionType.ExcerptFetchInit });
+
       try {
         const response = await axios.get(`${BASE_API_ENDPOINT}`, {
           cancelToken: source.token
@@ -29,7 +32,7 @@ const App = () => {
         const uniqueAuthors = [...new Set<string>(excerpts.map((excerpt: Excerpt) => excerpt.author))];
 
         dispatch({
-          type: ActionType.LoadExcerptsAndAuthors,
+          type: ActionType.ExcerptFetchSuccess,
           payload: { excerpts, uniqueAuthors }
         });
       } catch (error) {
@@ -37,10 +40,9 @@ const App = () => {
           console.log('Request canceled:', error.message);
         } else {
           console.error('Error fetching data:', error);
-          dispatch({ type: ActionType.SetError, payload: true });
         }
-      } finally {
-        dispatch({ type: ActionType.SetLoading, payload: false });
+
+        dispatch({ type: ActionType.ExcerptFetchFailure });
       }
     };
 
@@ -98,7 +100,7 @@ const App = () => {
   }
 
   if (state.isLoading) {
-    return <div className='loading-message'>Loading...</div>;
+    return <div className='loading-message'>Loading excerpts...</div>;
   }
 
   return (
