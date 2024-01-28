@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import axios from "axios";
-import { Action, ActionType, ApiResponse } from "./types";
+import { useEffect } from 'react';
+import axios from 'axios';
+import { Action, ActionType, ApiResponse } from './types';
 
-const BASE_API_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
+const API_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
 
 const useFetchExcerpts = (
   dispatch: React.Dispatch<Action>
@@ -14,7 +14,7 @@ const useFetchExcerpts = (
       dispatch({ type: ActionType.ExcerptsFetchInit });
 
       try {
-        const response = await axios.get<ApiResponse>(`${BASE_API_ENDPOINT}`, {
+        const response = await axios.get<ApiResponse>(`${API_ENDPOINT}`, {
           cancelToken: source.token
         });
 
