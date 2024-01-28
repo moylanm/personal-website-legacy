@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import axios from "axios";
-import { Action, ActionType } from "./types";
-import { extractUniqueAuthors, transformExcerptData } from "./dataTransformUtils";
+import { Action, ActionType, ApiResponse } from "./types";
 
 const BASE_API_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
 
@@ -15,12 +14,12 @@ const useFetchExcerpts = (
       dispatch({ type: ActionType.ExcerptsFetchInit });
 
       try {
-        const response = await axios.get(`${BASE_API_ENDPOINT}`, {
+        const response = await axios.get<ApiResponse>(`${BASE_API_ENDPOINT}`, {
           cancelToken: source.token
         });
 
-        const excerpts = transformExcerptData(response.data['excerpts']);
-        const uniqueAuthors = extractUniqueAuthors(excerpts);
+        const excerpts = response.data.excerpts;
+        const uniqueAuthors = [...new Set(excerpts.map(excerpt => excerpt.author))];
 
         dispatch({
           type: ActionType.ExcerptsFetchSuccess,

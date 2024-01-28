@@ -36,3 +36,6 @@ export type Action =
   | { type: ActionType.SetRandomExcerpt; payload: Excerpt | null }
   | { type: ActionType.Reset; payload: number };
 
+export type ApiResponse = {
+  excerpts: Excerpt[];
+}
