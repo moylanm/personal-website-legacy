@@ -1,10 +1,9 @@
-import React, {useCallback, useMemo, useReducer } from 'react';
+import React, { useCallback, useMemo, useReducer } from 'react';
 import List from './List';
 import FilterForm from './FilterForm';
 import useFetchExcerpts from './useFetchExcerpts';
 import { reducer, initialState } from './reducer';
 import { ActionType } from './types';
-
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -71,7 +70,7 @@ const App = () => {
         onAuthorChange={handleAuthorChange}
         onRandomClick={handleRandomClick}
         onReset={handleReset}
-      />  
+      /> 
       <List key={state.resetKey} excerpts={sortedAndFilteredExcerpts} />
     </>
   );
