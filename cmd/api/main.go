@@ -3,34 +3,34 @@ package main
 import (
 	"context"
 	"database/sql"
-	"flag"
 	"html/template"
 	"log/slog"
 	"os"
 	"time"
 
 	_ "github.com/lib/pq"
+	"gopkg.in/yaml.v3"
 	"mylesmoylan.net/internal/data"
 )
 
 type config struct {
-	host string
-	port int
-	db   struct {
-		dsn          string
-		maxOpenConns int
-		maxIdleConns int
-		maxIdleTime  time.Duration
-	}
-	limiter struct {
-		rps     float64
-		burst   int
-		enabled bool
-	}
-	admin struct {
-		username string
-		password string
-	}
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
+	Db   struct {
+		Dsn          string        `yaml:"dsn"`
+		MaxOpenConns int           `yaml:"maxOpenConns"`
+		MaxIdleConns int           `yaml:"maxIdleConns"`
+		MaxIdleTime  time.Duration `yaml:"maxIdleTime"`
+	} `yaml:"db"`
+	Limiter struct {
+		Rps     float64 `yaml:"rps"`
+		Burst   int     `yaml:"burst"`
+		Enabled bool    `yaml:"enabled"`
+	} `yaml:"limiter"`
+	Admin struct {
+		Username string `yaml:"username"`
+		Password string `yaml:"password"`
+	} `yaml:"admin"`
 }
 
 type application struct {
@@ -40,27 +40,46 @@ type application struct {
 	templateCache map[string]*template.Template
 }
 
-func main() {
+func readConfig(path string) (config, error) {
 	var cfg config
 
-	flag.StringVar(&cfg.host, "host", "localhost", "API server host")
-	flag.IntVar(&cfg.port, "port", 4000, "API server port")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return config{}, err
+	}
 
-	flag.IntVar(&cfg.db.maxOpenConns, "db-max-open-conns", 25, "PostgreSQL max open connections")
-	flag.IntVar(&cfg.db.maxIdleConns, "db-max-idle-conns", 25, "PostgreSQL max idle connections")
-	flag.DurationVar(&cfg.db.maxIdleTime, "db-max-idle-time", 15*time.Minute, "PostgreSQL max connection idle time")
+	err = yaml.Unmarshal(data, &cfg)
+	if err != nil {
+		return config{}, err
+	}
 
-	flag.Float64Var(&cfg.limiter.rps, "limiter-rps", 8, "Rate limiter maximum requests per second")
-	flag.IntVar(&cfg.limiter.burst, "limiter-burst", 16, "Rate limiter maximum burst")
-	flag.BoolVar(&cfg.limiter.enabled, "limiter-enabled", true, "Enable rate limiter")
+	overrideConfigWithEnv(&cfg)
 
-	flag.Parse()
+	return cfg, nil
+}
 
-	cfg.db.dsn = os.Getenv("WEBSITE_DB_DSN")
-	cfg.admin.username = os.Getenv("WEBSITE_USER")
-	cfg.admin.password = os.Getenv("WEBSITE_PASS")
+func overrideConfigWithEnv(cfg *config) {
+	if dsn := os.Getenv("WEBSITE_DB_DSN"); dsn != "" {
+		cfg.Db.Dsn = dsn
+	}
 
+	if username := os.Getenv("WEBSITE_USER"); username != "" {
+		cfg.Admin.Username = username
+	}
+
+	if password := os.Getenv("WEBSITE_PASS"); password != "" {
+		cfg.Admin.Password = password
+	}
+}
+
+func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+
+	cfgPath := "config.yaml"
+	cfg, err := readConfig(cfgPath)
+	if err != nil {
+		logger.Error(err.Error())
+	}
 
 	db, err := openDB(cfg)
 	if err != nil {
@@ -92,14 +111,14 @@ func main() {
 }
 
 func openDB(cfg config) (*sql.DB, error) {
-	db, err := sql.Open("postgres", cfg.db.dsn)
+	db, err := sql.Open("postgres", cfg.Db.Dsn)
 	if err != nil {
 		return nil, err
 	}
 
-	db.SetMaxOpenConns(cfg.db.maxOpenConns)
-	db.SetMaxIdleConns(cfg.db.maxIdleConns)
-	db.SetConnMaxIdleTime(cfg.db.maxIdleTime)
+	db.SetMaxOpenConns(cfg.Db.MaxOpenConns)
+	db.SetMaxIdleConns(cfg.Db.MaxIdleConns)
+	db.SetConnMaxIdleTime(cfg.Db.MaxIdleTime)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
