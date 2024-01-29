@@ -22,12 +22,12 @@ confirm:
 ## run/api: run the cmd/api application
 .PHONY: run/api
 run/api: build/frontend
-	@go run ./cmd/api -db-dsn=${DB_DSN} -admin-username=${ADMIN_USERNAME} -admin-password=${ADMIN_PASSWORD}
+	@go run ./cmd/api
 
 ## db/psql: connect to the database using psql
 .PHONY: db/psql
 db/psql:
-	@psql ${DB_DSN}
+	@psql ${WEBSITE_DB_DSN}
 
 ## db/migrations/new name=$1: create a new database migration
 .PHONY: db/migrations/new
@@ -84,7 +84,7 @@ build/api: build/frontend
 ## build/frontend: build the frontend javascript
 .PHONY: build/frontend
 build/frontend:
-	@printf 'Building static js...\n'
+	@printf 'Building js...\n'
 	@npm run build
 
 # ==================================================================================== #
