@@ -52,14 +52,14 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 	}()
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if app.config.limiter.enabled {
+		if app.config.Limiter.Enabled {
 			ip := realip.FromRequest(r)
 
 			mu.Lock()
 
 			if _, found := clients[ip]; !found {
 				clients[ip] = &client{
-					limiter: rate.NewLimiter(rate.Limit(app.config.limiter.rps), app.config.limiter.burst),
+					limiter: rate.NewLimiter(rate.Limit(app.config.Limiter.Rps), app.config.Limiter.Burst),
 				}
 			}
 
@@ -83,8 +83,8 @@ func (app *application) authenticate(next http.HandlerFunc) http.HandlerFunc {
 		username, password, ok := r.BasicAuth()
 
 		if !ok ||
-			subtle.ConstantTimeCompare([]byte(app.config.admin.username), []byte(username)) != 1 ||
-			subtle.ConstantTimeCompare([]byte(app.config.admin.password), []byte(password)) != 1 {
+			subtle.ConstantTimeCompare([]byte(app.config.Admin.Username), []byte(username)) != 1 ||
+			subtle.ConstantTimeCompare([]byte(app.config.Admin.Password), []byte(password)) != 1 {
 			app.invalidCredentialsResponse(w, r)
 			return
 		}
