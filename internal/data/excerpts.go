@@ -134,7 +134,7 @@ func (e ExcerptModel) Delete(id int64) error {
 
 func (e ExcerptModel) GetAll() ([]Excerpt, error) {
 	query := `
-		SELECT id, created_at, author, work, body
+		SELECT id, author, work, body
 		FROM excerpts
 		ORDER BY id DESC`
 
@@ -154,7 +154,6 @@ func (e ExcerptModel) GetAll() ([]Excerpt, error) {
 
 		err := rows.Scan(
 			&excerpt.ID,
-			&excerpt.CreatedAt,
 			&excerpt.Author,
 			&excerpt.Work,
 			&excerpt.Body,
