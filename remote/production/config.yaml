@@ -1,0 +1,14 @@
+host: ""
+port: 4000
+db:
+    dsn: ""
+    maxOpenConns: 25
+    maxIdleConns: 25
+    maxIdleTime: 15m
+limiter:
+    rps: 8
+    burst: 16
+    enabled: true
+admin:
+    username: ""
+    password: ""
