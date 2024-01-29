@@ -105,6 +105,7 @@ production/deploy/api: build/api
 	rsync -rP --delete ./migrations myles@${production_host_ip}:~
 	rsync -P ./remote/production/api.service myles@${production_host_ip}:~
 	rsync -P ./remote/production/Caddyfile myles@${production_host_ip}:~
+	rsync -P ./remote/production/config.yaml myles@${production_host_ip}:~
 	ssh -t myles@${production_host_ip} '\
 		migrate -path ~/migrations -database $$WEBSITE_DB_DSN up \
 		&& sudo mv ~/api.service /etc/systemd/system/ \
