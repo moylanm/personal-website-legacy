@@ -76,12 +76,12 @@ func overrideConfigWithEnv(cfg *config) {
 
 func validateConfig(cfg *config) error {
 	// Validate DB configuration
-    if cfg.Db.Dsn == "" {
-        return fmt.Errorf("database DSN is required")
-    }
-    if cfg.Db.MaxOpenConns <= 0 {
-        return fmt.Errorf("max open connections must be positive")
-    }
+	if cfg.Db.Dsn == "" {
+		return fmt.Errorf("database DSN is required")
+	}
+	if cfg.Db.MaxOpenConns <= 0 {
+		return fmt.Errorf("max open connections must be positive")
+	}
 	if cfg.Db.MaxIdleConns <= 0 {
 		return fmt.Errorf("max idle connections must be positive")
 	}
@@ -91,28 +91,28 @@ func validateConfig(cfg *config) error {
 
 	// Validate server configuration
 	if cfg.Host != "" && cfg.Host != "localhost" {
-        return fmt.Errorf("invalid host")
-    }
-    if cfg.Port <= 0 || cfg.Port > 65535 {
-        return fmt.Errorf("port must be between 1 and 65535")
-    }
+		return fmt.Errorf("invalid hostname")
+	}
+	if cfg.Port <= 0 || cfg.Port > 65535 {
+		return fmt.Errorf("port must be between 1 and 65535")
+	}
 
 	// Validate admin credentials
-    if cfg.Admin.Username == "" || cfg.Admin.Password == "" {
-        return fmt.Errorf("admin username and password are required")
-    }
+	if cfg.Admin.Username == "" || cfg.Admin.Password == "" {
+		return fmt.Errorf("admin username and password are required")
+	}
 
 	// Validate limiter configuration if enabled
-    if cfg.Limiter.Enabled {
-        if cfg.Limiter.Rps <= 0 {
-            return fmt.Errorf("rate limiter RPS must be positive")
-        }
-        if cfg.Limiter.Burst <= 0 {
-            return fmt.Errorf("rate limiter burst must be positive")
-        }
-    }
+	if cfg.Limiter.Enabled {
+		if cfg.Limiter.Rps <= 0 {
+			return fmt.Errorf("rate limiter RPS must be positive")
+		}
+		if cfg.Limiter.Burst <= 0 {
+			return fmt.Errorf("rate limiter burst must be positive")
+		}
+	}
 
-    return nil
+	return nil
 }
 
 func main() {
