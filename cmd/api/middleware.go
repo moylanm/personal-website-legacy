@@ -33,11 +33,11 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 	var (
 		mu      sync.Mutex
 		clients = make(map[string]*client)
+		ticker  = time.NewTicker(time.Minute)
 	)
 
 	go func() {
-		for {
-			time.Sleep(time.Minute)
+		for range ticker.C {
 
 			mu.Lock()
 
