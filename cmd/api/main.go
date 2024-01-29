@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"database/sql"
+	"flag"
+	"fmt"
 	"html/template"
 	"log/slog"
 	"os"
@@ -73,9 +75,12 @@ func overrideConfigWithEnv(cfg *config) {
 }
 
 func main() {
+	var cfgPath string
+
+	flag.StringVar(&cfgPath, "config-path", "config.yaml", "Configuration file path")
+
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
-	cfgPath := "config.yaml"
 	cfg, err := readConfig(cfgPath)
 	if err != nil {
 		logger.Error(err.Error())
