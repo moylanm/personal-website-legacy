@@ -48,7 +48,6 @@ func main() {
 	flag.IntVar(&cfg.port, "port", 4000, "API server port")
 	flag.StringVar(&cfg.env, "env", "development", "Environment (development|production)")
 
-	flag.StringVar(&cfg.db.dsn, "db-dsn", "", "PostgreSQL DSN")
 	flag.IntVar(&cfg.db.maxOpenConns, "db-max-open-conns", 25, "PostgreSQL max open connections")
 	flag.IntVar(&cfg.db.maxIdleConns, "db-max-idle-conns", 25, "PostgreSQL max idle connections")
 	flag.DurationVar(&cfg.db.maxIdleTime, "db-max-idle-time", 15*time.Minute, "PostgreSQL max connection idle time")
@@ -57,10 +56,11 @@ func main() {
 	flag.IntVar(&cfg.limiter.burst, "limiter-burst", 16, "Rate limiter maximum burst")
 	flag.BoolVar(&cfg.limiter.enabled, "limiter-enabled", true, "Enable rate limiter")
 
-	flag.StringVar(&cfg.admin.username, "admin-username", "", "Admin username")
-	flag.StringVar(&cfg.admin.password, "admin-password", "", "Admin password")
-
 	flag.Parse()
+
+	cfg.db.dsn = os.Getenv("WEBSITE_DB_DSN")
+	cfg.admin.username = os.Getenv("WEBSITE_USER")
+	cfg.admin.password = os.Getenv("WEBSITE_PASS")
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
