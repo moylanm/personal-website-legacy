@@ -39,7 +39,11 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data envelo
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	w.Write(js)
+
+	_, err = w.Write(js)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -141,11 +145,12 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 
 	err := ts.ExecuteTemplate(buf, "base", data)
 	if err != nil {
-		app.serverErrorResponse(w, r, err)
+		app.serverErrorResponse(w, r, fmt.Errorf("error executing template %s: %w", page, err))
 		return
 	}
 
 	w.WriteHeader(status)
-
-	buf.WriteTo(w)
+	if _, err := buf.WriteTo(w); err != nil {
+		app.logger.Error("Error writing rendered template to response: %v", err)
+	}
 }
