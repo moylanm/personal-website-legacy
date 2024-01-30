@@ -25,7 +25,7 @@ export enum ActionType {
   SetSelectedAuthor = 'SET_SELECTED_AUTHOR',
   SetRandomExcerpt = 'SET_RANDOM_EXCERPT',
   Reset = 'RESET',
-}
+};
 
 export type Action = 
   | { type: ActionType.ExcerptsFetchInit }
@@ -38,4 +38,4 @@ export type Action =
 
 export type ApiResponse = {
   excerpts: Excerpt[];
-}
+};
