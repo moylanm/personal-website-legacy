@@ -55,21 +55,18 @@ func markdownToHTML(args ...interface{}) (template.HTML, error) {
 		}
 	}
 
-	markdown, err := processMarkdown(sb.String())
-	if err != nil {
-		return "", fmt.Errorf("error processing markdown: %w", err)
-	}
+	markdown := processMarkdown(sb.String())
 
 	return template.HTML(markdown), nil
 }
 
-func processMarkdown(input string) ([]byte, error) {
+func processMarkdown(input string) []byte {
 	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
 	parser := parser.NewWithExtensions(extensions)
 
 	output := markdown.ToHTML([]byte(input), parser, nil)
 
-	return output, nil
+	return output
 }
 
 func inc(num int) int {
