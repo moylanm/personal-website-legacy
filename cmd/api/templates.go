@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"io/fs"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/russross/blackfriday/v2"
@@ -47,6 +48,11 @@ func pageSizes() []int {
 }
 
 func markdownToHTML(args ...interface{}) template.HTML {
+	var sb strings.Builder
+	for _, arg := range args {
+		sb.WriteString(fmt.Sprintf("%v", arg))
+	}
+
 	markdown := blackfriday.Run([]byte(fmt.Sprintf("%s", args...)))
 	return template.HTML(markdown)
 }
