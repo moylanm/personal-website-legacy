@@ -285,17 +285,13 @@ footer {
     float: right;
 }
 
-.error-message {
-    white-space: pre-line;
-}
-
-.react-loading-message {
+.loading-message {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.react-error-message {
+.error-message {
     color: red;
     display: flex;
     align-items: center;
