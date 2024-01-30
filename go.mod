@@ -9,8 +9,8 @@ require (
 	golang.org/x/time v0.5.0
 )
 
-require github.com/russross/blackfriday/v2 v2.1.0
-
 require github.com/gorilla/mux v1.8.1
 
 require gopkg.in/yaml.v3 v3.0.1
+
+require github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47
