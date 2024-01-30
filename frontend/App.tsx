@@ -53,11 +53,11 @@ const App = () => {
   }, [state.excerpts, state.randomExcerpt, state.selectedAuthor, state.reverseSort]);
 
   if (state.isError) {
-    return <div className='error-message'>{state.errorMessage}</div>;
+    return <div className='react-error-message'>{state.errorMessage}</div>;
   }
 
   if (state.isLoading) {
-    return <div className='loading-message'>Loading excerpts...</div>;
+    return <div className='react-loading-message'>Loading excerpts...</div>;
   }
 
   return (
