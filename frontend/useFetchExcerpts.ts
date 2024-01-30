@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Action, ActionType, ApiResponse } from './types';
 
 const API_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
@@ -26,12 +26,16 @@ const useFetchExcerpts = (
           payload: { excerpts, uniqueAuthors }
         });
       } catch (error) {
+        const axiosError = error as AxiosError;
+
         let errorMessage = 'Failed to fetch data.';
 
-        if (error.response) {
-          errorMessage = `Error ${error.response.status}: ${error.response.statusText}`;
-        } else if (error.request) {
-          errorMessage = 'Network error. Please try again.'
+        if (axiosError.response) {
+          errorMessage = `Error ${axiosError.response.status}: ${axiosError.response.statusText}`;
+        } else if (axiosError.request) {
+          errorMessage = 'Network error. Please try again.';
+        } else {
+          console.log('Error: ', axiosError.message);
         }
 
         dispatch({
