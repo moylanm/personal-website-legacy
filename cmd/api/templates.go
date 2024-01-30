@@ -8,7 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/russross/blackfriday/v2"
+	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/parser"
 	"mylesmoylan.net/internal/data"
 	"mylesmoylan.net/ui"
 )
@@ -63,7 +64,12 @@ func markdownToHTML(args ...interface{}) (template.HTML, error) {
 }
 
 func processMarkdown(input string) ([]byte, error) {
-	return blackfriday.Run([]byte(input)), nil
+	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
+	parser := parser.NewWithExtensions(extensions)
+
+	output := markdown.ToHTML([]byte(input), parser, nil)
+
+	return output, nil
 }
 
 func inc(num int) int {
