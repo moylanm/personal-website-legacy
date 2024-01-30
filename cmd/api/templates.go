@@ -42,14 +42,26 @@ func pageSizes() []int {
 	return []int{5, 10, 25, 50}
 }
 
-func markdownToHTML(args ...interface{}) template.HTML {
+func markdownToHTML(args ...interface{}) (template.HTML, error) {
 	var sb strings.Builder
+
 	for _, arg := range args {
-		sb.WriteString(fmt.Sprintf("%v", arg))
+		_, err := sb.WriteString(fmt.Sprintf("%v", arg))
+		if err != nil {
+			return "", fmt.Errorf("error building markdown string: %w", err)
+		}
 	}
 
-	markdown := blackfriday.Run([]byte(fmt.Sprintf("%s", args...)))
-	return template.HTML(markdown)
+	markdown, err := processMarkdown(sb.String())
+	if err != nil {
+		return "", fmt.Errorf("error processing markdown: %w", err)
+	}
+
+	return template.HTML(markdown), nil
+}
+
+func processMarkdown(input string) ([]byte, error) {
+	return blackfriday.Run([]byte(input)), nil
 }
 
 func inc(num int) int {
