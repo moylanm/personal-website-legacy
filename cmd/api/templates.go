@@ -22,12 +22,14 @@ type templateData struct {
 	ErrorMessage any
 }
 
+const dateFormat = "02 Jan 2006 at 15:04"
+
 func humanDate(t time.Time) string {
 	if t.IsZero() {
 		return ""
 	}
 
-	return t.In(time.Local).Format("02 Jan 2006 at 15:04")
+	return t.In(time.Local).Format(dateFormat)
 }
 
 func pageRange(last int) []int {
