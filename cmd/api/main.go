@@ -93,8 +93,8 @@ func validateConfig(cfg *config) error {
 	if cfg.Host != "" && cfg.Host != "localhost" {
 		return fmt.Errorf("invalid hostname")
 	}
-	if cfg.Port <= 0 || cfg.Port > 65535 {
-		return fmt.Errorf("port must be between 1 and 65535")
+	if cfg.Port < 1024 || cfg.Port > 65535 {
+		return fmt.Errorf("port must be between 1024 and 65535")
 	}
 
 	// Validate admin credentials
