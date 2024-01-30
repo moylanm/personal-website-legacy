@@ -191,7 +191,12 @@ func (e *ExcerptModel) Latest(limit int) ([]Excerpt, error) {
 	for rows.Next() {
 		var e Excerpt
 
-		err = rows.Scan(&e.ID, &e.Author, &e.Work, &e.CreatedAt)
+		err = rows.Scan(
+			&e.ID,
+			&e.Author,
+			&e.Work,
+			&e.CreatedAt,
+		)
 		if err != nil {
 			return nil, err
 		}
