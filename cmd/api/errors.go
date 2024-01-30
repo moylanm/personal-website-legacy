@@ -83,9 +83,15 @@ func (app *application) badRequestResponse(w http.ResponseWriter, r *http.Reques
 }
 
 func (app *application) failedValidationResponse(w http.ResponseWriter, r *http.Request, errors map[string]string) {
+	var sb strings.Builder
+
+	for k, v := range errors {
+		sb.WriteString(fmt.Sprintf("%s: %s\n", k, v))
+	}
+
 	httpErr := HTTPError{
 		StatusCode: http.StatusUnprocessableEntity,
-		Message:    fmt.Sprintf("%v", errors),
+		Message:    sb.String(),
 	}
 
 	app.errorResponse(w, r, httpErr)

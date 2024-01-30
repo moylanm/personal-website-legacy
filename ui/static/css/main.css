@@ -287,13 +287,17 @@ footer {
     float: right;
 }
 
-.loading-message {
+.error-message {
+    white-space: pre-line;
+}
+
+.react-loading-message {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.error-message {
+.react-error-message {
     color: red;
     display: flex;
     align-items: center;
