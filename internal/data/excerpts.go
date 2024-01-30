@@ -51,7 +51,7 @@ func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
 	}
 
 	query := `
-		SELECT id, created_at, author, work, body
+		SELECT id, author, work, body
 		FROM excerpts
 		WHERE id = $1`
 
@@ -62,7 +62,6 @@ func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
 
 	err := e.DB.QueryRowContext(ctx, query, id).Scan(
 		&excerpt.ID,
-		&excerpt.CreatedAt,
 		&excerpt.Author,
 		&excerpt.Work,
 		&excerpt.Body,
@@ -233,7 +232,7 @@ func (e ExcerptModel) GetAllFiltered(author string, filters Filters) ([]Excerpt,
 
 func (e *ExcerptModel) getFiltered(author string, filters Filters) (int, []Excerpt, error) {
 	query := fmt.Sprintf(`
-		SELECT count(*) OVER(), id, created_at, author, work, body
+		SELECT count(*) OVER(), id, author, work, body
 		FROM excerpts
 		WHERE (to_tsvector('simple', author) @@ plainto_tsquery('simple', $1) OR $1 = '')
 		ORDER BY %s %s, id ASC
@@ -259,7 +258,6 @@ func (e *ExcerptModel) getFiltered(author string, filters Filters) (int, []Excer
 		err := rows.Scan(
 			&totalRecords,
 			&excerpt.ID,
-			&excerpt.CreatedAt,
 			&excerpt.Author,
 			&excerpt.Work,
 			&excerpt.Body,
