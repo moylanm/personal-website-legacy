@@ -27,12 +27,7 @@ func humanDate(t time.Time) string {
 		return ""
 	}
 
-	loc, err := time.LoadLocation("America/Los_Angeles")
-	if err != nil {
-		return ""
-	}
-
-	return t.In(loc).Format("02 Jan 2006 at 15:04")
+	return t.In(time.Local).Format("02 Jan 2006 at 15:04")
 }
 
 func pageRange(last int) []int {
