@@ -70,12 +70,12 @@ var functions = template.FuncMap{
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
-	cache := map[string]*template.Template{}
-
 	pages, err := fs.Glob(ui.Files, "html/pages/*.tmpl")
 	if err != nil {
 		return nil, err
 	}
+
+	cache := make(map[string]*template.Template, len(pages))
 
 	for _, page := range pages {
 		name := filepath.Base(page)
