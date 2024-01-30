@@ -14,7 +14,7 @@ const List: React.FC<{excerpts: Excerpt[]}> = ({ excerpts }) => {
         setDisplayCount(prevCount => Math.min(prevCount + CHUNK_SIZE, excerpts.length));
       }
     }, {
-      rootMargin: '100px'
+      threshold: 1.0
     });
 
     if (loadMoreRef.current) {
