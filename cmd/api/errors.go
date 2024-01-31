@@ -6,13 +6,20 @@ import (
 	"strings"
 )
 
-type HTTPError struct {
-	StatusCode int
-	Message    string
+type httpError struct {
+	StatusCode       int
+	Message          string
+	ValidationErrors map[string]string
 }
 
-func (e HTTPError) Error() string {
-	return e.Message
+func (e httpError) FormatValidationErrors() string {
+	var sb strings.Builder
+
+	for k, v := range e.ValidationErrors {
+		sb.WriteString(fmt.Sprintf("%s: %s\n", k, v))
+	}
+
+	return sb.String()
 }
 
 func (app *application) logError(r *http.Request, err error) {
@@ -24,17 +31,29 @@ func (app *application) logError(r *http.Request, err error) {
 	app.logger.Error(err.Error(), "method", method, "uri", uri)
 }
 
-func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, httpErr HTTPError) {
+func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, httpErr httpError) {
 	status := httpErr.StatusCode
-	message := httpErr.Message
 
 	if strings.HasPrefix(r.Header.Get("Accept"), "text/html") {
 		data := app.newTemplateData()
 		data.StatusCode = status
-		data.ErrorMessage = message
+
+		if httpErr.ValidationErrors != nil {
+			data.ErrorMessage = httpErr.FormatValidationErrors()
+		} else {
+			data.ErrorMessage = httpErr.Message
+		}
+
 		app.render(w, r, status, "error.tmpl", data)
 	} else {
-		env := envelope{"error": message}
+		var env envelope
+
+		if httpErr.ValidationErrors != nil {
+			env = envelope{"errors": httpErr.ValidationErrors}
+		} else {
+			env = envelope{"error": httpErr.Message}
+		}
+
 		err := app.writeJSON(w, status, env)
 		if err != nil {
 			app.logError(r, err)
@@ -46,7 +65,7 @@ func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, ht
 func (app *application) serverErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
 	app.logError(r, err)
 
-	httpErr := HTTPError{
+	httpErr := httpError{
 		StatusCode: http.StatusInternalServerError,
 		Message:    "the server encountered a problem and could not process your request",
 	}
@@ -55,7 +74,7 @@ func (app *application) serverErrorResponse(w http.ResponseWriter, r *http.Reque
 }
 
 func (app *application) notFoundResponse(w http.ResponseWriter, r *http.Request) {
-	httpErr := HTTPError{
+	httpErr := httpError{
 		StatusCode: http.StatusNotFound,
 		Message:    "the requested resource could not be found",
 	}
@@ -64,7 +83,7 @@ func (app *application) notFoundResponse(w http.ResponseWriter, r *http.Request)
 }
 
 func (app *application) methodNotAllowedResponse(w http.ResponseWriter, r *http.Request) {
-	httpErr := HTTPError{
+	httpErr := httpError{
 		StatusCode: http.StatusMethodNotAllowed,
 		Message:    fmt.Sprintf("the %s method is not supported for this resource", r.Method),
 	}
@@ -73,7 +92,7 @@ func (app *application) methodNotAllowedResponse(w http.ResponseWriter, r *http.
 }
 
 func (app *application) badRequestResponse(w http.ResponseWriter, r *http.Request, err error) {
-	httpErr := HTTPError{
+	httpErr := httpError{
 		StatusCode: http.StatusBadRequest,
 		Message:    err.Error(),
 	}
@@ -82,22 +101,16 @@ func (app *application) badRequestResponse(w http.ResponseWriter, r *http.Reques
 }
 
 func (app *application) failedValidationResponse(w http.ResponseWriter, r *http.Request, errors map[string]string) {
-	var sb strings.Builder
-
-	for k, v := range errors {
-		sb.WriteString(fmt.Sprintf("%s: %s\n", k, v))
-	}
-
-	httpErr := HTTPError{
-		StatusCode: http.StatusUnprocessableEntity,
-		Message:    sb.String(),
+	httpErr := httpError{
+		StatusCode:       http.StatusUnprocessableEntity,
+		ValidationErrors: errors,
 	}
 
 	app.errorResponse(w, r, httpErr)
 }
 
 func (app *application) editConflictResponse(w http.ResponseWriter, r *http.Request) {
-	httpErr := HTTPError{
+	httpErr := httpError{
 		StatusCode: http.StatusConflict,
 		Message:    "unable to update the record due to an edit conflict, please try again",
 	}
@@ -106,7 +119,7 @@ func (app *application) editConflictResponse(w http.ResponseWriter, r *http.Requ
 }
 
 func (app *application) rateLimitExceededResponse(w http.ResponseWriter, r *http.Request) {
-	httpErr := HTTPError{
+	httpErr := httpError{
 		StatusCode: http.StatusTooManyRequests,
 		Message:    "rate limit exceeded",
 	}
@@ -115,7 +128,7 @@ func (app *application) rateLimitExceededResponse(w http.ResponseWriter, r *http
 }
 
 func (app *application) invalidCredentialsResponse(w http.ResponseWriter, r *http.Request) {
-	httpErr := HTTPError{
+	httpErr := httpError{
 		StatusCode: http.StatusUnauthorized,
 		Message:    "invalid authentication credentials",
 	}
