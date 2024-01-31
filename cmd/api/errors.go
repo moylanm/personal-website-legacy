@@ -19,10 +19,9 @@ func (app *application) logError(r *http.Request, err error) {
 	var (
 		method = r.Method
 		uri    = r.URL.RequestURI()
-		ip     = r.RemoteAddr
 	)
 
-	app.logger.Error(err.Error(), "method", method, "uri", uri, "ip", ip)
+	app.logger.Error(err.Error(), "method", method, "uri", uri)
 }
 
 func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, httpErr HTTPError) {
