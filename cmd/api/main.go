@@ -40,6 +40,7 @@ type application struct {
 	logger        *slog.Logger
 	models        data.Models
 	templateCache map[string]*template.Template
+	limiterCancel context.CancelFunc
 }
 
 func readConfig(path string) (config, error) {
@@ -127,8 +128,7 @@ func main() {
 		logger.Error(err.Error())
 	}
 
-	err = validateConfig(&cfg)
-	if err != nil {
+	if err = validateConfig(&cfg); err != nil {
 		logger.Error("Invalid configuration: " + err.Error())
 		os.Exit(1)
 	}
@@ -155,8 +155,7 @@ func main() {
 		templateCache: templateCache,
 	}
 
-	err = app.serve()
-	if err != nil {
+	if err = app.serve(); err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}

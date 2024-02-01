@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/subtle"
 	"fmt"
 	"net/http"
@@ -40,18 +41,26 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 		ticker  = time.NewTicker(time.Minute)
 	)
 
+	ctx, cancel := context.WithCancel(context.Background())
+	app.limiterCancel = cancel
+
 	go func() {
-		for range ticker.C {
+		for {
+			select {
+			case <-ticker.C:
+				mu.Lock()
 
-			mu.Lock()
-
-			for ip, client := range clients {
-				if time.Since(client.lastSeen) > 3*time.Minute {
-					delete(clients, ip)
+				for ip, client := range clients {
+					if time.Since(client.lastSeen) > 3*time.Minute {
+						delete(clients, ip)
+					}
 				}
-			}
 
-			mu.Unlock()
+				mu.Unlock()
+			case <-ctx.Done():
+				ticker.Stop()
+				return
+			}
 		}
 	}()
 
