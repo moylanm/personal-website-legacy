@@ -17,11 +17,11 @@ func (app *application) recoverPanic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if err := recover(); err != nil {
-				trace := fmt.Sprintf("%s\n%s", err, debug.Stack())
+				trace := fmt.Sprintf("%s", debug.Stack())
 				app.logError(r, fmt.Errorf("%s", trace))
 
 				w.Header().Set("Connection", "close")
-				app.serverErrorResponse(w, r, fmt.Errorf("a server error occurred"))
+				app.serverErrorResponse(w, r, fmt.Errorf("%s", err))
 			}
 		}()
 
