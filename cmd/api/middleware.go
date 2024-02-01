@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/tomasen/realip"
+	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/time/rate"
 )
 
@@ -17,8 +18,7 @@ func (app *application) recoverPanic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if err := recover(); err != nil {
-				trace := fmt.Sprintf("%s", debug.Stack())
-				app.logError(r, fmt.Errorf("%s", trace))
+				app.logError(r, fmt.Errorf("%s", debug.Stack()))
 
 				w.Header().Set("Connection", "close")
 				app.serverErrorResponse(w, r, fmt.Errorf("%s", err))
@@ -95,9 +95,15 @@ func (app *application) authenticate(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		username, password, ok := r.BasicAuth()
 
-		if !ok ||
-			subtle.ConstantTimeCompare([]byte(app.config.Admin.Username), []byte(username)) != 1 ||
-			subtle.ConstantTimeCompare([]byte(app.config.Admin.Password), []byte(password)) != 1 {
+		if !ok {
+			app.invalidCredentialsResponse(w, r)
+			return
+		}
+
+		usernameMatch := subtle.ConstantTimeCompare([]byte(app.config.Admin.Username), []byte(username)) == 1
+		passwordMatch := bcrypt.CompareHashAndPassword([]byte(app.config.Admin.PasswordHash), []byte(password)) == nil
+
+		if !usernameMatch || !passwordMatch {
 			app.invalidCredentialsResponse(w, r)
 			return
 		}

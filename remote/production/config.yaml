@@ -11,4 +11,4 @@ limiter:
     enabled: true
 admin:
     username: ""
-    password: ""
+    passwordHash: ""

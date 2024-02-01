@@ -14,3 +14,5 @@ require github.com/gorilla/mux v1.8.1
 require gopkg.in/yaml.v3 v3.0.1
 
 require github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47
+
+require golang.org/x/crypto v0.18.0

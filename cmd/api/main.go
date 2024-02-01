@@ -30,8 +30,8 @@ type config struct {
 		Enabled bool    `yaml:"enabled"`
 	} `yaml:"limiter"`
 	Admin struct {
-		Username string `yaml:"username"`
-		Password string `yaml:"password"`
+		Username     string `yaml:"username"`
+		PasswordHash string `yaml:"passwordHash"`
 	} `yaml:"admin"`
 }
 
@@ -66,12 +66,12 @@ func overrideConfigWithEnv(cfg *config) {
 		cfg.Db.Dsn = dsn
 	}
 
-	if username := os.Getenv("WEBSITE_USER"); username != "" {
+	if username := os.Getenv("WEBSITE_USERNAME"); username != "" {
 		cfg.Admin.Username = username
 	}
 
-	if password := os.Getenv("WEBSITE_PASS"); password != "" {
-		cfg.Admin.Password = password
+	if passwordHash := os.Getenv("WEBSITE_PASSWORD_HASH"); passwordHash != "" {
+		cfg.Admin.PasswordHash = passwordHash
 	}
 }
 
@@ -99,8 +99,8 @@ func validateConfig(cfg *config) error {
 	}
 
 	// Validate admin credentials
-	if cfg.Admin.Username == "" || cfg.Admin.Password == "" {
-		return fmt.Errorf("admin username and password are required")
+	if cfg.Admin.Username == "" || cfg.Admin.PasswordHash == "" {
+		return fmt.Errorf("admin username and password hash are required")
 	}
 
 	// Validate limiter configuration if enabled
