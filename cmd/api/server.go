@@ -31,6 +31,10 @@ func (app *application) serve() error {
 
 		app.logger.Info("shutting down server", "signal", s.String())
 
+		if app.limiterCancel != nil {
+			app.limiterCancel()
+		}
+
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
 

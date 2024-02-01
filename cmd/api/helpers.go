@@ -148,13 +148,13 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 
 	buf := new(bytes.Buffer)
 
-	err := ts.ExecuteTemplate(buf, "base", data)
-	if err != nil {
+	if err := ts.ExecuteTemplate(buf, "base", data); err != nil {
 		app.serverErrorResponse(w, r, fmt.Errorf("error executing template %s: %w", page, err))
 		return
 	}
 
 	w.WriteHeader(status)
+
 	if _, err := buf.WriteTo(w); err != nil {
 		app.logger.Error("Error writing rendered template to response: %v", err)
 	}
