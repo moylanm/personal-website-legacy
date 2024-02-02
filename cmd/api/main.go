@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 
+	vault "github.com/hashicorp/vault/api"
 	_ "github.com/lib/pq"
 	"gopkg.in/yaml.v3"
 	"mylesmoylan.net/internal/data"
@@ -62,9 +63,12 @@ func readConfig(path string) (config, error) {
 }
 
 func overrideConfigWithEnv(cfg *config) {
-	if dsn := os.Getenv("WEBSITE_DB_DSN"); dsn != "" {
-		cfg.Db.Dsn = dsn
+	dsnPassword, err := getDatabasePasswordFromVault()
+	if err != nil {
+		fmt.Println("Error getting password from Vault:", err)
+		return
 	}
+	cfg.Db.Dsn = fmt.Sprintf("postgres://myles:%s@localhost/website", dsnPassword)
 
 	if username := os.Getenv("WEBSITE_USERNAME"); username != "" {
 		cfg.Admin.Username = username
@@ -116,6 +120,52 @@ func validateConfig(cfg *config) error {
 	return nil
 }
 
+func getDatabasePasswordFromVault() (string, error) {
+	config := vault.DefaultConfig()
+	client, err := vault.NewClient(config)
+	if err != nil {
+		return "", fmt.Errorf("error creating Vault client: %w", err)
+	}
+
+	client.SetToken(os.Getenv("VAULT_TOKEN"))
+
+	secret, err := client.Logical().Read("kv/website")
+	if err != nil {
+		return "", fmt.Errorf("error reading secret from Vault: %w", err)
+	}
+	if secret == nil || secret.Data["DSN_PASSWORD"] == nil {
+		return "", fmt.Errorf("password not found in Vault")
+	}
+
+	password, ok := secret.Data["DSN_PASSWORD"].(string)
+	if !ok {
+		return "", fmt.Errorf("password is not a string")
+	}
+
+	return password, nil
+}
+
+func openDB(cfg config) (*sql.DB, error) {
+	db, err := sql.Open("postgres", cfg.Db.Dsn)
+	if err != nil {
+		return nil, err
+	}
+
+	db.SetMaxOpenConns(cfg.Db.MaxOpenConns)
+	db.SetMaxIdleConns(cfg.Db.MaxIdleConns)
+	db.SetConnMaxIdleTime(cfg.Db.MaxIdleTime)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err = db.PingContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
 func main() {
 	var cfgPath string
 
@@ -159,25 +209,4 @@ func main() {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
-}
-
-func openDB(cfg config) (*sql.DB, error) {
-	db, err := sql.Open("postgres", cfg.Db.Dsn)
-	if err != nil {
-		return nil, err
-	}
-
-	db.SetMaxOpenConns(cfg.Db.MaxOpenConns)
-	db.SetMaxIdleConns(cfg.Db.MaxIdleConns)
-	db.SetConnMaxIdleTime(cfg.Db.MaxIdleTime)
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	err = db.PingContext(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return db, nil
 }
