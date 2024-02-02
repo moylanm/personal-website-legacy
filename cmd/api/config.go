@@ -53,7 +53,7 @@ func overrideConfigWithEnv(cfg *config) error {
 	if err != nil {
 		return fmt.Errorf("error getting password from Vault: %w", err)
 	}
-	cfg.Db.Dsn = fmt.Sprintf("postgres://myles:%s@localhost/website", dsnPassword)
+	cfg.Db.Dsn = fmt.Sprintf("postgres://myles:%s@localhost/website?sslmode=require", dsnPassword)
 
 	if username := os.Getenv("WEBSITE_USERNAME"); username != "" {
 		cfg.Admin.Username = username
