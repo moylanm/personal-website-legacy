@@ -34,11 +34,11 @@ func readConfig(path string) (config, error) {
 
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return config{}, fmt.Errorf("Failed to read config file (%s): %w", path, err)
+		return config{}, fmt.Errorf("failed to read config file (%s): %w", path, err)
 	}
 
 	if err = yaml.Unmarshal(data, &cfg); err != nil {
-		return config{}, fmt.Errorf("Failed to unmarshal YAML: %w", err)
+		return config{}, fmt.Errorf("failed to unmarshal YAML: %w", err)
 	}
 
 	overrideConfigWithEnv(&cfg)
@@ -127,4 +127,3 @@ func validateConfig(cfg *config) error {
 
 	return nil
 }
-

@@ -13,7 +13,6 @@ import (
 	"mylesmoylan.net/internal/data"
 )
 
-
 type application struct {
 	config        config
 	logger        *slog.Logger
