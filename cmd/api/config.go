@@ -41,20 +41,18 @@ func readConfig(path string) (config, error) {
 		return config{}, fmt.Errorf("Failed to unmarshal YAML: %w", err)
 	}
 
-	if err = overrideConfigWithEnv(&cfg); err != nil {
-		return config{}, fmt.Errorf("Failed to override config with environment variables: %w", err)
+	overrideConfigWithEnv(&cfg)
+
+	dsnPassword, err := getDatabasePasswordFromVault()
+	if err != nil {
+		return config{}, fmt.Errorf("error getting password from Vault: %w", err)
 	}
+	cfg.Db.Dsn = fmt.Sprintf("postgres://myles:%s@localhost/website?sslmode=require", dsnPassword)
 
 	return cfg, nil
 }
 
-func overrideConfigWithEnv(cfg *config) error {
-	dsnPassword, err := getDatabasePasswordFromVault()
-	if err != nil {
-		return fmt.Errorf("error getting password from Vault: %w", err)
-	}
-	cfg.Db.Dsn = fmt.Sprintf("postgres://myles:%s@localhost/website?sslmode=require", dsnPassword)
-
+func overrideConfigWithEnv(cfg *config) {
 	if username := os.Getenv("WEBSITE_USERNAME"); username != "" {
 		cfg.Admin.Username = username
 	}
@@ -62,8 +60,6 @@ func overrideConfigWithEnv(cfg *config) error {
 	if passwordHash := os.Getenv("WEBSITE_PASSWORD_HASH"); passwordHash != "" {
 		cfg.Admin.PasswordHash = passwordHash
 	}
-
-	return nil
 }
 
 func getDatabasePasswordFromVault() (string, error) {
