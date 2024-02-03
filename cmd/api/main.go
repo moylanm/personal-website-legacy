@@ -30,13 +30,13 @@ func main() {
 
 	cfg, err := readConfig(cfgPath)
 	if err != nil {
-		logger.Error("Failed to read config: ", err)
+		logger.Error("failed to read config: ", err)
 		os.Exit(1)
 	}
 
 	db, err := openDB(cfg)
 	if err != nil {
-		logger.Error(err.Error())
+		logger.Error("failed to open database connection: ", err)
 		os.Exit(1)
 	}
 	defer db.Close()
@@ -45,7 +45,7 @@ func main() {
 
 	templateCache, err := newTemplateCache()
 	if err != nil {
-		logger.Error(err.Error())
+		logger.Error("failed to create template cache: ", err)
 		os.Exit(1)
 	}
 
