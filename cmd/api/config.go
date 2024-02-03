@@ -29,6 +29,8 @@ type config struct {
 	} `yaml:"admin"`
 }
 
+const dsnTemplate = "postgres://myles:%s@localhost/website?sslmode=require"
+
 func readConfig(path string) (config, error) {
 	var cfg config
 
@@ -47,7 +49,7 @@ func readConfig(path string) (config, error) {
 	if err != nil {
 		return config{}, fmt.Errorf("error getting password from Vault: %w", err)
 	}
-	cfg.Db.Dsn = fmt.Sprintf("postgres://myles:%s@localhost/website?sslmode=require", dsnPassword)
+	cfg.Db.Dsn = fmt.Sprintf(dsnTemplate, dsnPassword)
 
 	return cfg, nil
 }
