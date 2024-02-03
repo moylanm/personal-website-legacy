@@ -47,7 +47,7 @@ func readConfig(path string) (config, error) {
 
 	dsnPassword, err := getDatabasePasswordFromVault()
 	if err != nil {
-		return config{}, fmt.Errorf("error getting password from Vault: %w", err)
+		return config{}, fmt.Errorf("error getting database password from Vault: %w", err)
 	}
 	cfg.Db.Dsn = fmt.Sprintf(dsnTemplate, dsnPassword)
 
