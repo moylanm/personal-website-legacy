@@ -34,11 +34,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = validateConfig(&cfg); err != nil {
-		logger.Error("Invalid configuration: " + err.Error())
-		os.Exit(1)
-	}
-
 	db, err := openDB(cfg)
 	if err != nil {
 		logger.Error(err.Error())

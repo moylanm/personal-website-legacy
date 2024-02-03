@@ -51,6 +51,10 @@ func readConfig(path string) (config, error) {
 	}
 	cfg.Db.Dsn = fmt.Sprintf(dsnTemplate, dsnPassword)
 
+	if err = validateConfig(&cfg); err != nil {
+		return config{}, fmt.Errorf("invalid configuration: %w", err)
+	}
+
 	return cfg, nil
 }
 
