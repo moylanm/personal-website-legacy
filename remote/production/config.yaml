@@ -1,5 +1,7 @@
 host: ""
 port: 4000
+tlsCert: "/etc/letsencrypt/live/mylesmoylan.net/fullchain.pem"
+tlsKey: "/etc/letsencrypt/live/mylesmoylan.net/privkey.pem"
 db:
     dsn: ""
     maxOpenConns: 25
