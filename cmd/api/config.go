@@ -83,11 +83,11 @@ func getDatabasePasswordFromVault() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("error reading secret from Vault: %w", err)
 	}
-	if secret == nil || secret.Data["DSN_PASSWORD"] == nil {
+	if secret == nil || secret.Data["DB_PASSWORD"] == nil {
 		return "", fmt.Errorf("password not found in Vault")
 	}
 
-	password, ok := secret.Data["DSN_PASSWORD"].(string)
+	password, ok := secret.Data["DB_PASSWORD"].(string)
 	if !ok {
 		return "", fmt.Errorf("password is not a string")
 	}
