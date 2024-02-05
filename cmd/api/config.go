@@ -10,9 +10,11 @@ import (
 )
 
 type config struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
-	Db   struct {
+	Host    string `yaml:"host"`
+	Port    int    `yaml:"port"`
+	TLSCert string `yaml:"tlsCert"`
+	TLSKey  string `yaml:"tlsKey"`
+	Db      struct {
 		Dsn          string        `yaml:"dsn"`
 		MaxOpenConns int           `yaml:"maxOpenConns"`
 		MaxIdleConns int           `yaml:"maxIdleConns"`
