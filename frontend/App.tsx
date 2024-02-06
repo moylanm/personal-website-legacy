@@ -24,6 +24,13 @@ const App = () => {
     });
   }, []);
 
+  const handleWorkChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch({
+      type: ActionType.SetSelectedWork,
+      payload: event.target.value
+    });
+  }, []);
+
   const handleRandomClick = useCallback(() => {
     if (state.excerpts.length === 0) return;
 
@@ -45,12 +52,16 @@ const App = () => {
   const sortedAndFilteredExcerpts = useMemo(() => {
     if (state.randomExcerpt) return [state.randomExcerpt];
 
-    const filteredExcerpts = state.selectedAuthor
+    let filteredExcerpts = state.selectedAuthor
       ? state.excerpts.filter(excerpt => excerpt.author === state.selectedAuthor)
       : [...state.excerpts];
 
+    filteredExcerpts = state.selectedWork
+      ? filteredExcerpts.filter(excerpt => excerpt.work === state.selectedWork)
+      : filteredExcerpts;
+
     return state.reverseSort ? filteredExcerpts.reverse() : filteredExcerpts;
-  }, [state.excerpts, state.randomExcerpt, state.selectedAuthor, state.reverseSort]);
+  }, [state.excerpts, state.randomExcerpt, state.selectedAuthor, state.selectedWork, state.reverseSort]);
 
   if (state.isError) {
     return <div className='error-message'>{state.errorMessage}</div>;
@@ -66,8 +77,11 @@ const App = () => {
         selectedSortOrder={state.reverseSort}
         onSortChange={handleSortChange}
         uniqueAuthors={state.uniqueAuthors}
+        authorWorks={state.authorWorks}
         selectedAuthor={state.selectedAuthor}
+        selectedWork={state.selectedWork}
         onAuthorChange={handleAuthorChange}
+        onWorkChange={handleWorkChange}
         onRandomClick={handleRandomClick}
         onReset={handleReset}
       /> 
