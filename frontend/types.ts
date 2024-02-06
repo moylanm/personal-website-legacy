@@ -8,8 +8,10 @@ export type Excerpt = {
 export type AppState = {
   excerpts: Excerpt[];
   uniqueAuthors: string[];
+  authorWorks: { [author: string]: string[] };
   reverseSort: boolean;
   selectedAuthor: string;
+  selectedWork: string,
   randomExcerpt: Excerpt | null;
   resetKey: number;
   isLoading: boolean;
@@ -23,16 +25,24 @@ export enum ActionType {
   ExcerptsFetchFailure = 'EXCERPTS_FETCH_FAILURE',
   SetSortOrder = 'SET_SORT_ORDER',
   SetSelectedAuthor = 'SET_SELECTED_AUTHOR',
+  SetSelectedWork = 'SET_SELECTED_WORK',
   SetRandomExcerpt = 'SET_RANDOM_EXCERPT',
   Reset = 'RESET',
 };
 
+type ExcerptsFetchSuccessPayload = {
+  excerpts: Excerpt[];
+  uniqueAuthors: string[];
+  authorWorks: { [author: string]: string[] }
+}
+
 export type Action = 
   | { type: ActionType.ExcerptsFetchInit }
-  | { type: ActionType.ExcerptsFetchSuccess; payload: { excerpts: Excerpt[]; uniqueAuthors: string[] } }
+  | { type: ActionType.ExcerptsFetchSuccess; payload: ExcerptsFetchSuccessPayload }
   | { type: ActionType.ExcerptsFetchFailure; payload: string }
   | { type: ActionType.SetSortOrder; payload: boolean }
   | { type: ActionType.SetSelectedAuthor; payload: string }
+  | { type: ActionType.SetSelectedWork; payload: string }
   | { type: ActionType.SetRandomExcerpt; payload: Excerpt | null }
   | { type: ActionType.Reset; payload: number };
 
