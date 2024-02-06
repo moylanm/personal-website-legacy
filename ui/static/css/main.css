@@ -241,6 +241,22 @@ footer {
     text-align: center;
 }
 
+.dropdown-container {
+    display: flex;
+    align-items: left;
+    flex-direction: row;
+}
+
+@media (max-width: 768px) {
+    .dropdown-container {
+        flex-direction: column;
+    }
+}
+
+.author-dropdown {
+    margin-right: 20px;
+}
+
 :root {
     scroll-behavior: smooth;
 }
