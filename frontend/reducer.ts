@@ -3,8 +3,10 @@ import { AppState, Action, ActionType } from "./types";
 export const initialState: AppState = {
   excerpts: [],
   uniqueAuthors: [],
+  authorWorks: {},
   reverseSort: false,
   selectedAuthor: '',
+  selectedWork: '',
   randomExcerpt: null,
   resetKey: 0,
   isLoading: false,
@@ -25,6 +27,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
         ...state,
         excerpts: action.payload.excerpts,
         uniqueAuthors: action.payload.uniqueAuthors,
+        authorWorks: action.payload.authorWorks,
         isLoading: false,
         isError: false
       };
@@ -45,14 +48,21 @@ export const reducer = (state: AppState, action: Action): AppState => {
       return {
         ...state,
         selectedAuthor: action.payload,
+        selectedWork: '',
         randomExcerpt: null
+      };
+    case ActionType.SetSelectedWork:
+      return {
+        ...state,
+        selectedWork: action.payload
       };
     case ActionType.SetRandomExcerpt:
       return {
         ...state,
         randomExcerpt: action.payload,
         reverseSort: false,
-        selectedAuthor: ''
+        selectedAuthor: '',
+        selectedWork: ''
       };
     case ActionType.Reset:
       return {
@@ -60,6 +70,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
         resetKey: action.payload,
         reverseSort: false,
         selectedAuthor: '',
+        selectedWork: '',
         randomExcerpt: null
       };
     default:
