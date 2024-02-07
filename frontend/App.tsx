@@ -56,9 +56,9 @@ const App = () => {
       ? state.excerpts.filter(excerpt => excerpt.author === state.selectedAuthor)
       : [...state.excerpts];
 
-    filteredExcerpts = state.selectedWork
-      ? filteredExcerpts.filter(excerpt => excerpt.work === state.selectedWork)
-      : filteredExcerpts;
+    if (state.selectedWork) {
+      filteredExcerpts = filteredExcerpts.filter(excerpt => excerpt.work === state.selectedWork);
+    }
 
     return state.reverseSort ? filteredExcerpts.reverse() : filteredExcerpts;
   }, [state.excerpts, state.randomExcerpt, state.selectedAuthor, state.selectedWork, state.reverseSort]);
