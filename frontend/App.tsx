@@ -75,11 +75,11 @@ const App = () => {
     <>
       <FilterForm
         selectedSortOrder={state.reverseSort}
-        onSortChange={handleSortChange}
         uniqueAuthors={state.uniqueAuthors}
         authorWorks={state.authorWorks}
         selectedAuthor={state.selectedAuthor}
         selectedWork={state.selectedWork}
+        onSortChange={handleSortChange}
         onAuthorChange={handleAuthorChange}
         onWorkChange={handleWorkChange}
         onRandomClick={handleRandomClick}

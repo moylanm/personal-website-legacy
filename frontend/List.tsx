@@ -4,7 +4,7 @@ import { Excerpt } from './types';
 
 const CHUNK_SIZE = 7;
 
-const List: React.FC<{excerpts: Excerpt[]}> = ({ excerpts }) => {
+const List: React.FC<{ excerpts: Excerpt[] }> = ({ excerpts }) => {
   const [displayCount, setDisplayCount] = useState(CHUNK_SIZE);
   const loadMoreRef = useRef(null)
 
@@ -36,7 +36,7 @@ const List: React.FC<{excerpts: Excerpt[]}> = ({ excerpts }) => {
   );
 }
 
-const Item: React.FC<{excerpt: Excerpt}> = ({ excerpt }) => {
+const Item: React.FC<{ excerpt: Excerpt }> = ({ excerpt }) => {
   return (
     <article className='excerpt-item'>
       <header className='excerpt-metadata'>
