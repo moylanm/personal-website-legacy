@@ -27,7 +27,7 @@ run/api: build/frontend
 ## db/psql: connect to the database using psql
 .PHONY: db/psql
 db/psql:
-	@psql ${WEBSITE_DB_DSN}
+	@psql ${DB_DSN}
 
 ## db/migrations/new name=$1: create a new database migration
 .PHONY: db/migrations/new
@@ -116,6 +116,6 @@ production/deploy/api: build/api
 ## production/deploy/migration: deploy migration (NOT WORKING)
 .PHONY: production/deploy/migration
 production/deploy/migration:
-	rsync -rP --delete ./migrations myles@${production_host_ip}:~
-	ssh -t myles@${production_host_ip} '\
-		migrate -path ~/migrations -database postgres://myles:NOTTHEPASSWORD@localhost/website'
+	#rsync -rP --delete ./migrations myles@${production_host_ip}:~
+	#ssh -t myles@${production_host_ip} '\
+		migrate -path ~/migrations -database postgres://myles:@localhost/website'
