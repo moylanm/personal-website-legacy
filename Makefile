@@ -102,20 +102,15 @@ production/connect:
 .PHONY: production/deploy/api
 production/deploy/api: build/api
 	rsync -P ./bin/linux_amd64/api myles@${production_host_ip}:~
+	rsync -rP --delete ./migrations myles@${production_host_ip}:~
 	rsync -P ./remote/production/api.service myles@${production_host_ip}:~
 	rsync -P ./remote/production/Caddyfile myles@${production_host_ip}:~
 	rsync -P ./remote/production/config.yaml myles@${production_host_ip}:~
 	ssh -t myles@${production_host_ip} '\
-		sudo mv ~/api.service /etc/systemd/system/ \
+		migrate -path ~/migrations -database postgres://myles:$$(vault read -field=DB_PASSWORD kv/website)@localhost/website up \
+		&& sudo mv ~/api.service /etc/systemd/system/ \
 		&& sudo systemctl enable api \
 		&& sudo systemctl restart api \
 		&& sudo mv ~/Caddyfile /etc/caddy/ \
 		&& sudo systemctl reload caddy \
 		'
-
-## production/deploy/migration: deploy migration (NOT WORKING)
-.PHONY: production/deploy/migration
-production/deploy/migration:
-	#rsync -rP --delete ./migrations myles@${production_host_ip}:~
-	#ssh -t myles@${production_host_ip} '\
-		migrate -path ~/migrations -database postgres://myles:@localhost/website'
