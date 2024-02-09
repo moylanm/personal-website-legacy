@@ -291,6 +291,7 @@ footer {
 }
 
 .rtt {
+    display: none;
     opacity: 0.65;
     position: fixed;
     bottom: 20px;
