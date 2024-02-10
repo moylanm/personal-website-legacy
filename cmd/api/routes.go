@@ -27,6 +27,12 @@ func (app *application) routes() http.Handler {
 	router.Handle("/excerpts", dynamic.ThenFunc(app.listExcerpts)).Methods(http.MethodGet)
 	router.Handle("/excerpts/json", dynamic.ThenFunc(app.listExcerptsJson)).Methods(http.MethodGet)
 
+	router.Handle("/signup", dynamic.ThenFunc(app.userSignup)).Methods(http.MethodGet)
+	router.Handle("/signup", dynamic.ThenFunc(app.userSignupPost)).Methods(http.MethodPost)
+	router.Handle("/login", dynamic.ThenFunc(app.userLogin)).Methods(http.MethodGet)
+	router.Handle("/login", dynamic.ThenFunc(app.userLoginPost)).Methods(http.MethodPost)
+	router.Handle("/logout", dynamic.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
+
 	dynamicAuth := dynamic.Append(app.authenticate)
 
 	router.Handle("/excerpts", dynamicAuth.ThenFunc(app.createExcerpt)).Methods(http.MethodPost)
