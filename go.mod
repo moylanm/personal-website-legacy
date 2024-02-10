@@ -19,6 +19,7 @@ require (
 	github.com/alexedwards/scs/postgresstore v0.0.0-20240203174419-a38e822451b6
 	github.com/alexedwards/scs/v2 v2.7.0
 	github.com/hashicorp/vault/api v1.11.0
+	github.com/justinas/alice v1.2.0
 	golang.org/x/crypto v0.18.0
 )
 
