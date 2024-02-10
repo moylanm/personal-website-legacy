@@ -20,7 +20,7 @@ type templateData struct {
 	Excerpts     []data.Excerpt
 	Metadata     data.Metadata
 	StatusCode   int
-	ErrorMessage any
+	ErrorMessage string
 }
 
 const dateFormat = "02 Jan 2006 at 15:04"
