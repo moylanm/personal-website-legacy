@@ -16,13 +16,13 @@ require gopkg.in/yaml.v3 v3.0.1
 require github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47
 
 require (
+	github.com/alexedwards/scs/postgresstore v0.0.0-20240203174419-a38e822451b6
+	github.com/alexedwards/scs/v2 v2.7.0
 	github.com/hashicorp/vault/api v1.11.0
 	golang.org/x/crypto v0.18.0
 )
 
 require (
-	github.com/alexedwards/scs/postgresstore v0.0.0-20240203174419-a38e822451b6 // indirect
-	github.com/alexedwards/scs/v2 v2.7.0 // indirect
 	github.com/cenkalti/backoff/v3 v3.0.0 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.1 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
