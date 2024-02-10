@@ -17,13 +17,16 @@ func (app *application) routes() http.Handler {
 	fileServer := http.FileServer(http.FS(ui.Files))
 	router.PathPrefix("/static/").Handler(fileServer)
 
+	dynamic := alice.New(app.sessionManager.LoadAndSave)
+
 	excerptsPath := "/excerpts/{id:[0-9]+}"
-	router.HandleFunc(excerptsPath, app.showExcerpt).Methods(http.MethodGet)
-	router.HandleFunc(excerptsPath, app.authenticate(app.deleteExcerpt)).Methods(http.MethodDelete)
-	router.HandleFunc(excerptsPath, app.authenticate(app.updateExcerpt)).Methods(http.MethodPatch)
-	router.HandleFunc("/excerpts/json", app.listExcerptsJson).Methods(http.MethodGet)
-	router.HandleFunc("/excerpts", app.authenticate(app.createExcerpt)).Methods(http.MethodPost)
-	router.HandleFunc("/excerpts", app.listExcerpts).Methods(http.MethodGet)
+	router.Handle(excerptsPath, dynamic.ThenFunc(app.showExcerpt)).Methods(http.MethodGet)
+	router.Handle("/excerpts", dynamic.ThenFunc(app.listExcerpts)).Methods(http.MethodGet)
+	router.Handle("/excerpts/json", dynamic.ThenFunc(app.listExcerptsJson)).Methods(http.MethodGet)
+
+	router.Handle("/excerpts", dynamic.ThenFunc(app.authenticate(app.createExcerpt))).Methods(http.MethodPost)
+	router.Handle(excerptsPath, dynamic.ThenFunc(app.authenticate(app.deleteExcerpt))).Methods(http.MethodDelete)
+	router.Handle(excerptsPath, dynamic.ThenFunc(app.authenticate(app.updateExcerpt))).Methods(http.MethodPatch)
 
 	router.HandleFunc("/about", app.about).Methods(http.MethodGet)
 	router.HandleFunc("/", app.home).Methods(http.MethodGet)
