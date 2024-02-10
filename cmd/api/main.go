@@ -52,13 +52,14 @@ func main() {
 
 	sessionManager := scs.New()
 	sessionManager.Store = postgresstore.New(db)
+	sessionManager.IdleTimeout = 20 * time.Minute
 	sessionManager.Lifetime = 12 * time.Hour
 
 	app := &application{
-		config:        cfg,
-		logger:        logger,
-		models:        data.NewModels(db),
-		templateCache: templateCache,
+		config:         cfg,
+		logger:         logger,
+		models:         data.NewModels(db),
+		templateCache:  templateCache,
 		sessionManager: sessionManager,
 	}
 
