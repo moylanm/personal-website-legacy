@@ -6,16 +6,20 @@ import (
 	"html/template"
 	"log/slog"
 	"os"
+	"time"
 
+	"github.com/alexedwards/scs/postgresstore"
+	"github.com/alexedwards/scs/v2"
 	"mylesmoylan.net/internal/data"
 )
 
 type application struct {
-	config        config
-	logger        *slog.Logger
-	models        data.Models
-	templateCache map[string]*template.Template
-	limiterCancel context.CancelFunc
+	config         config
+	logger         *slog.Logger
+	models         data.Models
+	templateCache  map[string]*template.Template
+	sessionManager *scs.SessionManager
+	limiterCancel  context.CancelFunc
 }
 
 func main() {
@@ -46,11 +50,16 @@ func main() {
 		os.Exit(1)
 	}
 
+	sessionManager := scs.New()
+	sessionManager.Store = postgresstore.New(db)
+	sessionManager.Lifetime = 12 * time.Hour
+
 	app := &application{
 		config:        cfg,
 		logger:        logger,
 		models:        data.NewModels(db),
 		templateCache: templateCache,
+		sessionManager: sessionManager,
 	}
 
 	if err = app.serve(); err != nil {
