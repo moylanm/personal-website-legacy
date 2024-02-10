@@ -16,14 +16,14 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := app.newTemplateData()
+	data := app.newTemplateData(r)
 	data.Excerpts = excerpts
 
 	app.render(w, r, http.StatusOK, "home.tmpl", data)
 }
 
 func (app *application) about(w http.ResponseWriter, r *http.Request) {
-	data := app.newTemplateData()
+	data := app.newTemplateData(r)
 	app.render(w, r, http.StatusOK, "about.tmpl", data)
 }
 
@@ -83,7 +83,7 @@ func (app *application) showExcerpt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := app.newTemplateData()
+	data := app.newTemplateData(r)
 	data.Excerpt = *excerpt
 
 	app.render(w, r, http.StatusOK, "view.tmpl", data)
@@ -204,7 +204,7 @@ func (app *application) listExcerpts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := app.newTemplateData()
+	data := app.newTemplateData(r)
 	data.Excerpts = excerpts
 	data.Metadata = metadata
 

@@ -35,7 +35,7 @@ func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, ht
 	status := httpErr.StatusCode
 
 	if strings.HasPrefix(r.Header.Get("Accept"), "text/html") {
-		data := app.newTemplateData()
+		data := app.newTemplateData(r)
 		data.StatusCode = status
 
 		if httpErr.ValidationErrors != nil {

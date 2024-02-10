@@ -132,7 +132,7 @@ func (app *application) readInt(qs url.Values, key string, defaultValue int, v *
 	return i
 }
 
-func (app *application) newTemplateData() templateData {
+func (app *application) newTemplateData(r *http.Request) templateData {
 	return templateData{
 		CurrentYear: time.Now().Year(),
 	}
