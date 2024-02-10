@@ -28,8 +28,8 @@ func (app *application) routes() http.Handler {
 	router.Handle(excerptsPath, dynamic.ThenFunc(app.authenticate(app.deleteExcerpt))).Methods(http.MethodDelete)
 	router.Handle(excerptsPath, dynamic.ThenFunc(app.authenticate(app.updateExcerpt))).Methods(http.MethodPatch)
 
-	router.HandleFunc("/about", app.about).Methods(http.MethodGet)
-	router.HandleFunc("/", app.home).Methods(http.MethodGet)
+	router.Handle("/about", dynamic.ThenFunc(app.about)).Methods(http.MethodGet)
+	router.Handle("/", dynamic.ThenFunc(app.home)).Methods(http.MethodGet)
 
 	standard := alice.New(app.recoverPanic, app.rateLimit, secureHeaders)
 
