@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/justinas/alice"
 	"mylesmoylan.net/ui"
 )
 
@@ -27,5 +28,7 @@ func (app *application) routes() http.Handler {
 	router.HandleFunc("/about", app.about).Methods(http.MethodGet)
 	router.HandleFunc("/", app.home).Methods(http.MethodGet)
 
-	return app.recoverPanic(app.rateLimit(router))
+	standard := alice.New(app.recoverPanic, app.rateLimit, secureHeaders)
+
+	return standard.Then(router)
 }
