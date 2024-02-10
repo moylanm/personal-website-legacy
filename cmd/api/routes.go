@@ -19,17 +19,20 @@ func (app *application) routes() http.Handler {
 
 	dynamic := alice.New(app.sessionManager.LoadAndSave)
 
+	router.Handle("/about", dynamic.ThenFunc(app.about)).Methods(http.MethodGet)
+	router.Handle("/", dynamic.ThenFunc(app.home)).Methods(http.MethodGet)
+
 	excerptsPath := "/excerpts/{id:[0-9]+}"
 	router.Handle(excerptsPath, dynamic.ThenFunc(app.showExcerpt)).Methods(http.MethodGet)
 	router.Handle("/excerpts", dynamic.ThenFunc(app.listExcerpts)).Methods(http.MethodGet)
 	router.Handle("/excerpts/json", dynamic.ThenFunc(app.listExcerptsJson)).Methods(http.MethodGet)
 
-	router.Handle("/excerpts", dynamic.ThenFunc(app.authenticate(app.createExcerpt))).Methods(http.MethodPost)
-	router.Handle(excerptsPath, dynamic.ThenFunc(app.authenticate(app.deleteExcerpt))).Methods(http.MethodDelete)
-	router.Handle(excerptsPath, dynamic.ThenFunc(app.authenticate(app.updateExcerpt))).Methods(http.MethodPatch)
+	dynamicAuth := dynamic.Append(app.authenticate)
 
-	router.Handle("/about", dynamic.ThenFunc(app.about)).Methods(http.MethodGet)
-	router.Handle("/", dynamic.ThenFunc(app.home)).Methods(http.MethodGet)
+	router.Handle("/excerpts", dynamicAuth.ThenFunc(app.createExcerpt)).Methods(http.MethodPost)
+	router.Handle(excerptsPath, dynamicAuth.ThenFunc(app.deleteExcerpt)).Methods(http.MethodDelete)
+	router.Handle(excerptsPath, dynamicAuth.ThenFunc(app.updateExcerpt)).Methods(http.MethodPatch)
+
 
 	standard := alice.New(app.recoverPanic, app.rateLimit, secureHeaders)
 
