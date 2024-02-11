@@ -192,6 +192,17 @@ form div:last-child a:hover {
     text-decoration: none;
 }
 
+.error {
+    color: #C0392B;
+    font-weight: bold;
+    display: block;
+}
+
+.error + textarea, .error + input {
+    border-color: #C0392B !important;
+    border-width: 2px !important;
+}
+
 textarea {
     padding: 18px;
     width: 100%;
