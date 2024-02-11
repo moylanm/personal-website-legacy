@@ -3,6 +3,7 @@ package validator
 import (
 	"regexp"
 	"slices"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -32,6 +33,22 @@ func (v *Validator) Check(ok bool, key, message string) {
 	}
 }
 
+func NotBlank(value string) bool {
+	return strings.TrimSpace(value) != ""
+}
+
+func MaxChars(value string, n int) bool {
+	return utf8.RuneCountInString(value) <= n
+}
+
+func MinChars(value string, n int) bool {
+	return utf8.RuneCountInString(value) >= n
+}
+
+func Matches(value string, rx *regexp.Regexp) bool {
+	return rx.MatchString(value)
+}
+
 func PermittedValue[T comparable](value T, permittedValues ...T) bool {
 	return slices.Contains(permittedValues, value)
 }
@@ -44,12 +61,4 @@ func Unique[T comparable](values []T) bool {
 	}
 
 	return len(values) == len(uniqueValues)
-}
-
-func MinChars(value string, n int) bool {
-	return utf8.RuneCountInString(value) >= n
-}
-
-func Matches(value string, rx *regexp.Regexp) bool {
-	return rx.MatchString(value)
 }
