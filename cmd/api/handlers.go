@@ -225,10 +225,10 @@ func (app *application) listExcerptsJson(w http.ResponseWriter, r *http.Request)
 }
 
 type userSignupForm struct {
-	Name                string `form:"name"`
-	Email               string `form:"email"`
-	Password            string `form:"password"`
-	validator.Validator `form:"-"`
+	Name                string
+	Email               string
+	Password            string
+	validator.Validator
 }
 
 func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
@@ -238,6 +238,32 @@ func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	form := userSignupForm{
+		Name: r.PostForm.Get("name"),
+		Email: r.PostForm.Get("email"),
+		Password: r.PostForm.Get("password"),
+		Validator: *validator.New(),
+	}
+
+	form.Check(validator.NotBlank(form.Name), "name", "This field cannot be blank")
+	form.Check(validator.NotBlank(form.Email), "email", "This field cannot be blank")
+	form.Check(validator.Matches(form.Email, validator.EmailRX), "email", "This field must be a valid email address")
+	form.Check(validator.NotBlank(form.Password), "password", "This field cannot be blank")
+	form.Check(validator.MinChars(form.Password, 8), "password", "This field must be at least 8 characters long")
+
+	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+		app.render(w, r, http.StatusUnprocessableEntity, "signup.tmpl", data)
+		return
+	}
+
 	fmt.Fprintln(w, "Create a new user...")
 }
 
