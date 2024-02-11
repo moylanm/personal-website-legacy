@@ -20,6 +20,7 @@ type templateData struct {
 	Excerpts     []data.Excerpt
 	Metadata     data.Metadata
 	Form         any
+	Flash        string
 	StatusCode   int
 	ErrorMessage string
 }
