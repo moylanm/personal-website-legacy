@@ -10,7 +10,6 @@ import (
 
 	"github.com/alexedwards/scs/postgresstore"
 	"github.com/alexedwards/scs/v2"
-	"github.com/go-playground/form/v4"
 	"mylesmoylan.net/internal/data"
 )
 
@@ -19,7 +18,6 @@ type application struct {
 	logger         *slog.Logger
 	models         data.Models
 	templateCache  map[string]*template.Template
-	formDecoder    *form.Decoder
 	sessionManager *scs.SessionManager
 	limiterCancel  context.CancelFunc
 }
@@ -62,7 +60,6 @@ func main() {
 		logger:         logger,
 		models:         data.NewModels(db),
 		templateCache:  templateCache,
-		formDecoder:    form.NewDecoder(),
 		sessionManager: sessionManager,
 	}
 

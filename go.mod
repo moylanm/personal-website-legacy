@@ -18,7 +18,6 @@ require github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47
 require (
 	github.com/alexedwards/scs/postgresstore v0.0.0-20240203174419-a38e822451b6
 	github.com/alexedwards/scs/v2 v2.7.0
-	github.com/go-playground/form/v4 v4.2.1
 	github.com/hashicorp/vault/api v1.11.0
 	github.com/justinas/alice v1.2.0
 	golang.org/x/crypto v0.18.0
