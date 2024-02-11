@@ -19,6 +19,7 @@ type templateData struct {
 	Excerpt      data.Excerpt
 	Excerpts     []data.Excerpt
 	Metadata     data.Metadata
+	Form         any
 	StatusCode   int
 	ErrorMessage string
 }
