@@ -22,8 +22,6 @@ type ExcerptModel struct {
 	DB *sql.DB
 }
 
-const queryTimeout = 3 * time.Second
-
 func ValidateExcerpt(v *validator.Validator, excerpt *Excerpt) {
 	v.Check(excerpt.Author != "", "author", "must be provided")
 
@@ -39,7 +37,7 @@ func (e ExcerptModel) Insert(excerpt *Excerpt) error {
 
 	args := []any{excerpt.Author, excerpt.Work, excerpt.Body}
 
-	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	_, err := e.DB.ExecContext(ctx, query, args...)
@@ -59,7 +57,7 @@ func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
 
 	var excerpt Excerpt
 
-	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	err := e.DB.QueryRowContext(ctx, query, id).Scan(
@@ -88,7 +86,7 @@ func (e ExcerptModel) Update(excerpt *Excerpt) error {
 
 	args := []any{excerpt.Author, excerpt.Work, excerpt.Body, excerpt.ID}
 
-	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	_, err := e.DB.ExecContext(ctx, query, args...)
@@ -113,7 +111,7 @@ func (e ExcerptModel) Delete(id int64) error {
 		DELETE FROM excerpts
 		WHERE id = $1`
 
-	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	result, err := e.DB.ExecContext(ctx, query, id)
@@ -139,7 +137,7 @@ func (e ExcerptModel) GetAll() ([]Excerpt, error) {
 		FROM excerpts
 		ORDER BY id DESC`
 
-	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	rows, err := e.DB.QueryContext(ctx, query)
@@ -179,7 +177,7 @@ func (e *ExcerptModel) Latest(limit int) ([]Excerpt, error) {
 		FROM excerpts
 		ORDER BY id DESC LIMIT $1`
 
-	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	rows, err := e.DB.QueryContext(ctx, query, limit)
@@ -245,7 +243,7 @@ func (e *ExcerptModel) getFiltered(author string, filters Filters) (int, []Excer
 		ORDER BY %s %s, id ASC
 		LIMIT $2 OFFSET $3`, filters.sortColumn(), filters.sortDirection())
 
-	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	args := []any{author, filters.limit(), filters.offset()}
@@ -288,7 +286,7 @@ func (e *ExcerptModel) getUniqueAuthors() ([]string, error) {
 		SELECT DISTINCT author
 		FROM excerpts`
 
-	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	rows, err := e.DB.QueryContext(ctx, query)
