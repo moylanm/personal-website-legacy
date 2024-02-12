@@ -2,7 +2,7 @@
   email contact@mylesmoylan.net
 }
 
-mylesmoylan.net, www.mylesmoylan.net {
+mylesmoylan.net {
   reverse_proxy https://mylesmoylan.net:4000 {
     transport http {
       tls
