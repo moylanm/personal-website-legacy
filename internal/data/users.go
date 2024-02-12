@@ -3,17 +3,18 @@ package data
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	ID             int
-	Name           string
-	Email          string
-	HashedPassword []byte
-	Created        time.Time
+	ID           int
+	Name         string
+	Email        string
+	PasswordHash []byte
+	Created      time.Time
 }
 
 type UserModel struct {
@@ -32,7 +33,7 @@ func (m *UserModel) Insert(name, email, password string) error {
 
 	args := []any{name, email, passwordHash}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
 	defer cancel()
 
 	_, err = m.DB.ExecContext(ctx, query, args...)
@@ -49,7 +50,35 @@ func (m *UserModel) Insert(name, email, password string) error {
 }
 
 func (m *UserModel) Authetnicate(email, password string) (int, error) {
-	return 0, nil
+	var id int
+	var passwordHash []byte
+
+	query := "SELECT id, password_hash FROM users WHERE email = $1"
+
+	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	defer cancel()
+
+	err := m.DB.QueryRowContext(ctx, query, email).Scan(&id, &passwordHash)
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return 0, ErrInvalidCredentials
+		default:
+			return 0, err
+		}
+	}
+
+	err = bcrypt.CompareHashAndPassword(passwordHash, []byte(password))
+	if err != nil {
+		switch {
+		case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword):
+			return 0, ErrInvalidCredentials
+		default:
+			return 0, err
+		}
+	}
+
+	return id, nil
 }
 
 func (m *UserModel) Exists(id int) (bool, error) {
