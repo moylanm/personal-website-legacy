@@ -225,9 +225,9 @@ func (app *application) listExcerptsJson(w http.ResponseWriter, r *http.Request)
 }
 
 type userSignupForm struct {
-	Name                string
-	Email               string
-	Password            string
+	Name     string
+	Email    string
+	Password string
 	validator.Validator
 }
 
@@ -245,9 +245,9 @@ func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	form := userSignupForm{
-		Name: r.PostForm.Get("name"),
-		Email: r.PostForm.Get("email"),
-		Password: r.PostForm.Get("password"),
+		Name:      r.PostForm.Get("name"),
+		Email:     r.PostForm.Get("email"),
+		Password:  r.PostForm.Get("password"),
 		Validator: *validator.New(),
 	}
 
@@ -264,7 +264,24 @@ func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintln(w, "Create a new user...")
+	err = app.models.Users.Insert(form.Name, form.Email, form.Password)
+	if err != nil {
+		if errors.Is(err, data.ErrDuplicateEmail) {
+			form.AddError("email", "Email address is already in use")
+
+			data := app.newTemplateData(r)
+			data.Form = form
+			app.render(w, r, http.StatusUnprocessableEntity, "signup", data)
+		} else {
+			app.serverErrorResponse(w, r, err)
+		}
+
+		return
+	}
+
+	app.sessionManager.Put(r.Context(), "flash", "Your signup was successful.")
+
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
 func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
