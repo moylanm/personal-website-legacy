@@ -134,8 +134,9 @@ func (app *application) readInt(qs url.Values, key string, defaultValue int, v *
 
 func (app *application) newTemplateData(r *http.Request) templateData {
 	return templateData{
-		CurrentYear: time.Now().Year(),
-		Flash:       app.sessionManager.PopString(r.Context(), "flash"),
+		CurrentYear:     time.Now().Year(),
+		Flash:           app.sessionManager.PopString(r.Context(), "flash"),
+		IsAuthenticated: app.isAuthenticated(r),
 	}
 }
 
@@ -159,4 +160,8 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 	if _, err := buf.WriteTo(w); err != nil {
 		app.logger.Error("Error writing rendered template to response: %v", err)
 	}
+}
+
+func (app *application) isAuthenticated(r *http.Request) bool {
+	return app.sessionManager.Exists(r.Context(), "authenticatedUserID")
 }

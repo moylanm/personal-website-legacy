@@ -15,14 +15,15 @@ import (
 )
 
 type templateData struct {
-	CurrentYear  int
-	Excerpt      data.Excerpt
-	Excerpts     []data.Excerpt
-	Metadata     data.Metadata
-	Form         any
-	Flash        string
-	StatusCode   int
-	ErrorMessage string
+	CurrentYear     int
+	Excerpt         data.Excerpt
+	Excerpts        []data.Excerpt
+	Metadata        data.Metadata
+	Form            any
+	Flash           string
+	IsAuthenticated bool
+	StatusCode      int
+	ErrorMessage    string
 }
 
 const dateFormat = "02 Jan 2006 at 15:04"
