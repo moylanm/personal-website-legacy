@@ -17,7 +17,7 @@ func (app *application) routes() http.Handler {
 	fileServer := http.FileServer(http.FS(ui.Files))
 	router.PathPrefix("/static/").Handler(fileServer)
 
-	dynamic := alice.New(app.sessionManager.LoadAndSave)
+	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf)
 
 	router.Handle("/about", dynamic.ThenFunc(app.about)).Methods(http.MethodGet)
 	router.Handle("/", dynamic.ThenFunc(app.home)).Methods(http.MethodGet)
@@ -29,13 +29,17 @@ func (app *application) routes() http.Handler {
 
 	router.Handle("/login", dynamic.ThenFunc(app.userLogin)).Methods(http.MethodGet)
 	router.Handle("/login", dynamic.ThenFunc(app.userLoginPost)).Methods(http.MethodPost)
-	router.Handle("/logout", dynamic.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
 
-	dynamicAuth := dynamic.Append(app.authenticate)
+	protectedPage := dynamic.Append(app.requireAuthentication)
 
-	router.Handle("/excerpts", dynamicAuth.ThenFunc(app.createExcerpt)).Methods(http.MethodPost)
-	router.Handle(excerptsPath, dynamicAuth.ThenFunc(app.deleteExcerpt)).Methods(http.MethodDelete)
-	router.Handle(excerptsPath, dynamicAuth.ThenFunc(app.updateExcerpt)).Methods(http.MethodPatch)
+	router.Handle("/dashboard", protectedPage.ThenFunc(app.dashboard)).Methods(http.MethodGet)
+	router.Handle("/logout", protectedPage.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
+
+	protectedAPI := alice.New(app.authenticate)
+
+	router.Handle("/excerpts", protectedAPI.ThenFunc(app.createExcerpt)).Methods(http.MethodPost)
+	router.Handle(excerptsPath, protectedAPI.ThenFunc(app.deleteExcerpt)).Methods(http.MethodDelete)
+	router.Handle(excerptsPath, protectedAPI.ThenFunc(app.updateExcerpt)).Methods(http.MethodPatch)
 
 	standard := alice.New(app.recoverPanic, app.rateLimit, secureHeaders)
 
