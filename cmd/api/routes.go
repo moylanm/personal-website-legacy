@@ -39,7 +39,7 @@ func (app *application) routes() http.Handler {
 	router.Handle(excerptsPath, app.basicAuth(app.updateExcerpt)).Methods(http.MethodPatch)
 	router.Handle(excerptsPath, app.basicAuth(app.deleteExcerpt)).Methods(http.MethodDelete)
 
-	standard := alice.New(app.recoverPanic, app.rateLimit, secureHeaders)
+	standard := alice.New(app.recoverPanic, app.enableCORS, app.rateLimit, secureHeaders)
 
 	return standard.Then(router)
 }
