@@ -30,10 +30,10 @@ func (app *application) routes() http.Handler {
 	router.Handle("/login", dynamic.ThenFunc(app.userLogin)).Methods(http.MethodGet)
 	router.Handle("/login", dynamic.ThenFunc(app.userLoginPost)).Methods(http.MethodPost)
 
-	protectedPage := dynamic.Append(app.requireAuthentication)
+	protected := dynamic.Append(app.requireAuthentication)
 
-	router.Handle("/dashboard", protectedPage.ThenFunc(app.dashboard)).Methods(http.MethodGet)
-	router.Handle("/logout", protectedPage.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
+	router.Handle("/dashboard", protected.ThenFunc(app.dashboard)).Methods(http.MethodGet)
+	router.Handle("/logout", protected.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
 
 	router.Handle("/excerpts", app.basicAuth(app.createExcerpt)).Methods(http.MethodPost)
 	router.Handle(excerptsPath, app.basicAuth(app.updateExcerpt)).Methods(http.MethodPatch)
