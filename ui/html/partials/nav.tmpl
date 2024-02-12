@@ -3,6 +3,9 @@
 	<span>
 		<a href='/'>Home</a>
 		<a href='/excerpts'>Excerpts</a>
+		{{if .IsAuthenticated}}
+			<a href='/dashboard'>Dashboard</a>
+		{{end}}
 		<a href='/about'>About</a>
 	</span>
 	<span>
