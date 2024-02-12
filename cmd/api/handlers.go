@@ -223,6 +223,11 @@ func (app *application) listExcerptsJson(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
+	app.render(w, r, http.StatusOK, "dashboard.tmpl", data)
+}
+
 type userLoginForm struct {
 	Email    string
 	Password string
