@@ -4,18 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
-
-type User struct {
-	ID           int
-	Name         string
-	Email        string
-	PasswordHash []byte
-	Created      time.Time
-}
 
 type UserModel struct {
 	DB *sql.DB
