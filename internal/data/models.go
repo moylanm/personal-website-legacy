@@ -3,6 +3,7 @@ package data
 import (
 	"database/sql"
 	"errors"
+	"time"
 )
 
 var (
@@ -11,6 +12,8 @@ var (
 	ErrDuplicateEmail = errors.New("duplicate email")
 	ErrInvalidCredentials = errors.New("invalid credentials")
 )
+
+const queryTimeout = 3 * time.Second
 
 type Models struct {
 	Excerpts ExcerptModel
