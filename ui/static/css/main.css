@@ -215,6 +215,15 @@ form input[type=text], form input[type="password"], form input[type="email"], te
     border-width: 2px !important;
 }
 
+div.flash {
+    color: #FFFFFF;
+    font-weight: bold;
+    background-color: #34495E;
+    padding: 18px;
+    margin-bottom: 36px;
+    text-align: center;
+}
+
 textarea {
     padding: 18px;
     width: 100%;
