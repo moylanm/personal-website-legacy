@@ -10,7 +10,8 @@ import (
 var EmailRX = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
 type Validator struct {
-	Errors map[string]string
+	NonFieldErrors []string
+	Errors         map[string]string
 }
 
 func New() *Validator {
@@ -18,7 +19,11 @@ func New() *Validator {
 }
 
 func (v *Validator) Valid() bool {
-	return len(v.Errors) == 0
+	return len(v.Errors) == 0 && len(v.NonFieldErrors) == 0
+}
+
+func (v *Validator) AddNonFieldError(message string) {
+	v.NonFieldErrors = append(v.NonFieldErrors, message)
 }
 
 func (v *Validator) AddError(key, message string) {
