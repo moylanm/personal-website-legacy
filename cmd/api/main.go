@@ -6,9 +6,7 @@ import (
 	"html/template"
 	"log/slog"
 	"os"
-	"time"
 
-	"github.com/alexedwards/scs/postgresstore"
 	"github.com/alexedwards/scs/v2"
 	"mylesmoylan.net/internal/data"
 )
