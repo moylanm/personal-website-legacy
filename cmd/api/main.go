@@ -48,17 +48,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	sessionManager := scs.New()
-	sessionManager.Store = postgresstore.New(db)
-	sessionManager.IdleTimeout = 20 * time.Minute
-	sessionManager.Lifetime = 12 * time.Hour
+	publishMetrics(db)
 
 	app := &application{
 		config:         cfg,
 		logger:         logger,
 		models:         data.NewModels(db),
 		templateCache:  templateCache,
-		sessionManager: sessionManager,
+		sessionManager: newSessionManager(db),
 	}
 
 	if err = app.serve(); err != nil {
