@@ -29,6 +29,9 @@ type config struct {
 		Username     string `yaml:"username"`
 		PasswordHash string `yaml:"passwordHash"`
 	} `yaml:"admin"`
+	Cors struct {
+		TrustedOrigins []string `yaml:"trustedOrigins"`
+	} `yaml:"cors"`
 }
 
 const dsnTemplate = "postgres://myles:%s@localhost/website?sslmode=require"
@@ -121,6 +124,11 @@ func validateConfig(cfg *config) error {
 	// Validate admin credentials
 	if cfg.Admin.Username == "" || cfg.Admin.PasswordHash == "" {
 		return fmt.Errorf("admin username and password hash are required")
+	}
+
+	// Validate CORS configuration
+	if len(cfg.Cors.TrustedOrigins) == 0 {
+		return fmt.Errorf("CORS trusted origins must be provided")
 	}
 
 	// Validate limiter configuration if enabled
