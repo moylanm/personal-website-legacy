@@ -1,6 +1,7 @@
 package main
 
 import (
+	"expvar"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -33,6 +34,7 @@ func (app *application) routes() http.Handler {
 	protected := dynamic.Append(app.requireAuthentication)
 
 	router.Handle("/dashboard", protected.ThenFunc(app.dashboard)).Methods(http.MethodGet)
+	router.Handle("/dashboard/debug", protected.Then(expvar.Handler())).Methods(http.MethodGet)
 	router.Handle("/logout", protected.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
 
 	router.Handle("/excerpts", app.basicAuth(app.createExcerpt)).Methods(http.MethodPost)
