@@ -3,6 +3,9 @@
 }
 
 mylesmoylan.net, www.mylesmoylan.net {
+  header {
+  	-server
+  }
   reverse_proxy https://mylesmoylan.net:4000 {
     transport http {
       tls
