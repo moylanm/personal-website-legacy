@@ -21,6 +21,7 @@ require (
 	github.com/hashicorp/vault/api v1.11.0
 	github.com/justinas/alice v1.2.0
 	github.com/justinas/nosurf v1.1.1
+	github.com/mileusna/useragent v1.3.4
 	golang.org/x/crypto v0.18.0
 )
 
