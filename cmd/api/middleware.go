@@ -3,18 +3,19 @@ package main
 import (
 	"context"
 	"crypto/subtle"
-	"expvar"
 	"fmt"
 	"net/http"
 	"runtime/debug"
-	"strconv"
 	"sync"
 	"time"
 
 	"github.com/justinas/nosurf"
+	"github.com/mileusna/useragent"
 	"github.com/tomasen/realip"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/time/rate"
+
+	"mylesmoylan.net/internal/data"
 )
 
 func secureHeaders(next http.Handler) http.Handler {
@@ -196,28 +197,39 @@ func (app *application) enableCORS(next http.Handler) http.Handler {
 	})
 }
 
-func (app *application) metrics(next http.Handler) http.Handler {
-	var (
-		totalRequestsReceived           = expvar.NewInt("total_requests_received")
-		totalResponsesSent              = expvar.NewInt("total_responses_sent")
-		totalProcessingTimeMicroseconds = expvar.NewInt("total_processing_time_μs")
-		totalResponsesSentByStatus		= expvar.NewMap("total_responses_sent_by_status")
-	)
-
+func (app *application) requests(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := time.Now()
+		ua := useragent.Parse(r.Header.Get("User-Agent"))
 
-		totalRequestsReceived.Add(1)
+		var deviceType string
 
-		mw := newMetricsResponseWriter(w)
+		switch {
+		case ua.Mobile:
+			deviceType = "Mobile"
+		case ua.Tablet:
+			deviceType = "Tablet"
+		case ua.Desktop:
+			deviceType = "Desktop"
+		case ua.Bot:
+			deviceType = "Bot"
+		default:
+			deviceType = "Unknown"
+		}
+
+		request := &data.Request{
+			Method:       r.Method,
+			Path:         r.URL.Path,
+			IpAddress:    realip.FromRequest(r),
+			Referer:      r.Header.Get("Referer"),
+			UAName:       ua.Name,
+			UAOS:         ua.OS,
+			UADeviceType: deviceType,
+			UADeviceName: ua.Device,
+			TimeStamp:    time.Now(),
+		}
+
+		app.models.Requests.Insert(request)
 
 		next.ServeHTTP(w, r)
-
-		totalResponsesSent.Add(1)
-
-		totalResponsesSentByStatus.Add(strconv.Itoa(mw.statusCode), 1)
-
-		duration := time.Since(start).Microseconds()
-		totalProcessingTimeMicroseconds.Add(duration)
 	})
 }
