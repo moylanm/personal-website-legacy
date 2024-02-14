@@ -48,8 +48,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	publishMetrics(db)
-
 	app := &application{
 		config:         cfg,
 		logger:         logger,
