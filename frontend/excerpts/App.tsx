@@ -88,6 +88,6 @@ const App = () => {
       <List key={state.resetKey} excerpts={sortedAndFilteredExcerpts} />
     </>
   );
-}
+};
 
-export default App
+export default App;
