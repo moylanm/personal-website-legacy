@@ -1,7 +1,6 @@
 package main
 
 import (
-	"expvar"
 	"net/http"
 
 	"github.com/gorilla/mux"
