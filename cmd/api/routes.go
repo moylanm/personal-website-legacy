@@ -33,6 +33,7 @@ func (app *application) routes() http.Handler {
 	protected := dynamic.Append(app.requireAuthentication)
 
 	router.Handle("/dashboard", protected.ThenFunc(app.dashboard)).Methods(http.MethodGet)
+	router.Handle("/dashboard/request-logs", protected.ThenFunc(app.requestLogsJson)).Methods(http.MethodGet)
 	router.Handle("/logout", protected.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
 
 	router.Handle("/excerpts", app.basicAuth(app.createExcerpt)).Methods(http.MethodPost)
