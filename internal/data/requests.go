@@ -7,15 +7,16 @@ import (
 )
 
 type Request struct {
-	Method       string
-	Path         string
-	IpAddress    string
-	Referer      string
-	UAName       string
-	UAOS         string
-	UADeviceType string
-	UADeviceName string
-	TimeStamp    time.Time
+	ID           string    `json:"id"`
+	Method       string    `json:"method"`
+	Path         string    `json:"path"`
+	IpAddress    string    `json:"ipAddress"`
+	Referer      string    `json:"referer"`
+	UAName       string    `json:"uaName"`
+	UAOS         string    `json:"uaOS"`
+	UADeviceType string    `json:"uaDeviceType"`
+	UADeviceName string    `json:"uaDeviceName"`
+	TimeStamp    time.Time `json:"timestamp"`
 }
 
 type RequestModel struct {
