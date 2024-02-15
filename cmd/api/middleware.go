@@ -230,7 +230,9 @@ func (app *application) requests(next http.Handler) http.Handler {
 				TimeStamp:    time.Now(),
 			}
 
-			app.models.Requests.Insert(request)
+			if err := app.models.Requests.Insert(request); err != nil {
+				app.logError(r, err)
+			}
 		}
 
 		next.ServeHTTP(w, r)
