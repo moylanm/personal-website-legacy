@@ -85,7 +85,8 @@ build/api: build/frontend
 .PHONY: build/frontend
 build/frontend:
 	@printf 'Building js...\n'
-	@npm run build
+	@npm run buildExcerpts
+	@npm run buildDashboard
 
 # ==================================================================================== #
 # PRODUCTION
