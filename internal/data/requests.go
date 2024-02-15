@@ -47,3 +47,49 @@ func (r RequestModel) Insert(request *Request) error {
 
 	return err
 }
+
+func (r RequestModel) GetAll() ([]Request, error) {
+	query := `
+		SELECT id, method, path, ip_address, referer, ua_name, ua_os, ua_device_type, ua_device_name, timestamp
+		FROM requests
+		ORDER BY id DESC`
+
+	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	defer cancel()
+
+	rows, err := r.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	requests := []Request{}
+
+	for rows.Next() {
+		var request Request
+
+		err := rows.Scan(
+			&request.ID,
+			&request.Method,
+			&request.Path,
+			&request.IpAddress,
+			&request.Referer,
+			&request.UAName,
+			&request.UAOS,
+			&request.UADeviceType,
+			&request.UADeviceName,
+			&request.TimeStamp,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		requests = append(requests, request)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return requests, nil
+}
