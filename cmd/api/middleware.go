@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
+	"strings"
 	"sync"
 	"time"
 
@@ -199,36 +200,38 @@ func (app *application) enableCORS(next http.Handler) http.Handler {
 
 func (app *application) requests(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ua := useragent.Parse(r.Header.Get("User-Agent"))
+		if !strings.HasPrefix(r.URL.Path, "/static") {
+			ua := useragent.Parse(r.Header.Get("User-Agent"))
 
-		var deviceType string
+			var deviceType string
 
-		switch {
-		case ua.Mobile:
-			deviceType = "Mobile"
-		case ua.Tablet:
-			deviceType = "Tablet"
-		case ua.Desktop:
-			deviceType = "Desktop"
-		case ua.Bot:
-			deviceType = "Bot"
-		default:
-			deviceType = "Unknown"
+			switch {
+			case ua.Mobile:
+				deviceType = "Mobile"
+			case ua.Tablet:
+				deviceType = "Tablet"
+			case ua.Desktop:
+				deviceType = "Desktop"
+			case ua.Bot:
+				deviceType = "Bot"
+			default:
+				deviceType = "Unknown"
+			}
+
+			request := &data.Request{
+				Method:       r.Method,
+				Path:         r.URL.Path,
+				IpAddress:    realip.FromRequest(r),
+				Referer:      r.Header.Get("Referer"),
+				UAName:       ua.Name,
+				UAOS:         ua.OS,
+				UADeviceType: deviceType,
+				UADeviceName: ua.Device,
+				TimeStamp:    time.Now(),
+			}
+
+			app.models.Requests.Insert(request)
 		}
-
-		request := &data.Request{
-			Method:       r.Method,
-			Path:         r.URL.Path,
-			IpAddress:    realip.FromRequest(r),
-			Referer:      r.Header.Get("Referer"),
-			UAName:       ua.Name,
-			UAOS:         ua.OS,
-			UADeviceType: deviceType,
-			UADeviceName: ua.Device,
-			TimeStamp:    time.Now(),
-		}
-
-		app.models.Requests.Insert(request)
 
 		next.ServeHTTP(w, r)
 	})
