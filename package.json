@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "buildDashboard": "node esbuild_dashboard.js",
-    "buildExcerpts": "node esbuild_excerpts.js",
+    "buildExcerpts": "node esbuild_excerpts.js"
   },
   "dependencies": {
     "axios": "^1.6.5",
