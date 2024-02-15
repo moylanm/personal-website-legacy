@@ -1,15 +1,10 @@
 {
   "name": "js",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "build": "node esbuild.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "buildDashboard": "node esbuild_dashboard.js",
+    "buildExcerpts": "node esbuild_excerpts.js",
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "axios": "^1.6.5",
     "react": "^18.2.0",
