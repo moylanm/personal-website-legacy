@@ -249,6 +249,12 @@ type userLoginForm struct {
 
 func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
+
+	if data.IsAuthenticated {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
 	data.Form = userLoginForm{}
 	app.render(w, r, http.StatusOK, "login.tmpl", data)
 }
