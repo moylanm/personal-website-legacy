@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    font-size: 18px;
     font-family: "Merriweather", monospace;
 }
 
@@ -320,6 +321,10 @@ textarea {
     border-collapse: collapse;
     width: 100%;
     margin: 2px calc(-1 * ((100% - 500px) / 2)) 0;
+}
+
+.dashboard-table th {
+    font-size: 16px;
 }
 
 .dashboard-table td, .dashboard-table th {
