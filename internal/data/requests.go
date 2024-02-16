@@ -52,7 +52,7 @@ func (r RequestModel) GetAll() ([]Request, error) {
 	query := `
 		SELECT id, method, path, ip_address, referer, ua_name, ua_os, ua_device_type, ua_device_name, timestamp
 		FROM requests
-		ORDER BY id ASC`
+		ORDER BY id DESC`
 
 	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
 	defer cancel()
