@@ -130,6 +130,7 @@ nav span:last-child {
 .logout-button:hover {
     color: #4EB722;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 button, a.button {
