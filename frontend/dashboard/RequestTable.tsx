@@ -1,14 +1,63 @@
 import React from 'react';
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableBody,
+  TableCell,
+  TableHeaderCell
+} from 'semantic-ui-react';
 import { Request } from './types';
 
-const List: React.FC<{ requests: Request[] }> = ({ requests }) => {
-  return requests.map((request) => <Item key={request.id} request={request} />)
-};
-
-const Item: React.FC<{ request: Request }> = ({ request }) => {
+const RequestTable: React.FC<{ requests: Request[] }> = ({ requests }) => {
   return (
-    <pre>{JSON.stringify(request, null, 2)}</pre>
+    <Table className='dashboard-table'>
+      <TableHeader>
+        <TableRow>
+          <TableHeaderCell>Timestamp</TableHeaderCell>
+          <TableHeaderCell>Method</TableHeaderCell>
+          <TableHeaderCell>Path</TableHeaderCell>
+          <TableHeaderCell>IP Address</TableHeaderCell>
+          <TableHeaderCell>Referer</TableHeaderCell>
+          <TableHeaderCell>UA Name</TableHeaderCell>
+          <TableHeaderCell>UA OS</TableHeaderCell>
+          <TableHeaderCell>UA Device Type</TableHeaderCell>
+          <TableHeaderCell>UA Device Name</TableHeaderCell>
+        </TableRow>
+      </TableHeader>
+
+      <TableBody>
+        {requests.map((request) => <Row key={request.id} request={request} />)}
+      </TableBody>
+    </Table>
   );
 };
 
-export default List;
+const Row: React.FC<{ request: Request }> = ({ request }) => {
+
+
+
+  return (
+    <TableRow>
+      <TableCell>{formatDate(request.timestamp)}</TableCell>
+      <TableCell>{request.method}</TableCell>
+      <TableCell>{request.path}</TableCell>
+      <TableCell>{request.ipAddress}</TableCell>
+      <TableCell>{request.referer}</TableCell>
+      <TableCell>{request.uaName}</TableCell>
+      <TableCell>{request.uaOS}</TableCell>
+      <TableCell>{request.uaDeviceType}</TableCell>
+      <TableCell>{request.uaDeviceName}</TableCell>
+    </TableRow>
+  );
+};
+
+const formatDate = (dateString: string) => {
+  return Intl.DateTimeFormat(undefined, {
+    dateStyle: 'short',
+    timeStyle: 'medium',
+    hour12: false
+  }).format(Date.parse(dateString));
+};
+
+export default RequestTable;
