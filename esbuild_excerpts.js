@@ -8,5 +8,5 @@ esbuild
 	minify: true,
         plugins: [],
     })
-    .then(() => console.log("⚡ Excerpt app build complete! ⚡"))
+    .then(() => console.log("⚡ Excerpts build complete! ⚡"))
     .catch(() => process.exit(1));

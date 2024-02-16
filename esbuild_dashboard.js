@@ -8,5 +8,5 @@ esbuild
 	minify: true,
         plugins: [],
     })
-    .then(() => console.log("⚡ Dashboard app build complete! ⚡"))
+    .then(() => console.log("⚡ Dashboard build complete! ⚡"))
     .catch(() => process.exit(1));
