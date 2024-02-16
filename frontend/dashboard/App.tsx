@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import List from './List';
+import RequestTable from './RequestTable';
 import useFetchRequests from './useFetchRequests';
 import { reducer, initialState } from './reducer';
 
@@ -16,7 +16,7 @@ const App = () => {
     return <div className='loading-message'>Loading requests...</div>;
   }
 
-  return <List requests={state.requests} />
+  return <RequestTable requests={state.requests} />
 };
 
 export default App;
