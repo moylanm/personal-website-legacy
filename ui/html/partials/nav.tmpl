@@ -7,7 +7,8 @@
 		{{if .IsAuthenticated}}
 			<a href='/dashboard'>Dashboard</a>
 			<form action='/logout' method='POST'>
-				<input class='logout-button' type='submit' value='Logout'>
+				<input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+				<input type='submit' class='logout-button' value='Logout'>
 			</form>
 		{{end}}
 	</span>
