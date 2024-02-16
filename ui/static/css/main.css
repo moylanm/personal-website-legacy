@@ -1,11 +1,10 @@
 * {
     margin: 0;
     padding: 0;
-    font-size: 18px;
     font-family: "Merriweather", monospace;
 }
 
-html,.excerpt-body {
+html, .excerpt-body {
     height: 100%;
 }
 
@@ -273,27 +272,52 @@ textarea {
     color: #34495E;
 }
 
-table {
+.home-table {
     background: white;
     border: 1px solid #E4E5E7;
     border-collapse: collapse;
     width: 100%;
 }
 
-td, th {
+.home-table td, .home-table th {
     text-align: left;
     padding: 9px 18px;
 }
 
-th:last-child, td:last-child {
+.home-table th:last-child, .home-table td:last-child {
     text-align: right;
 }
 
-tr {
+.home-table tr {
     border-bottom: 1px solid #E4E5E7;
 }
 
-tr:nth-child(2n) {
+.home-table tr:nth-child(2n) {
+    background-color: #F7F9FA;
+}
+
+.dashboard-table {
+    background: white;
+    border: 1px solid #E4E5E7;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 2px calc(-1 * ((100% - 500px) / 2)) 0;
+}
+
+.dashboard-table td, .dashboard-table th {
+    text-align: left;
+    padding: 9px 18px;
+}
+
+.dashboard-table tr {
+    border-bottom: 1px solid #E4E5E7;
+}
+
+.dashboard-table tr td {
+    font-size: 12px;
+}
+
+.dashboard-table tr:nth-child(2n) {
     background-color: #F7F9FA;
 }
 
