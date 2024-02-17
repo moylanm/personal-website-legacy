@@ -16,6 +16,7 @@ export type AppState = {
 	ipAddresses: string[];
 	selectedIPAddresses: string[];
 	reverseSort: boolean;
+	renderKey: number;
 	isLoading: boolean;
 	errorMessage: string;
 	isInitError: boolean;
@@ -42,6 +43,7 @@ type InitialFetchSuccessPayload = {
 type RefetchSuccessPayload = {
 	requests: Request[];
 	ipAddresses: string[];
+	renderKey: number;
 };
 
 export type Action =
