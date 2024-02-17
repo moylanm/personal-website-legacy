@@ -55,6 +55,7 @@ const App = () => {
 
   return (
     <>
+      {state.isRefetchError ?? <div className='error-message'>{state.errorMessage}</div>}
       <FilterForm
         selectedSortOrder={state.reverseSort}
         ipAddresses={state.ipAddresses}
@@ -62,7 +63,6 @@ const App = () => {
         onIPAddrChange={handleIPAddressChange}
         onFetchDataClick={handleFetchDataClick}
       />
-      {state.isRefetchError ?? <div className='error-message'>{state.errorMessage}</div>}
       <RequestTable requests={sortedAndFilteredRequests} />
     </>
   );
