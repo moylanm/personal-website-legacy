@@ -37,20 +37,24 @@ const FilterForm: React.FC<FormProps> = ({
 }) => (
   <form>
     <fieldset>
-      <label>Sort By:</label>
-      <RadioButton value='newest' checked={!selectedSortOrder} onChange={onSortChange} label='Newest' />
-      <RadioButton value='oldest' checked={selectedSortOrder} onChange={onSortChange} label='Oldest' />
+      <label
+        >Sort By:
+        <RadioButton value='newest' checked={!selectedSortOrder} onChange={onSortChange} label='Newest' />
+        <RadioButton value='oldest' checked={selectedSortOrder} onChange={onSortChange} label='Oldest' />
+      </label>
     </fieldset>
-    <label>IP Addresses:</label>
-    <div className='scrollable-list'>
-      {ipAddresses.map(ipAddress => (
-        <label key={ipAddress}>
-          <input type='checkbox' value={ipAddress} onChange={onIPAddrChange} defaultChecked />
-          <div className='divider' />
-          {ipAddress}
-        </label>
-      ))}
-    </div>
+    <label>
+      IP Addresses:
+      <div className='scrollable-list'>
+        {ipAddresses.map(ipAddress => (
+          <label key={ipAddress}>
+            <input id={ipAddress} type='checkbox' value={ipAddress} onChange={onIPAddrChange} defaultChecked />
+            <div className='divider' />
+            {ipAddress}
+          </label>
+        ))}
+      </div>
+    </label>
     <div>
       <button type='button' onClick={onFetchDataClick}>Refetch Data</button>
     </div>
