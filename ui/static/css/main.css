@@ -354,6 +354,8 @@ textarea {
 
 .scrollable-list label {
     font-size: 14px;
+    margin-right: 10px;
+    margin-bottom: 0px;
 }
 
 footer {
