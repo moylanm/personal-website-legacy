@@ -7,7 +7,8 @@ export const initialState: AppState = {
 	reverseSort: false,
 	isLoading: false,
 	errorMessage: '',
-	isError: false
+	isInitError: false,
+	isRefetchError: false
 }
 
 export const reducer = (state: AppState, action: Action): AppState => {
@@ -16,7 +17,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
 			return {
 				...state,
 				isLoading: true,
-				isError: false
+				isInitError: false
 			};
 		case ActionType.InitialFetchSuccess:
 			return {
@@ -25,14 +26,26 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				ipAddresses: action.payload.ipAddresses,
 				selectedIPAddresses: action.payload.selectedIPAddresses,
 				isLoading: false,
-				isError: false
+				isInitError: false
 			};
 		case ActionType.InitialFetchFailure:
 			return {
 				...state,
 				errorMessage: action.payload,
 				isLoading: false,
-				isError: true
+				isInitError: true
+			};
+		case ActionType.RefetchSuccess:
+			return {
+				...state,
+				requests: action.payload.requests,
+				ipAddresses: action.payload.ipAddresses
+			};
+		case ActionType.RefetchFailure:
+			return {
+				...state,
+				errorMessage: action.payload,
+				isRefetchError: true
 			};
 		case ActionType.SetSortOrder:
 		  return {
