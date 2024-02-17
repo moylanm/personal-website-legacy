@@ -39,7 +39,7 @@ const FilterForm: React.FC<FormProps> = ({
       <RadioButton value='newest' checked={!selectedSortOrder} onChange={onSortChange} label='Newest' />
       <RadioButton value='oldest' checked={selectedSortOrder} onChange={onSortChange} label='Oldest' />
     </fieldset>
-    <label>IP Address:</label>
+    <label>IP Addresses:</label>
     <div className='scrollable-list'>
       {ipAddresses.map(ipAddress => (
         <label key={ipAddress}>
