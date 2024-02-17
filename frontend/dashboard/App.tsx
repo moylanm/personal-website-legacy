@@ -1,14 +1,18 @@
 import React, { useCallback, useMemo, useReducer } from 'react';
 import FilterForm from './FilterForm';
 import RequestTable from './RequestTable';
-import useFetchRequests from './useFetchRequests';
+import { useInitialFetch, refetchData } from './fetch';
 import { reducer, initialState } from './reducer';
 import { ActionType } from './types';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   
-  useFetchRequests(dispatch);
+  useInitialFetch(dispatch);
+
+  const handleFetchDataClick = () => {
+    refetchData(dispatch);
+  };
 
   const handleSortChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -41,7 +45,7 @@ const App = () => {
     return state.reverseSort ? filteredRequests.reverse() : filteredRequests;
   }, [state.requests, state.selectedIPAddresses, state.reverseSort]);
 
-  if (state.isError) {
+  if (state.isInitError) {
     return <div className='error-message'>{state.errorMessage}</div>;
   }
 
@@ -56,7 +60,9 @@ const App = () => {
         ipAddresses={state.ipAddresses}
         onSortChange={handleSortChange}
         onIPAddrChange={handleIPAddressChange}
+        onFetchDataClick={handleFetchDataClick}
       />
+      {state.isRefetchError ?? <div className='error-message'>{state.errorMessage}</div>}
       <RequestTable requests={sortedAndFilteredRequests} />
     </>
   );
