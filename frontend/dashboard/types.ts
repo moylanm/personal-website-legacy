@@ -22,24 +22,24 @@ export type AppState = {
 }
 
 export enum ActionType {
-	RequestsFetchInit = 'REQUESTS_FETCH_INIT',
-	RequestsFetchSuccess = 'REQUESTS_FETCH_SUCCESS',
-	RequestsFetchFailure = 'REQUESTS_FETCH_FAILURE',
+	InitialFetchInit = 'REQUESTS_FETCH_INIT',
+	InitialFetchSuccess = 'REQUESTS_FETCH_SUCCESS',
+	InitialFetchFailure = 'REQUESTS_FETCH_FAILURE',
 	SetSortOrder = 'SET_SORT_ORDER',
 	SetSelectedIPAddresses = 'SET_SELECTED_IP_ADDRESSES',
 	Reset = 'RESET'
 }
 
-type RequestsFetchSuccessPayload = {
+type InitialFetchSuccessPayload = {
 	requests: Request[];
 	ipAddresses: string[];
 	selectedIPAddresses: string[];
 };
 
 export type Action =
-	| { type: ActionType.RequestsFetchInit }
-	| { type: ActionType.RequestsFetchSuccess; payload: RequestsFetchSuccessPayload }
-	| { type: ActionType.RequestsFetchFailure; payload: string }
+	| { type: ActionType.InitialFetchInit }
+	| { type: ActionType.InitialFetchSuccess; payload: InitialFetchSuccessPayload }
+	| { type: ActionType.InitialFetchFailure; payload: string }
 	| { type: ActionType.SetSelectedIPAddresses; payload: string[] }
 	| { type: ActionType.SetSortOrder; payload: boolean }
 	| { type: ActionType.Reset }

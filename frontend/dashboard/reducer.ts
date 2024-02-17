@@ -12,13 +12,13 @@ export const initialState: AppState = {
 
 export const reducer = (state: AppState, action: Action): AppState => {
 	switch (action.type) {
-		case ActionType.RequestsFetchInit:
+		case ActionType.InitialFetchInit:
 			return {
 				...state,
 				isLoading: true,
 				isError: false
 			};
-		case ActionType.RequestsFetchSuccess:
+		case ActionType.InitialFetchSuccess:
 			return {
 				...state,
 				requests: action.payload.requests,
@@ -27,7 +27,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				isLoading: false,
 				isError: false
 			};
-		case ActionType.RequestsFetchFailure:
+		case ActionType.InitialFetchFailure:
 			return {
 				...state,
 				errorMessage: action.payload,

@@ -4,14 +4,14 @@ import { Action, ActionType, ApiResponse } from './types';
 
 const API_ENDPOINT = 'https://mylesmoylan.net/dashboard/request-logs'
 
-const useFetchRequests = (
+const useInitialFetch = (
 	dispatch: React.Dispatch<Action>
 ) => {
 	useEffect(() => {
 		const source = axios.CancelToken.source();
 
 		const fetchData = async () => {
-			dispatch({ type: ActionType.RequestsFetchInit });
+			dispatch({ type: ActionType.InitialFetchInit });
 
 			try {
 				const response = await axios.get<ApiResponse>(`${API_ENDPOINT}`, {
@@ -23,7 +23,7 @@ const useFetchRequests = (
 				const selectedIPAddresses = [...ipAddresses];
 
 				dispatch({
-					type: ActionType.RequestsFetchSuccess,
+					type: ActionType.InitialFetchSuccess,
 					payload: { requests, ipAddresses, selectedIPAddresses }
 				});
 			} catch (error) {
@@ -40,7 +40,7 @@ const useFetchRequests = (
         }
 
         dispatch({
-          type: ActionType.RequestsFetchFailure,
+          type: ActionType.InitialFetchFailure,
           payload: errorMessage
         });
 			}
@@ -54,4 +54,4 @@ const useFetchRequests = (
 	}, []);
 };
 
-export default useFetchRequests;
+export default useInitialFetch;
