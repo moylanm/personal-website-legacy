@@ -11,7 +11,7 @@ import (
 func newSessionManager(db *sql.DB) *scs.SessionManager {
 	sessionManager := scs.New()
 	sessionManager.Store = postgresstore.New(db)
-	sessionManager.IdleTimeout = 20 * time.Minute
+	sessionManager.IdleTimeout = 1 * time.Hour
 	sessionManager.Lifetime = 12 * time.Hour
 
 	return sessionManager
