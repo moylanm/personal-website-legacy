@@ -344,6 +344,18 @@ textarea {
     background-color: #F7F9FA;
 }
 
+.scrollable-list {
+    border: 2px solid #CCC;
+    padding-left: 3px;
+    width: 200px;
+    height: 100px;
+    overflow-y: scroll;
+}
+
+.scrollable-list label {
+    font-size: 14px;
+}
+
 footer {
     border-top: 1px solid #E4E5E7;
     padding-top: 17px;
