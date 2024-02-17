@@ -11,7 +11,7 @@ const App = () => {
   useInitialFetch(dispatch);
 
   const handleFetchDataClick = () => {
-    refetchData(dispatch);
+    refetchData(dispatch, state.renderKey);
   };
 
   const handleSortChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,13 +57,14 @@ const App = () => {
     <>
       {state.isRefetchError ?? <div className='error-message'>{state.errorMessage}</div>}
       <FilterForm
+        key={state.renderKey}
         selectedSortOrder={state.reverseSort}
         ipAddresses={state.ipAddresses}
         onSortChange={handleSortChange}
         onIPAddrChange={handleIPAddressChange}
         onFetchDataClick={handleFetchDataClick}
       />
-      <RequestTable requests={sortedAndFilteredRequests} />
+      <RequestTable key={state.renderKey} requests={sortedAndFilteredRequests} />
     </>
   );
 };
