@@ -15,9 +15,9 @@ const RequestTable: React.FC<{ requests: Request[] }> = ({ requests }) => {
       <TableHeader>
         <TableRow>
           <TableHeaderCell>Timestamp</TableHeaderCell>
+          <TableHeaderCell>IP Address</TableHeaderCell>
           <TableHeaderCell>Method</TableHeaderCell>
           <TableHeaderCell>Path</TableHeaderCell>
-          <TableHeaderCell>IP Address</TableHeaderCell>
           <TableHeaderCell>Referer</TableHeaderCell>
           <TableHeaderCell>UA Name</TableHeaderCell>
           <TableHeaderCell>UA OS</TableHeaderCell>
@@ -34,15 +34,12 @@ const RequestTable: React.FC<{ requests: Request[] }> = ({ requests }) => {
 };
 
 const Row: React.FC<{ request: Request }> = ({ request }) => {
-
-
-
   return (
     <TableRow>
       <TableCell>{formatDate(request.timestamp)}</TableCell>
+      <TableCell>{request.ipAddress}</TableCell>
       <TableCell>{request.method}</TableCell>
       <TableCell>{request.path}</TableCell>
-      <TableCell>{request.ipAddress}</TableCell>
       <TableCell>{request.referer}</TableCell>
       <TableCell>{request.uaName}</TableCell>
       <TableCell>{request.uaOS}</TableCell>
