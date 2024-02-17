@@ -55,7 +55,8 @@ export const useInitialFetch = (
 };
 
 export const refetchData = async (
-	dispatch: React.Dispatch<Action>
+	dispatch: React.Dispatch<Action>,
+	currentRenderKey: number
 ) => {
 	const source = axios.CancelToken.source();
 
@@ -66,10 +67,11 @@ export const refetchData = async (
 
 		const requests = response.data.requests;
 		const ipAddresses = [...new Set(requests.map(request => request.ipAddress))];
+		const renderKey = currentRenderKey + 1;
 
 		dispatch({
 			type: ActionType.RefetchSuccess,
-			payload: { requests, ipAddresses }
+			payload: { requests, ipAddresses, renderKey }
 		});
 	} catch (error) {
 		const axiosError = error as AxiosError;
