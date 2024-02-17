@@ -18,9 +18,13 @@ const useFetchRequests = (
 					cancelToken: source.token
 				});
 
+				const requests = response.data.requests;
+				const ipAddresses = [...new Set(requests.map(request => request.ipAddress))];
+				const selectedIPAddresses = [...ipAddresses];
+
 				dispatch({
 					type: ActionType.RequestsFetchSuccess,
-					payload: response.data.requests
+					payload: { requests, ipAddresses, selectedIPAddresses }
 				});
 			} catch (error) {
 				const axiosError = error as AxiosError;
@@ -45,7 +49,7 @@ const useFetchRequests = (
 		fetchData();
 
 		return () => {
-			source.cancel('Component unmounted, request calceled');
+			source.cancel('Component unmounted, request canceled')
 		};
 	}, []);
 };
