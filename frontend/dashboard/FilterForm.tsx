@@ -25,13 +25,15 @@ type FormProps = {
   ipAddresses: string[];
   onSortChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onIPAddrChange: (event: React.FormEvent<HTMLInputElement>) => void;
+  onFetchDataClick: () => void;
 };
 
 const FilterForm: React.FC<FormProps> = ({
   selectedSortOrder,
   ipAddresses,
   onSortChange,
-  onIPAddrChange
+  onIPAddrChange,
+  onFetchDataClick
 }) => (
   <form>
     <fieldset>
@@ -48,6 +50,9 @@ const FilterForm: React.FC<FormProps> = ({
           {ipAddress}
         </label>
       ))}
+    </div>
+    <div>
+      <button type='button' onClick={onFetchDataClick}>Fetch Request Data</button>
     </div>
   </form>
 );
