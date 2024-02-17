@@ -200,7 +200,7 @@ func (app *application) enableCORS(next http.Handler) http.Handler {
 
 func (app *application) logRequests(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !strings.HasPrefix(r.URL.Path, "/static") {
+		if !strings.HasPrefix(r.URL.Path, "/static") && !strings.HasPrefix(r.URL.Path, "/dashboard") {
 			ua := useragent.Parse(r.Header.Get("User-Agent"))
 
 			var deviceType string
