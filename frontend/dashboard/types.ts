@@ -22,9 +22,9 @@ export type AppState = {
 }
 
 export enum ActionType {
-	InitialFetchInit = 'REQUESTS_FETCH_INIT',
-	InitialFetchSuccess = 'REQUESTS_FETCH_SUCCESS',
-	InitialFetchFailure = 'REQUESTS_FETCH_FAILURE',
+	InitialFetchInit = 'INITIAL_FETCH_INIT',
+	InitialFetchSuccess = 'INITIAL_FETCH_SUCCESS',
+	InitialFetchFailure = 'INITIAL_FETCH_FAILURE',
 	SetSortOrder = 'SET_SORT_ORDER',
 	SetSelectedIPAddresses = 'SET_SELECTED_IP_ADDRESSES',
 	Reset = 'RESET'
