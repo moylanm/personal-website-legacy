@@ -52,7 +52,7 @@ const FilterForm: React.FC<FormProps> = ({
       ))}
     </div>
     <div>
-      <button type='button' onClick={onFetchDataClick}>Fetch Request Data</button>
+      <button type='button' onClick={onFetchDataClick}>Refetch Data</button>
     </div>
   </form>
 );
