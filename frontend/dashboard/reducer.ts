@@ -3,8 +3,8 @@ import { AppState, Action, ActionType } from './types';
 export const initialState: AppState = {
 	requests: [],
 	ipAddresses: [],
-	selectedIPAddresses: [],
 	reverseSort: false,
+	renderKey: 0,
 	isLoading: false,
 	errorMessage: '',
 	isInitError: false,
@@ -24,7 +24,6 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				...state,
 				requests: action.payload.requests,
 				ipAddresses: action.payload.ipAddresses,
-				selectedIPAddresses: action.payload.selectedIPAddresses,
 				isLoading: false,
 				isInitError: false
 			};
@@ -52,10 +51,10 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				...state,
 				reverseSort: action.payload,
 		  };
-		case ActionType.SetSelectedIPAddresses:
+		case ActionType.SetIPAddresses:
 			return {
 				...state,
-				selectedIPAddresses: action.payload
+				ipAddresses: action.payload
 			};
 		case ActionType.Reset:
 			return {
