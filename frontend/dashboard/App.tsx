@@ -11,7 +11,7 @@ const App = () => {
   useInitialFetch(dispatch);
 
   const handleFetchDataClick = () => {
-    refetchData(dispatch, state.renderKey);
+    refetchData(dispatch, state.ipAddresses, state.renderKey);
   };
 
   const handleSortChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,27 +23,27 @@ const App = () => {
 
   const handleIPAddressChange = useCallback((event: React.FormEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
-    let selectedIPAddresses: string[];
-
-    if (target.checked) {
-      selectedIPAddresses = [...state.selectedIPAddresses, target.value];
-    } else {
-      selectedIPAddresses = state.selectedIPAddresses.filter(ipAddress => ipAddress !== target.value);
-    }
+    const ipAddresses = state.ipAddresses.map(ip => {
+      return ip.value === target.value ? {value: ip.value, selected: target.checked} : ip
+    });
 
     dispatch({
-      type: ActionType.SetSelectedIPAddresses,
-      payload: selectedIPAddresses
+      type: ActionType.SetIPAddresses,
+      payload: ipAddresses
     });
-  }, [state.selectedIPAddresses]);
+  }, [state.ipAddresses]);
 
   const sortedAndFilteredRequests = useMemo(() => {
-    const filteredRequests = state.requests.filter(request => {
-      return state.selectedIPAddresses.includes(request.ipAddress);
-    });
+    const selectedIPs = state.ipAddresses
+      .filter(ip => ip.selected)
+      .map(ip => ip.value);
+
+    const filteredRequests = state.requests.filter(request =>
+      selectedIPs.includes(request.ipAddress)
+    );
 
     return state.reverseSort ? filteredRequests.reverse() : filteredRequests;
-  }, [state.requests, state.selectedIPAddresses, state.reverseSort]);
+  }, [state.requests, state.ipAddresses, state.reverseSort]);
 
   if (state.isInitError) {
     return <div className='error-message'>{state.errorMessage}</div>;
@@ -57,7 +57,7 @@ const App = () => {
     <>
       {state.isRefetchError ?? <div className='error-message'>{state.errorMessage}</div>}
       <FilterForm
-        key={state.renderKey}
+        renderKey={state.renderKey}
         selectedSortOrder={state.reverseSort}
         ipAddresses={state.ipAddresses}
         onSortChange={handleSortChange}

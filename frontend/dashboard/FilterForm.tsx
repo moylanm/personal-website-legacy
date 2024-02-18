@@ -1,4 +1,5 @@
 import React from 'react';
+import { IPAddress } from './types';
 
 type RadioButtonProps = {
   value: string;
@@ -21,14 +22,16 @@ const RadioButton: React.FC<RadioButtonProps> = ({
 );
 
 type FormProps = {
+  renderKey: number;
   selectedSortOrder: boolean;
-  ipAddresses: string[];
+  ipAddresses: IPAddress[];
   onSortChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onIPAddrChange: (event: React.FormEvent<HTMLInputElement>) => void;
   onFetchDataClick: () => void;
 };
 
 const FilterForm: React.FC<FormProps> = ({
+  renderKey,
   selectedSortOrder,
   ipAddresses,
   onSortChange,
@@ -45,12 +48,12 @@ const FilterForm: React.FC<FormProps> = ({
     </fieldset>
     <label>
       IP Addresses:
-      <div className='scrollable-list'>
+      <div key={renderKey} className='scrollable-list'>
         {ipAddresses.map(ipAddress => (
-          <label key={ipAddress}>
-            <input id={ipAddress} type='checkbox' value={ipAddress} onChange={onIPAddrChange} defaultChecked />
+          <label key={ipAddress.value}>
+            <input id={ipAddress.value} type='checkbox' value={ipAddress.value} onChange={onIPAddrChange} checked={ipAddress.selected} />
             <div className='divider' />
-            {ipAddress}
+            {ipAddress.value}
           </label>
         ))}
       </div>
