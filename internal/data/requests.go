@@ -93,3 +93,15 @@ func (r RequestModel) GetAll() ([]Request, error) {
 
 	return requests, nil
 }
+
+func (r RequestModel) Clear() error {
+	query := `
+		TRUNCATE requests RESTART IDENTITY`
+
+	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
+	defer cancel()
+
+	_, err := r.DB.ExecContext(ctx, query)
+
+	return err
+}

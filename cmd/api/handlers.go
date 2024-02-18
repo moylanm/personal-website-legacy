@@ -241,6 +241,13 @@ func (app *application) requestLogsJson(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+func (app *application) clearRequestLogs(w http.ResponseWriter, r *http.Request) {
+	if err := app.models.Requests.Clear(); err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+}
+
 type userLoginForm struct {
 	Email    string
 	Password string
