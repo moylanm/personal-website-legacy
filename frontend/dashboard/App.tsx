@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useReducer } from 'react';
 import FilterForm from './FilterForm';
 import RequestTable from './RequestTable';
-import { useInitialFetch, refetchData } from './fetch';
+import { useInitialFetch, refetchData } from './api';
 import { reducer, initialState } from './reducer';
 import { ActionType } from './types';
 
