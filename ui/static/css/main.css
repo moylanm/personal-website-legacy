@@ -320,7 +320,7 @@ textarea {
     border: 1px solid #E4E5E7;
     border-collapse: collapse;
     width: 100%;
-    margin: 2px calc(-1 * ((100% - 500px) / 2)) 0;
+    margin: 2px calc(-1 * ((100% - 450px) / 2)) 0;
 }
 
 .dashboard-table th {
