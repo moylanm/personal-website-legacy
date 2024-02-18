@@ -11,10 +11,14 @@ export type Request = {
 	timestamp: string;
 };
 
+export type IPAddress = {
+	value: string;
+	selected: boolean;
+};
+
 export type AppState = {
 	requests: Request[];
-	ipAddresses: string[];
-	selectedIPAddresses: string[];
+	ipAddresses: IPAddress[];
 	reverseSort: boolean;
 	renderKey: number;
 	isLoading: boolean;
@@ -30,19 +34,18 @@ export enum ActionType {
 	RefetchSuccess = 'REFETCH_SUCCESS',
 	RefetchFailure = 'REFETCH_FAILURE',
 	SetSortOrder = 'SET_SORT_ORDER',
-	SetSelectedIPAddresses = 'SET_SELECTED_IP_ADDRESSES',
+	SetIPAddresses = 'SET_IP_ADDRESSES',
 	Reset = 'RESET'
 }
 
 type InitialFetchSuccessPayload = {
 	requests: Request[];
-	ipAddresses: string[];
-	selectedIPAddresses: string[];
+	ipAddresses: IPAddress[];
 };
 
 type RefetchSuccessPayload = {
 	requests: Request[];
-	ipAddresses: string[];
+	ipAddresses: IPAddress[];
 	renderKey: number;
 };
 
@@ -52,7 +55,7 @@ export type Action =
 	| { type: ActionType.InitialFetchFailure; payload: string }
 	| { type: ActionType.RefetchSuccess; payload: RefetchSuccessPayload }
 	| { type: ActionType.RefetchFailure; payload: string }
-	| { type: ActionType.SetSelectedIPAddresses; payload: string[] }
+	| { type: ActionType.SetIPAddresses; payload: IPAddress[] }
 	| { type: ActionType.SetSortOrder; payload: boolean }
 	| { type: ActionType.Reset }
 
