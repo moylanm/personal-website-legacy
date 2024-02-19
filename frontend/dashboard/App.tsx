@@ -69,7 +69,10 @@ const App = () => {
         onFetchDataClick={handleFetchDataClick}
         onClearDataClick={handleClearDataClick}
       />
-      <RequestTable key={state.renderKey} requests={sortedAndFilteredRequests} />
+      {sortedAndFilteredRequests.length > 0
+        ? <RequestTable key={state.renderKey} requests={sortedAndFilteredRequests} />
+        : <div className='loading-message'>No logs to render...</div>
+      }
     </>
   );
 };
