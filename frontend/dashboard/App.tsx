@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useReducer } from 'react';
 import FilterForm from './FilterForm';
 import RequestTable from './RequestTable';
-import { useInitialFetch, refetchData } from './api';
+import { useInitialFetch, refetchData, clearLogs } from './api';
 import { reducer, initialState } from './reducer';
 import { ActionType } from './types';
 
@@ -13,6 +13,10 @@ const App = () => {
   const handleFetchDataClick = () => {
     refetchData(dispatch, state.ipAddresses, state.renderKey);
   };
+
+  const handleClearDataClick = () => {
+    clearLogs(dispatch, state.renderKey);
+  }
 
   const handleSortChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -55,7 +59,7 @@ const App = () => {
 
   return (
     <>
-      {state.isRefetchError ?? <div className='error-message'>{state.errorMessage}</div>}
+      {state.isOtherError ?? <div className='error-message'>{state.errorMessage}</div>}
       <FilterForm
         renderKey={state.renderKey}
         selectedSortOrder={state.reverseSort}
@@ -63,6 +67,7 @@ const App = () => {
         onSortChange={handleSortChange}
         onIPAddrChange={handleIPAddressChange}
         onFetchDataClick={handleFetchDataClick}
+        onClearDataClick={handleClearDataClick}
       />
       <RequestTable key={state.renderKey} requests={sortedAndFilteredRequests} />
     </>
