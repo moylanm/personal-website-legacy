@@ -106,3 +106,48 @@ const updateIPAddresses = (existingIPs: IPAddress[], newIPs: string[]): IPAddres
 
 	return Array.from(existingIPsMap, ([value, selected]) => ({ value, selected }));
 };
+
+export const clearLogs = async (
+	dispatch: React.Dispatch<Action>,
+	currentRenderKey: number
+) => {
+	const source = axios.CancelToken.source();
+
+	try {
+		const csrfToken = document.querySelector('input[name="csrf_token"]')!.getAttribute('value')!;
+
+		const formBody = new FormData()
+		formBody.append('csrf_token', csrfToken);
+
+		await axios({
+			method: 'POST',
+			url: `${API_ENDPOINT}`,
+			data: formBody,
+			cancelToken: source.token
+		});
+
+		const renderKey = currentRenderKey + 1;
+
+		dispatch({
+			type: ActionType.ClearLogsSuccess,
+			payload: renderKey
+		});
+	} catch (error) {
+		const axiosError = error as AxiosError;
+
+    let errorMessage = 'Failed to clear data.';
+
+    if (axiosError.response) {
+      errorMessage = `Error ${axiosError.response.status}: ${axiosError.response.statusText}`;
+    } else if (axiosError.request) {
+      errorMessage = 'Network error. Please try again.';
+    } else {
+      console.log('Error: ', axiosError.message);
+    }
+
+    dispatch({
+      type: ActionType.ClearLogsFailure,
+      payload: errorMessage
+    });
+	}
+};
