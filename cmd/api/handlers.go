@@ -242,9 +242,15 @@ func (app *application) requestLogsJson(w http.ResponseWriter, r *http.Request) 
 }
 
 func (app *application) clearRequestLogs(w http.ResponseWriter, r *http.Request) {
-	if err := app.models.Requests.Clear(); err != nil {
+	err := app.models.Requests.Clear()
+	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
+	}
+
+	err = app.writeJSON(w, http.StatusOK, envelope{"message": "requests logs successfully deleted"})
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
 	}
 }
 
