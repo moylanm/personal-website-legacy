@@ -28,6 +28,7 @@ type FormProps = {
   onSortChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onIPAddrChange: (event: React.FormEvent<HTMLInputElement>) => void;
   onFetchDataClick: () => void;
+  onClearDataClick: () => void;
 };
 
 const FilterForm: React.FC<FormProps> = ({
@@ -36,7 +37,8 @@ const FilterForm: React.FC<FormProps> = ({
   ipAddresses,
   onSortChange,
   onIPAddrChange,
-  onFetchDataClick
+  onFetchDataClick,
+  onClearDataClick
 }) => (
   <form>
     <fieldset>
@@ -60,6 +62,8 @@ const FilterForm: React.FC<FormProps> = ({
     </label>
     <div>
       <button type='button' onClick={onFetchDataClick}>Refetch Data</button>
+      <div className='divider' />
+      <button type='button' onClick={onClearDataClick}>Clear Data</button>
     </div>
   </form>
 );
