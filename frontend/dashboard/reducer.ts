@@ -8,7 +8,7 @@ export const initialState: AppState = {
 	isLoading: false,
 	errorMessage: '',
 	isInitError: false,
-	isRefetchError: false
+	isOtherError: false
 }
 
 export const reducer = (state: AppState, action: Action): AppState => {
@@ -44,8 +44,21 @@ export const reducer = (state: AppState, action: Action): AppState => {
 			return {
 				...state,
 				errorMessage: action.payload,
-				isRefetchError: true
+				isOtherError: true
 			};
+		case ActionType.ClearLogsSuccess:
+			return {
+				...state,
+				requests: [],
+				ipAddresses: [],
+				renderKey: action.payload
+			};
+		case ActionType.ClearLogsFailure:
+			return {
+				...state,
+				errorMessage: action.payload,
+				isOtherError: true
+			}
 		case ActionType.SetSortOrder:
 		  return {
 				...state,
