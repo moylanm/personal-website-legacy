@@ -116,7 +116,7 @@ export const clearLogs = async (
 	try {
 		const csrfToken = document.querySelector('input[name="csrf_token"]')!.getAttribute('value')!;
 
-		const formBody = new FormData()
+		const formBody = new FormData();
 		formBody.append('csrf_token', csrfToken);
 
 		await axios({
