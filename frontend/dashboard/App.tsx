@@ -54,7 +54,7 @@ const App = () => {
   }
 
   if (state.isLoading) {
-    return <div className='loading-message'>Loading requests...</div>;
+    return <div className='message'>Loading requests...</div>;
   }
 
   return (
@@ -71,7 +71,7 @@ const App = () => {
       />
       {sortedAndFilteredRequests.length > 0
         ? <RequestTable key={state.renderKey} requests={sortedAndFilteredRequests} />
-        : <div className='loading-message'>No logs to render...</div>
+        : <div className='message'>No logs to render...</div>
       }
     </>
   );

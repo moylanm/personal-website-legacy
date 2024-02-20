@@ -433,7 +433,7 @@ footer {
     float: right;
 }
 
-.loading-message {
+.message {
     display: flex;
     align-items: center;
     justify-content: center;
