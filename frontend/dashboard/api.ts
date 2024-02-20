@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
 import { IPAddress, Action, ActionType, ApiResponse } from './types';
+import { updateIPAddresses } from './utils';
 
 const API_ENDPOINT = 'https://mylesmoylan.net/dashboard/request-logs'
 
@@ -96,16 +97,6 @@ export const refetchData = async (
 
 	return () => source.cancel('Fetch aborted: component unmounted or fetch reset');
 }
-
-const updateIPAddresses = (existingIPs: IPAddress[], newIPs: string[]): IPAddress[] => {
-	const existingIPsMap = new Map(existingIPs.map(ip => [ip.value, ip.selected]));
-
-	newIPs.forEach(ipValue => {
-		existingIPsMap.set(ipValue, existingIPsMap.has(ipValue) ? existingIPsMap.get(ipValue)! : true);
-	});
-
-	return Array.from(existingIPsMap, ([value, selected]) => ({ value, selected }));
-};
 
 export const clearLogs = async (
 	dispatch: React.Dispatch<Action>,

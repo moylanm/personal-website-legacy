@@ -8,6 +8,7 @@ import {
   TableHeaderCell
 } from 'semantic-ui-react';
 import { Request } from './types';
+import { formatDate } from './utils';
 
 const RequestTable: React.FC<{ requests: Request[] }> = ({ requests }) => {
   return (
@@ -47,14 +48,6 @@ const Row: React.FC<{ request: Request }> = ({ request }) => {
       <TableCell>{request.uaDeviceName}</TableCell>
     </TableRow>
   );
-};
-
-const formatDate = (dateString: string) => {
-  return Intl.DateTimeFormat(undefined, {
-    dateStyle: 'short',
-    timeStyle: 'medium',
-    hour12: false
-  }).format(Date.parse(dateString));
 };
 
 export default RequestTable;
