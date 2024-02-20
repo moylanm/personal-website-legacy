@@ -150,4 +150,6 @@ export const clearLogs = async (
       payload: errorMessage
     });
 	}
+
+	return () => source.cancel('Post aborted: component unmounted or fetch reset');
 };
