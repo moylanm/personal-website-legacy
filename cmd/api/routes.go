@@ -17,7 +17,7 @@ func (app *application) routes() http.Handler {
 	fileServer := http.FileServer(http.FS(ui.Files))
 	router.PathPrefix("/static/").Handler(fileServer)
 
-	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf, app.authenticate)
+	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf, app.authenticate, app.logRequests)
 
 	router.Handle("/about", dynamic.ThenFunc(app.about)).Methods(http.MethodGet)
 	router.Handle("/", dynamic.ThenFunc(app.home)).Methods(http.MethodGet)
@@ -41,7 +41,7 @@ func (app *application) routes() http.Handler {
 	router.Handle(excerptsPath, app.basicAuth(app.updateExcerpt)).Methods(http.MethodPatch)
 	router.Handle(excerptsPath, app.basicAuth(app.deleteExcerpt)).Methods(http.MethodDelete)
 
-	standard := alice.New(app.logRequests, app.recoverPanic, app.enableCORS, app.rateLimit, secureHeaders)
+	standard := alice.New(app.recoverPanic, app.enableCORS, app.rateLimit, secureHeaders)
 
 	return standard.Then(router)
 }

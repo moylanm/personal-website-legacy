@@ -199,37 +199,39 @@ func (app *application) enableCORS(next http.Handler) http.Handler {
 
 func (app *application) logRequests(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ua := useragent.Parse(r.Header.Get("User-Agent"))
+		if !app.isAuthenticated(r) {
+			ua := useragent.Parse(r.Header.Get("User-Agent"))
 
-		var deviceType string
+			var deviceType string
 
-		switch {
-		case ua.Mobile:
-			deviceType = "Mobile"
-		case ua.Tablet:
-			deviceType = "Tablet"
-		case ua.Desktop:
-			deviceType = "Desktop"
-		case ua.Bot:
-			deviceType = "Bot"
-		default:
-			deviceType = "Unknown"
-		}
+			switch {
+			case ua.Mobile:
+				deviceType = "Mobile"
+			case ua.Tablet:
+				deviceType = "Tablet"
+			case ua.Desktop:
+				deviceType = "Desktop"
+			case ua.Bot:
+				deviceType = "Bot"
+			default:
+				deviceType = "Unknown"
+			}
 
-		request := &data.Request{
-			Method:       r.Method,
-			Path:         r.URL.Path,
-			IpAddress:    realip.FromRequest(r),
-			Referer:      r.Header.Get("Referer"),
-			UAName:       ua.Name,
-			UAOS:         ua.OS,
-			UADeviceType: deviceType,
-			UADeviceName: ua.Device,
-			TimeStamp:    time.Now(),
-		}
+			request := &data.Request{
+				Method:       r.Method,
+				Path:         r.URL.Path,
+				IpAddress:    realip.FromRequest(r),
+				Referer:      r.Header.Get("Referer"),
+				UAName:       ua.Name,
+				UAOS:         ua.OS,
+				UADeviceType: deviceType,
+				UADeviceName: ua.Device,
+				TimeStamp:    time.Now(),
+			}
 
-		if err := app.models.Requests.Insert(request); err != nil {
-			app.logError(r, err)
+			if err := app.models.Requests.Insert(request); err != nil {
+				app.logError(r, err)
+			}
 		}
 
 		next.ServeHTTP(w, r)
