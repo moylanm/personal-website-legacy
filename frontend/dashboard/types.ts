@@ -30,3 +30,7 @@ export type Action =
 	| { type: ActionType.InitialFetchInit }
 	| { type: ActionType.InitialFetchSuccess; payload: InitialFetchSuccessPayload }
 	| { type: ActionType.InitialFetchFailure; payload: string };
+
+export type ApiResponse = {
+	excerpts: Excerpt[];
+};
