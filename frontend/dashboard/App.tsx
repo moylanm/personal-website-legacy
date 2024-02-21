@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
+import { initialState, reducer } from './reducer';
 import Logs from './logs/Logs'
+import Publisher from './Publisher';
+import Editor from './Editor';
+import useInitialFetch from './useInitialFetch';
 
 const App = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [activeTab, setActiveTab] = useState<string>('publish');
+
+  useInitialFetch(dispatch);
 
   const selectTab = (tabId: string) => {
     setActiveTab(tabId);
@@ -28,8 +35,8 @@ const App = () => {
       <hr />
 
       <div className='tab-content'>
-        {activeTab === 'publish' && <div>Publish content...</div>}
-        {activeTab === 'edit' && <div>Edit content...</div>}
+        {activeTab === 'publish' && <Publisher state={state} dispatch={dispatch} />}
+        {activeTab === 'edit' && <Editor state={state} dispatch={dispatch} />}
         {activeTab === 'logs' && <Logs />}
         {activeTab === 'metrics' && <div>Metrics content...</div>}
       </div>
