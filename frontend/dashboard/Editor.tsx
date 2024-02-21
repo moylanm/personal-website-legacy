@@ -1,10 +1,15 @@
 import React from 'react';
 import { Action, AppState } from './types';
 
-const Editor = (
-  state: AppState,
-  dispatch: React.Dispatch<Action>
-) => {
+type EditorProps = {
+  state: AppState;
+  dispatch: React.Dispatch<Action>;
+};
+
+const Editor: React.FC<EditorProps> = ({
+  state,
+  dispatch
+}) => {
   return (
     <>
     </>
