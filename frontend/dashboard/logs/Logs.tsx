@@ -5,7 +5,7 @@ import { useInitialFetch, refetchData, clearLogs } from './api';
 import { reducer, initialState } from './reducer';
 import { ActionType } from './types';
 
-const App = () => {
+const Logs = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   
   useInitialFetch(dispatch);
@@ -77,4 +77,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Logs;
