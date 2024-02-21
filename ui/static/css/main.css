@@ -366,6 +366,10 @@ textarea {
     margin-bottom: 0px;
 }
 
+hr {
+    margin-bottom: 5px;
+}
+
 footer {
     border-top: 1px solid #E4E5E7;
     padding-top: 17px;
