@@ -25,6 +25,8 @@ const App = () => {
         </button>
       </div>
 
+      <hr />
+
       <div className='tab-content'>
         {activeTab === 'publish' && <div>Publish content...</div>}
         {activeTab === 'edit' && <div>Edit content...</div>}
