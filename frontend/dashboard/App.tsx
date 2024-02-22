@@ -12,7 +12,7 @@ const tabStyle = {
   opacity: 1,
   '&:hover': {
     backgroundColor: 'transparent',
-    color: '#4EB722'
+    color: '#1876D2'
   }
 }
 
