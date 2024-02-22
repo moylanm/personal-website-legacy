@@ -21,7 +21,7 @@ import (
 func secureHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Security-Policy",
-			"default-src 'self'; connect-src 'self' https://www.mylesmoylan.net https://mylesmoylan.net; object-src 'none'; style-src 'self' fonts.googleapis.com; font-src fonts.gstatic.com")
+			"default-src 'self'; connect-src 'self' https://www.mylesmoylan.net https://mylesmoylan.net; object-src 'none'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src fonts.gstatic.com")
 
 		w.Header().Set("Strict-Transport-Security", "31536000")
 		w.Header().Set("Referrer-Policy", "origin-when-cross-origin")
