@@ -344,14 +344,6 @@ textarea {
     background-color: #F7F9FA;
 }
 
-.tab-headers button {
-  margin-right: 5px;
-}
-
-.tab-headers .active {
-  background-color: #4EB722;
-}
-
 .scrollable-list {
     border: 2px solid #CCC;
     padding-left: 3px;
