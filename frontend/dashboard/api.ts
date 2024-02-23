@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
-import { Action, ActionType, ApiResponse } from './types';
+import { Action, ActionType, FetchResponse, PublishResponse } from './types';
 
-const API_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
+const FETCH_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
+const PUBLISH_ENDPOINT = 'https://mylesmoylan.net/excerpts';
 
-const useInitialFetch = (
+export const useInitialFetch = (
   dispatch: React.Dispatch<Action>
 ) => {
   useEffect(() => {
@@ -14,7 +15,7 @@ const useInitialFetch = (
       dispatch({ type: ActionType.InitialFetchInit });
 
       try {
-        const response = await axios.get<ApiResponse>(`${API_ENDPOINT}`, {
+        const response = await axios.get<FetchResponse>(`${FETCH_ENDPOINT}`, {
           cancelToken: source.token
         });
 
@@ -64,4 +65,54 @@ const useInitialFetch = (
   }, [])
 };
 
-export default useInitialFetch;
+export const publishExcerpt = async (
+  dispatch: React.Dispatch<Action>,
+  author: string,
+  work: string,
+  body: string
+) => {
+  dispatch({ type: ActionType.PublishExcerptInit });
+
+  const source = axios.CancelToken.source();
+
+  try {
+    const csrfToken = document.querySelector('input[name="csrf_token"]')!.getAttribute('value')!;
+
+    const formData = new FormData();
+    formData.append('csrf_token', csrfToken);
+    formData.append('author', author);
+    formData.append('work', work);
+    formData.append('body', body);
+
+    const response = await axios<PublishResponse>({
+      method: 'POST',
+      url: `${PUBLISH_ENDPOINT}`,
+      data: formData,
+      cancelToken: source.token
+    });
+
+    dispatch({
+      type: ActionType.PublishExcerptSuccess,
+      payload: response.data.message
+    });
+  } catch (error) {
+    const axiosError = error as AxiosError;
+
+    let errorMessage = 'Failed to publish excerpt.';
+
+    if (axiosError.response) {
+      errorMessage = `Error ${axiosError.response.status}`;
+    } else if (axiosError.request) {
+      errorMessage = 'Network error. Please try again.'
+    } else {
+      console.log('Error: ', axiosError.message);
+    }
+
+    dispatch({
+      type: ActionType.PublishExcerptFailure,
+      payload: errorMessage
+    });
+  }
+
+  return () => source.cancel('Post aborted: component unmounted or fetch reset');
+};
