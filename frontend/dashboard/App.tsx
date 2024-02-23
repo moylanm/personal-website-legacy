@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react';
 import { initialState, reducer } from './reducer';
-import useInitialFetch from './useInitialFetch';
+import { useInitialFetch } from './api';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
