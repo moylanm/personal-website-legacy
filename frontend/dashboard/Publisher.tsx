@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
 
 const dropdownStyle = {
   fontStyle: 'Roboto, Helvetica, Arial, sans-serif'
@@ -55,6 +56,10 @@ const Publisher: React.FC<PublisherProps> = ({
     });
   };
 
+  const handleSnackbarClose = () => {
+    dispatch({ type: ActionType.ResetPublisherState });
+  };
+
   const resetForm = () => {
     dispatch({
       type: ActionType.ResetPublishForm
@@ -70,16 +75,17 @@ const Publisher: React.FC<PublisherProps> = ({
     );
   }
 
-  if (state.isError) {
+  if (state.initialFetchError) {
     return <div className='error-message'>{state.errorMessage}</div>;
   }
 
-  if (state.isLoading) {
+  if (state.initialFetchLoading) {
     return <div className='message'>Loading...</div>
   }
 
   return (
     <>
+      {state.publishExcerptError && <div className='error-message'>{state.errorMessage}</div>}
       <Autocomplete
         freeSolo
         inputValue={state.authorField}
@@ -133,6 +139,12 @@ const Publisher: React.FC<PublisherProps> = ({
       <Button variant='contained' onClick={resetForm}>Clear</Button>
       <div className='divider' />
       <Button variant='contained' onClick={submitForm}>Submit</Button>
+      <Snackbar
+        open={state.publishExcerptSuccess}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        message={state.publishExcerptResponse}
+      />
     </>
   );
 };
