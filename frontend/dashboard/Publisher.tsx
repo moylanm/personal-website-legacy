@@ -2,6 +2,7 @@ import React from 'react';
 import { Action, AppState } from './types';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Typography from '@mui/material/Typography';
 
 type WorkOption = {
   author: string;
@@ -38,6 +39,11 @@ const Publisher: React.FC<PublisherProps> = ({
       <Autocomplete
         freeSolo
         options={state.authors}
+        renderOption={(props, option) => (
+          <Typography {...props} sx={{ fontStyle: 'Roboto, Helvetica, Arial, sans-serif' }}>
+            {option}
+          </Typography>
+        )}
         renderInput={(authors) => <TextField {...authors} label='Author' margin='normal' />}
       />
       <Autocomplete
@@ -45,6 +51,11 @@ const Publisher: React.FC<PublisherProps> = ({
         options={worksOptions.sort((a, b) => -b.author.localeCompare(a.author))}
         groupBy={(option) => option.author}
         getOptionLabel={(option) => typeof option === 'string' ? option : option.work}
+        renderOption={(props, option) => (
+          <Typography {...props} sx={{ fontStyle: 'Roboto, Helvetica, Arial, sans-serif' }}>
+            {option.work}
+          </Typography>
+        )}
         renderInput={(params) => <TextField {...params} label='Work' margin='normal' />}
       />
       <TextField fullWidth label='Body' variant='outlined' margin='normal' multiline rows={10} />
