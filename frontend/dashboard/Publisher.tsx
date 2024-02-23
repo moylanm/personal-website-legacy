@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Action, ActionType, AppState } from './types';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -22,13 +22,15 @@ const Publisher: React.FC<PublisherProps> = ({
   state,
   dispatch
 }) => {
-  const worksOptions = state.authors.reduce<WorkOption[]>((acc, author) => {
-    state.works[author].forEach(work => {
-      acc.push({ author: author, work: work})
-    });
+  const worksOptions = useMemo(() => {
+    return state.authors.reduce<WorkOption[]>((acc, author) => {
+      state.works[author].forEach(work => {
+        acc.push({ author: author, work: work });
+      });
 
-    return acc;
-  }, []);
+      return acc;
+    }, []);
+  }, [state.authors, state.works]);
 
   const handleAuthorFieldChange = (_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch({
