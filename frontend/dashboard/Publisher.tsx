@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
 import { Action, ActionType, AppState } from './types';
+import { publishExcerpt } from './api';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 const dropdownStyle = {
   fontStyle: 'Roboto, Helvetica, Arial, sans-serif'
@@ -52,6 +54,21 @@ const Publisher: React.FC<PublisherProps> = ({
       payload: event.target.value
     });
   };
+
+  const resetForm = () => {
+    dispatch({
+      type: ActionType.ResetPublishForm
+    });
+  };
+
+  const submitForm = () => {
+    publishExcerpt(
+      dispatch,
+      state.authorField,
+      state.workField,
+      state.bodyField
+    );
+  }
 
   if (state.isError) {
     return <div className='error-message'>{state.errorMessage}</div>;
@@ -113,7 +130,9 @@ const Publisher: React.FC<PublisherProps> = ({
         multiline
         rows={10}
       />
-      
+      <Button variant='contained' onClick={resetForm}>Clear</Button>
+      <div className='divider' />
+      <Button variant='contained' onClick={submitForm}>Submit</Button>
     </>
   );
 };
