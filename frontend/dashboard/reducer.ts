@@ -4,6 +4,9 @@ export const initialState: AppState = {
 	excerpts: [],
 	authors: [],
 	works: {},
+	authorField: '',
+	workField: '',
+	bodyField: '',
 	isLoading: false,
 	errorMessage: '',
 	isError: false
@@ -33,6 +36,21 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				isLoading: false,
 				isError: true
 			};
+		case ActionType.SetAuthorField:
+		  return {
+				...state,
+				authorField: action.payload
+		  };
+		case ActionType.SetWorkField:
+		  return {
+				...state,
+				workField: action.payload
+		  };
+		case ActionType.SetBodyField:
+		  return {
+				...state,
+				bodyField: action.payload
+		  };
 		default:
 			return state;
 	}
