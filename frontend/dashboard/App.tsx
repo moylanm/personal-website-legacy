@@ -40,6 +40,8 @@ const App = () => {
         <Tab label='Metrics' value={3} sx={tabStyle}/>
       </Tabs>
 
+      <hr />
+
       {activeTab === 0 && <Publisher state={state} dispatch={dispatch} />}
       {activeTab === 1 && <Editor state={state} dispatch={dispatch} />}
       {activeTab === 2 && <Logs />}
