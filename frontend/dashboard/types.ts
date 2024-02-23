@@ -24,6 +24,7 @@ export enum ActionType {
 	SetAuthorField = 'SET_AUTHOR_FIELD',
 	SetWorkField = 'SET_WORK_FIELD',
 	SetBodyField = 'SET_BODY_FIELD',
+	ResetPublishForm = 'RESET_PUBLISH_FORM',
 };
 
 type InitialFetchSuccessPayload = {
@@ -38,7 +39,8 @@ export type Action =
 	| { type: ActionType.InitialFetchFailure; payload: string }
 	| { type: ActionType.SetAuthorField; payload: string }
 	| { type: ActionType.SetWorkField; payload: string }
-	| { type: ActionType.SetBodyField; payload: string };
+	| { type: ActionType.SetBodyField; payload: string }
+	| { type: ActionType.ResetPublishForm };
 
 export type ApiResponse = {
 	excerpts: Excerpt[];

@@ -51,6 +51,13 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				...state,
 				bodyField: action.payload
 		  };
+		case ActionType.ResetPublishForm:
+		  return {
+				...state,
+				authorField: '',
+				workField: '',
+				bodyField: ''
+		  };
 		default:
 			return state;
 	}
