@@ -63,16 +63,26 @@ const Publisher: React.FC<PublisherProps> = ({
     <>
       <Autocomplete
         freeSolo
+        inputValue={state.authorField}
         options={state.authors}
         renderOption={(props, option) => (
           <Typography {...props} sx={dropdownStyle}>
             {option}
           </Typography>
         )}
-        renderInput={(authors) => <TextField {...authors} onChange={handleAuthorFieldChange} label='Author' margin='normal' />}
+        renderInput={(authors) => 
+          <TextField 
+            {...authors}
+            fullWidth
+            id='author'
+            label='Author'
+            margin='normal'
+            onChange={handleAuthorFieldChange}
+          />}
       />
       <Autocomplete
         freeSolo
+        inputValue={state.workField}
         options={worksOptions.sort((a, b) => -b.author.localeCompare(a.author))}
         groupBy={(option) => option.author}
         getOptionLabel={(option) => typeof option === 'string' ? option : option.work}
@@ -81,9 +91,26 @@ const Publisher: React.FC<PublisherProps> = ({
             {option.work}
           </Typography>
         )}
-        renderInput={(params) => <TextField {...params} onChange={handleWorkFieldChange} label='Work' margin='normal' />}
+        renderInput={(params) => 
+          <TextField
+            {...params}
+            fullWidth
+            id='work'
+            label='Work'
+            margin='normal'
+            onChange={handleWorkFieldChange}
+          />}
       />
-      <TextField fullWidth onChange={handleBodyFieldChange} label='Body' margin='normal' multiline rows={10} />
+      <TextField
+        fullWidth
+        id='body'
+        label='Body'
+        margin='normal'
+        onChange={handleBodyFieldChange}
+        value={state.bodyField}
+        multiline
+        rows={10}
+      />
       
     </>
   );
