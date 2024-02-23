@@ -30,17 +30,17 @@ const Publisher: React.FC<PublisherProps> = ({
     return acc;
   }, []);
 
-  const handleAuthorFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAuthorFieldChange = (_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch({
       type: ActionType.SetAuthorField,
-      payload: event.target.value
+      payload: value
     });
   };
 
-  const handleWorkFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleWorkFieldChange = (_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch({
       type: ActionType.SetWorkField,
-      payload: event.target.value
+      payload: value
     });
   };
 
@@ -64,6 +64,7 @@ const Publisher: React.FC<PublisherProps> = ({
       <Autocomplete
         freeSolo
         inputValue={state.authorField}
+        onInputChange={handleAuthorFieldChange}
         options={state.authors}
         renderOption={(props, option) => (
           <Typography {...props} sx={dropdownStyle}>
@@ -77,12 +78,12 @@ const Publisher: React.FC<PublisherProps> = ({
             id='author'
             label='Author'
             margin='normal'
-            onChange={handleAuthorFieldChange}
           />}
       />
       <Autocomplete
         freeSolo
         inputValue={state.workField}
+        onInputChange={handleWorkFieldChange}
         options={worksOptions.sort((a, b) => -b.author.localeCompare(a.author))}
         groupBy={(option) => option.author}
         getOptionLabel={(option) => typeof option === 'string' ? option : option.work}
