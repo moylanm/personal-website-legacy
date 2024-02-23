@@ -44,7 +44,7 @@ const Publisher: React.FC<PublisherProps> = ({
         freeSolo
         options={worksOptions.sort((a, b) => -b.author.localeCompare(a.author))}
         groupBy={(option) => option.author}
-        getOptionLabel={(option) => option.work}
+        getOptionLabel={(option) => typeof option === 'string' ? option : option.work}
         renderInput={(params) => <TextField {...params} label='Work' margin='normal' />}
       />
       <TextField fullWidth label='Body' variant='outlined' margin='normal' multiline rows={10} />
