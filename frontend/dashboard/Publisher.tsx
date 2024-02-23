@@ -99,7 +99,6 @@ const Publisher: React.FC<PublisherProps> = ({
             id='work'
             label='Work'
             margin='normal'
-            onChange={handleWorkFieldChange}
           />}
       />
       <TextField
