@@ -8,61 +8,6 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-type SnackbarProps = {
-  state: AppState;
-  handleClose: () => void;
-};
-
-const SuccessSnackbar: React.FC<SnackbarProps> = ({
-  state,
-  handleClose
-}) => {
-  return (
-    <Snackbar
-      open={state.excerptActionSuccess}
-      autoHideDuration={5000}
-      onClose={handleClose}>
-      <Alert
-        onClose={handleClose}
-        severity='success'
-        variant='filled'
-      >
-        <Typography sx={{
-          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
-          padding: 0
-        }}>
-          {state.excerptActionResponse}
-        </Typography>
-      </Alert>
-    </Snackbar>
-  );
-};
-
-const ErrorSnackbar: React.FC<SnackbarProps> = ({
-  state,
-  handleClose
-}) => {
-  return (
-    <Snackbar
-      open={state.excerptActionError}
-      autoHideDuration={5000}
-      onClose={handleClose}>
-      <Alert
-        onClose={handleClose}
-        severity='error'
-        variant='filled'
-      >
-        <Typography sx={{
-          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
-          padding: 0
-        }}>
-          {state.errorMessage}
-        </Typography>
-      </Alert>
-    </Snackbar>
-  );
-};
-
 const fontStyle = {
   fontStyle: 'Roboto, Helvetica, Arial, sans-serif'
 }
@@ -198,6 +143,61 @@ const Publisher: React.FC<PublisherProps> = ({
       <SuccessSnackbar state={state} handleClose={handleSnackbarClose} />
       <ErrorSnackbar state={state} handleClose={handleSnackbarClose} />
     </>
+  );
+};
+
+type SnackbarProps = {
+  state: AppState;
+  handleClose: () => void;
+};
+
+const SuccessSnackbar: React.FC<SnackbarProps> = ({
+  state,
+  handleClose
+}) => {
+  return (
+    <Snackbar
+      open={state.excerptActionSuccess}
+      autoHideDuration={5000}
+      onClose={handleClose}>
+      <Alert
+        onClose={handleClose}
+        severity='success'
+        variant='filled'
+      >
+        <Typography sx={{
+          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
+          padding: 0
+        }}>
+          {state.excerptActionResponse}
+        </Typography>
+      </Alert>
+    </Snackbar>
+  );
+};
+
+const ErrorSnackbar: React.FC<SnackbarProps> = ({
+  state,
+  handleClose
+}) => {
+  return (
+    <Snackbar
+      open={state.excerptActionError}
+      autoHideDuration={5000}
+      onClose={handleClose}>
+      <Alert
+        onClose={handleClose}
+        severity='error'
+        variant='filled'
+      >
+        <Typography sx={{
+          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
+          padding: 0
+        }}>
+          {state.errorMessage}
+        </Typography>
+      </Alert>
+    </Snackbar>
   );
 };
 
