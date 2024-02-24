@@ -15,7 +15,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-const CHUNK_SIZE = 10;
+const CHUNK_SIZE = 15;
 
 type EditorProps = {
   state: AppState;
@@ -35,7 +35,7 @@ const Editor: React.FC<EditorProps> = ({
         setDisplayCount(prevCount => Math.min(prevCount + CHUNK_SIZE, state.excerpts.length));
       }
     }, {
-      rootMargin: '300px'
+      rootMargin: '500px'
     });
 
     if (loadMoreRef.current) {
@@ -117,9 +117,9 @@ const Item: React.FC<ItemProps> = ({
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <TextField fullWidth label='Author' margin='normal' value={excerpt.author} inputRef={authorRef} />
-          <TextField fullWidth label='Work' margin='normal' value={excerpt.work} inputRef={workRef} />
-          <TextField fullWidth multiline rows={10} label='Body' margin='normal' value={excerpt.body} inputRef={bodyRef} />
+          <TextField fullWidth label='Author' margin='normal' defaultValue={excerpt.author} inputRef={authorRef} />
+          <TextField fullWidth label='Work' margin='normal' defaultValue={excerpt.work} inputRef={workRef} />
+          <TextField fullWidth multiline rows={10} label='Body' margin='normal' defaultValue={excerpt.body} inputRef={bodyRef} />
         </AccordionDetails>
         <AccordionActions>
           <Button onClick={handleClickOpenDialog}>Delete</Button>
