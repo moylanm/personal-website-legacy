@@ -96,27 +96,16 @@ func (app *application) updateExcerpt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var input struct {
-		ID     *int64  `json:"id"`
-		Author *string `json:"author"`
-		Work   *string `json:"work"`
-		Body   *string `json:"body"`
-	}
+	r.ParseForm()
 
-	err = app.readJSON(w, r, &input)
-	if err != nil {
-		app.badRequestResponse(w, r, err)
-		return
+	if r.FormValue("author") != "" {
+		excerpt.Author = r.FormValue("author")
 	}
-
-	if input.Author != nil {
-		excerpt.Author = *input.Author
+	if r.FormValue("work") != "" {
+		excerpt.Work = r.FormValue("work")
 	}
-	if input.Work != nil {
-		excerpt.Work = *input.Work
-	}
-	if input.Body != nil {
-		excerpt.Body = *input.Body
+	if r.FormValue("body") != "" {
+		excerpt.Body = r.FormValue("body")
 	}
 
 	v := validator.New()
