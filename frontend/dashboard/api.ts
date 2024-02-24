@@ -123,7 +123,50 @@ export const updateExcerpt = async (
   work: string,
   body: string
 ) => {
+  dispatch({ type: ActionType.ExcerptActionInit });
 
+  const source = axios.CancelToken.source();
+
+  try {
+    const csrfToken = document.querySelector('input[name="csrf_token"]')!.getAttribute('value')!;
+
+    const formData = new FormData();
+    formData.append('csrf_token', csrfToken);
+    formData.append('author', author);
+    formData.append('work', work);
+    formData.append('body', body);
+
+    const response = await axios<ActionResponse>({
+      method: 'PATCH',
+      url: `${BASE_ENDPOINT}/${id}`,
+      data: formData,
+      cancelToken: source.token
+    });
+
+    dispatch({
+      type: ActionType.ExcerptActionSuccess,
+      payload: response.data.message
+    });
+  } catch (error) {
+    const axiosError = error as AxiosError;
+
+    let errorMessage = 'Failed to update excerpt.';
+
+    if (axiosError.response) {
+      errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
+    } else if (axiosError.request) {
+      errorMessage = 'Network error. Please try again.'
+    } else {
+      console.log('Error: ', axiosError.message);
+    }
+
+    dispatch({
+      type: ActionType.ExcerptActionFailure,
+      payload: errorMessage
+    });
+  }
+
+  return () => source.cancel('Post aborted: component unmounted or fetch reset');
 };
 
 export const deleteExcerpt = async (
@@ -141,7 +184,7 @@ export const deleteExcerpt = async (
     formData.append('csrf_token', csrfToken);
 
     const response = await axios<ActionResponse>({
-      method: 'POST',
+      method: 'DELETE',
       url: `${BASE_ENDPOINT}/${id}`,
       data: formData,
       cancelToken: source.token
