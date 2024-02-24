@@ -118,27 +118,45 @@ const Item: React.FC<ItemProps> = ({
           <Button onClick={handleUpdate}>Update</Button>
         </AccordionActions>
       </Accordion>
-      <Dialog
-        onClose={handleCloseDialog}
-        open={openDialog}
-      >
-        <DialogTitle sx={{ fontSize: '1rem' }}>
-          {`${excerpt.id}: ${excerpt.author} - ${excerpt.work}`}
-        </DialogTitle>
-        <DialogContent>
-          <Typography sx={{
-            fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
-            padding: 0
-          }}>
-          Are you sure you want to delete this excerpt?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleDelete}>Delete</Button>
-        </DialogActions>
-      </Dialog>
+      <DeleteDialog excerpt={excerpt} open={openDialog} handleClose={handleCloseDialog} handleConfirm={handleDelete} />
     </>
+  );
+};
+
+type DeleteDialogProps = {
+  excerpt: Excerpt;
+  open: boolean;
+  handleClose: () => void;
+  handleConfirm: () => void;
+};
+
+const DeleteDialog: React.FC<DeleteDialogProps> = ({
+  excerpt,
+  open,
+  handleClose,
+  handleConfirm
+}) => {
+  return (
+    <Dialog
+    onClose={handleClose}
+    open={open}
+    >
+    <DialogTitle sx={{ fontSize: '1rem' }}>
+      {`${excerpt.id}: ${excerpt.author} - ${excerpt.work}`}
+    </DialogTitle>
+    <DialogContent>
+      <Typography sx={{
+        fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
+        padding: 0
+      }}>
+      Are you sure you want to delete this excerpt?
+      </Typography>
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={handleClose}>Cancel</Button>
+      <Button onClick={handleConfirm}>Delete</Button>
+    </DialogActions>
+    </Dialog>
   );
 };
 
