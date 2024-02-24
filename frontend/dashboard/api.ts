@@ -43,7 +43,7 @@ export const useInitialFetch = (
         let errorMessage = 'Failed to fetch data.';
 
         if (axiosError.response) {
-          errorMessage = `Error ${axiosError.response.status}: ${axiosError.response.statusText}`;
+          errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
         } else if (axiosError.request) {
           errorMessage = 'Network error. Please try again.';
         } else {
@@ -101,7 +101,7 @@ export const publishExcerpt = async (
     let errorMessage = 'Failed to publish excerpt.';
 
     if (axiosError.response) {
-      errorMessage = `Error ${axiosError.response.status}`;
+      errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
     } else if (axiosError.request) {
       errorMessage = 'Network error. Please try again.'
     } else {
@@ -115,4 +115,21 @@ export const publishExcerpt = async (
   }
 
   return () => source.cancel('Post aborted: component unmounted or fetch reset');
+};
+
+export const updateExcerpt = async (
+  dispatch: React.Dispatch<Action>,
+  id: number,
+  author: string,
+  work: string,
+  body: string
+) => {
+
+};
+
+export const deleteExcerpt = async (
+  dispatch: React.Dispatch<Action>,
+  id: number
+) => {
+
 };
