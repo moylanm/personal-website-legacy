@@ -27,22 +27,12 @@ func (app *application) about(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) createExcerpt(w http.ResponseWriter, r *http.Request) {
-	var input struct {
-		Author string
-		Work   string
-		Body   string
-	}
-
-	err := app.readJSON(w, r, &input)
-	if err != nil {
-		app.badRequestResponse(w, r, err)
-		return
-	}
+	r.ParseForm()
 
 	excerpt := &data.Excerpt{
-		Author: input.Author,
-		Work:   input.Work,
-		Body:   input.Body,
+		Author: r.FormValue("author"),
+		Work:   r.FormValue("work"),
+		Body:   r.FormValue("body"),
 	}
 
 	v := validator.New()
@@ -52,7 +42,7 @@ func (app *application) createExcerpt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.models.Excerpts.Insert(excerpt)
+	err := app.models.Excerpts.Insert(excerpt)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
