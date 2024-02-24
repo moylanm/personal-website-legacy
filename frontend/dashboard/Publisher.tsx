@@ -140,24 +140,64 @@ const Publisher: React.FC<PublisherProps> = ({
       <Button variant='contained' onClick={resetForm}>Clear</Button>
       <div className='divider' />
       <Button variant='contained' onClick={submitForm}>Submit</Button>
-      <Snackbar
-        open={state.publishExcerptSuccess}
-        autoHideDuration={5000}
-        onClose={handleSnackbarClose}>
-        <Alert
-          onClose={handleSnackbarClose}
-          severity='success'
-          variant='filled'
-        >
-          <Typography sx={{
-            fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
-            padding: 0
-          }}>
-            {state.publishExcerptResponse}
-          </Typography>
-        </Alert>
-      </Snackbar>
+      <SuccessSnackbar state={state} handleClose={handleSnackbarClose} />
+      <ErrorSnackbar state={state} handleClose={handleSnackbarClose} />
     </>
+  );
+};
+
+type SnackbarProps = {
+  state: AppState;
+  handleClose: () => void;
+};
+
+const SuccessSnackbar: React.FC<SnackbarProps> = ({
+  state,
+  handleClose
+}) => {
+  return (
+    <Snackbar
+      open={state.publishExcerptSuccess}
+      autoHideDuration={5000}
+      onClose={handleClose}>
+      <Alert
+        onClose={handleClose}
+        severity='success'
+        variant='filled'
+      >
+        <Typography sx={{
+          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
+          padding: 0
+        }}>
+          {state.publishExcerptResponse}
+        </Typography>
+      </Alert>
+    </Snackbar>
+  );
+};
+
+const ErrorSnackbar: React.FC<SnackbarProps> = ({
+  state,
+  handleClose
+}) => {
+  return (
+    <Snackbar
+      open={state.publishExcerptError}
+      autoHideDuration={5000}
+      onClose={handleClose}>
+      <Alert
+        onClose={handleClose}
+        severity='error'
+        variant='filled'
+      >
+        <Typography sx={{
+          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
+          padding: 0
+        }}>
+          {state.errorMessage}
+        </Typography>
+      </Alert>
+    </Snackbar>
   );
 };
 
