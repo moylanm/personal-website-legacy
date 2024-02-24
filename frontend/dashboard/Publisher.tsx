@@ -6,8 +6,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
-const dropdownStyle = {
+const fontStyle = {
   fontStyle: 'Roboto, Helvetica, Arial, sans-serif'
 }
 
@@ -73,7 +74,7 @@ const Publisher: React.FC<PublisherProps> = ({
       state.workField,
       state.bodyField
     );
-  }
+  };
 
   if (state.initialFetchError) {
     return <div className='error-message'>{state.errorMessage}</div>;
@@ -92,7 +93,7 @@ const Publisher: React.FC<PublisherProps> = ({
         onInputChange={handleAuthorFieldChange}
         options={state.authors}
         renderOption={(props, option) => (
-          <Typography {...props} sx={dropdownStyle}>
+          <Typography {...props} sx={fontStyle}>
             {option}
           </Typography>
         )}
@@ -113,7 +114,7 @@ const Publisher: React.FC<PublisherProps> = ({
         groupBy={(option) => option.author}
         getOptionLabel={(option) => typeof option === 'string' ? option : option.work}
         renderOption={(props, option) => (
-          <Typography {...props} sx={dropdownStyle}>
+          <Typography {...props} sx={fontStyle}>
             {option.work}
           </Typography>
         )}
@@ -141,10 +142,21 @@ const Publisher: React.FC<PublisherProps> = ({
       <Button variant='contained' onClick={submitForm}>Submit</Button>
       <Snackbar
         open={state.publishExcerptSuccess}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        message={state.publishExcerptResponse}
-      />
+        autoHideDuration={5000}
+        onClose={handleSnackbarClose}>
+        <Alert
+          onClose={handleSnackbarClose}
+          severity='success'
+          variant='filled'
+        >
+          <Typography sx={{
+            fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
+            padding: 0
+          }}>
+            {state.publishExcerptResponse}
+          </Typography>
+        </Alert>
+      </Snackbar>
     </>
   );
 };
