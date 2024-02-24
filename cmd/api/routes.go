@@ -38,7 +38,7 @@ func (app *application) routes() http.Handler {
 	router.Handle("/logout", protected.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
 
 	router.Handle("/excerpts", protected.ThenFunc(app.createExcerpt)).Methods(http.MethodPost)
-	router.Handle(excerptsPath, app.basicAuth(app.updateExcerpt)).Methods(http.MethodPatch)
+	router.Handle(excerptsPath, protected.ThenFunc(app.updateExcerpt)).Methods(http.MethodPatch)
 	router.Handle(excerptsPath, protected.ThenFunc(app.deleteExcerpt)).Methods(http.MethodDelete)
 
 	standard := alice.New(app.recoverPanic, app.enableCORS, app.rateLimit, secureHeaders)
