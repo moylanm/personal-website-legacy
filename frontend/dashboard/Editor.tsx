@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Action, AppState, Excerpt } from './types';
 import Accordion from '@mui/material/Accordion';
 import AccordionActions from '@mui/material/AccordionActions';
@@ -8,11 +8,53 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-type ExcerptItemProps = {
+const CHUNK_SIZE = 10;
+
+type EditorProps = {
+  state: AppState;
+  dispatch: React.Dispatch<Action>;
+};
+
+const Editor: React.FC<EditorProps> = ({
+  state,
+  dispatch
+}) => {
+  const [displayCount, setDisplayCount] = useState(CHUNK_SIZE);
+  const loadMoreRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setDisplayCount(prevCount => Math.min(prevCount + CHUNK_SIZE, state.excerpts.length));
+      }
+    }, {
+      rootMargin: '100px'
+    });
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+    };
+  }, [state.excerpts]);
+
+  return (
+    <>
+      {state.excerpts.slice(0, displayCount).map((excerpt) => <Item key={excerpt.id} excerpt={excerpt} />)}
+      {displayCount < state.excerpts.length && <div ref={loadMoreRef} className='message'>Loading more...</div>}
+    </>
+  );
+};
+
+type ItemProps = {
   excerpt: Excerpt;
 };
 
-const ExcerptItem: React.FC<ExcerptItemProps> = ({
+const Item: React.FC<ItemProps> = ({
   excerpt
 }) => {
   return (
@@ -35,22 +77,6 @@ const ExcerptItem: React.FC<ExcerptItemProps> = ({
         <Button>Update</Button>
       </AccordionActions>
     </Accordion>
-  );
-};
-
-type EditorProps = {
-  state: AppState;
-  dispatch: React.Dispatch<Action>;
-};
-
-const Editor: React.FC<EditorProps> = ({
-  state,
-  dispatch
-}) => {
-  return (
-    <>
-      {state.excerpts.map(excerpt => <ExcerptItem excerpt={excerpt} />)}
-    </>
   );
 };
 
