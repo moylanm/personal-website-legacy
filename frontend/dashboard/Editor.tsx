@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Action, AppState, Excerpt } from './types';
+import { Action, ActionType, AppState, Excerpt } from './types';
 import { deleteExcerpt, updateExcerpt } from './api';
 import Accordion from '@mui/material/Accordion';
 import AccordionActions from '@mui/material/AccordionActions';
@@ -9,6 +9,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -33,7 +35,7 @@ const Editor: React.FC<EditorProps> = ({
         setDisplayCount(prevCount => Math.min(prevCount + CHUNK_SIZE, state.excerpts.length));
       }
     }, {
-      rootMargin: '100px'
+      rootMargin: '300px'
     });
 
     if (loadMoreRef.current) {
@@ -47,10 +49,16 @@ const Editor: React.FC<EditorProps> = ({
     };
   }, [state.excerpts]);
 
+  const handleSnackbarClose = () => {
+    dispatch({ type: ActionType.ResetActionState });
+  };
+
   return (
     <>
       {state.excerpts.slice(0, displayCount).map((excerpt) => <Item key={excerpt.id} excerpt={excerpt} dispatch={dispatch} />)}
       {displayCount < state.excerpts.length && <div ref={loadMoreRef} className='message'>Loading more...</div>}
+      <SuccessSnackbar state={state} handleClose={handleSnackbarClose} />
+      <ErrorSnackbar state={state} handleClose={handleSnackbarClose} />
     </>
   );
 };
@@ -76,10 +84,10 @@ const Item: React.FC<ItemProps> = ({
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-  }
+  };
 
   const handleDelete = () => {
-    setOpenDialog(false);
+    handleCloseDialog();
 
     deleteExcerpt(
       dispatch,
@@ -94,7 +102,7 @@ const Item: React.FC<ItemProps> = ({
       authorRef.current!.value,
       workRef.current!.value,
       bodyRef.current!.value
-    )
+    );
   };
 
   return (
@@ -111,7 +119,7 @@ const Item: React.FC<ItemProps> = ({
         <AccordionDetails>
           <TextField fullWidth label='Author' margin='normal' value={excerpt.author} inputRef={authorRef} />
           <TextField fullWidth label='Work' margin='normal' value={excerpt.work} inputRef={workRef} />
-          <TextField fullWidth multiline rows={10} label='Body' value={excerpt.body} inputRef={bodyRef} />
+          <TextField fullWidth multiline rows={10} label='Body' margin='normal' value={excerpt.body} inputRef={bodyRef} />
         </AccordionDetails>
         <AccordionActions>
           <Button onClick={handleClickOpenDialog}>Delete</Button>
@@ -157,6 +165,61 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({
       <Button onClick={handleConfirm}>Delete</Button>
     </DialogActions>
     </Dialog>
+  );
+};
+
+type SnackbarProps = {
+  state: AppState;
+  handleClose: () => void;
+};
+
+const SuccessSnackbar: React.FC<SnackbarProps> = ({
+  state,
+  handleClose
+}) => {
+  return (
+    <Snackbar
+      open={state.excerptActionSuccess}
+      autoHideDuration={5000}
+      onClose={handleClose}>
+      <Alert
+        onClose={handleClose}
+        severity='success'
+        variant='filled'
+      >
+        <Typography sx={{
+          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
+          padding: 0
+        }}>
+          {state.excerptActionResponse}
+        </Typography>
+      </Alert>
+    </Snackbar>
+  );
+};
+
+const ErrorSnackbar: React.FC<SnackbarProps> = ({
+  state,
+  handleClose
+}) => {
+  return (
+    <Snackbar
+      open={state.excerptActionError}
+      autoHideDuration={5000}
+      onClose={handleClose}>
+      <Alert
+        onClose={handleClose}
+        severity='error'
+        variant='filled'
+      >
+        <Typography sx={{
+          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
+          padding: 0
+        }}>
+          {state.errorMessage}
+        </Typography>
+      </Alert>
+    </Snackbar>
   );
 };
 
