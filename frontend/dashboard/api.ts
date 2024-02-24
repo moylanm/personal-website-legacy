@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
-import { Action, ActionType, FetchResponse, PublishResponse } from './types';
+import { Action, ActionResponse, ActionType, FetchResponse } from './types';
 
-const FETCH_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
-const PUBLISH_ENDPOINT = 'https://mylesmoylan.net/excerpts';
+const BASE_ENDPOINT = 'https://mylesmoylan.net/excerpts';
 
 export const useInitialFetch = (
   dispatch: React.Dispatch<Action>
@@ -15,7 +14,7 @@ export const useInitialFetch = (
       dispatch({ type: ActionType.InitialFetchInit });
 
       try {
-        const response = await axios.get<FetchResponse>(`${FETCH_ENDPOINT}`, {
+        const response = await axios.get<FetchResponse>(`${BASE_ENDPOINT}/json`, {
           cancelToken: source.token
         });
 
@@ -71,7 +70,7 @@ export const publishExcerpt = async (
   work: string,
   body: string
 ) => {
-  dispatch({ type: ActionType.PublishExcerptInit });
+  dispatch({ type: ActionType.ExcerptActionInit });
 
   const source = axios.CancelToken.source();
 
@@ -84,15 +83,15 @@ export const publishExcerpt = async (
     formData.append('work', work);
     formData.append('body', body);
 
-    const response = await axios<PublishResponse>({
+    const response = await axios<ActionResponse>({
       method: 'POST',
-      url: `${PUBLISH_ENDPOINT}`,
+      url: `${BASE_ENDPOINT}`,
       data: formData,
       cancelToken: source.token
     });
 
     dispatch({
-      type: ActionType.PublishExcerptSuccess,
+      type: ActionType.ExcerptActionSuccess,
       payload: response.data.message
     });
   } catch (error) {
@@ -109,7 +108,7 @@ export const publishExcerpt = async (
     }
 
     dispatch({
-      type: ActionType.PublishExcerptFailure,
+      type: ActionType.ExcerptActionFailure,
       payload: errorMessage
     });
   }
@@ -131,5 +130,45 @@ export const deleteExcerpt = async (
   dispatch: React.Dispatch<Action>,
   id: number
 ) => {
+  dispatch({ type: ActionType.ExcerptActionInit });
 
+  const source = axios.CancelToken.source();
+
+  try {
+    const csrfToken = document.querySelector('input[name="csrf_token"]')!.getAttribute('value')!;
+
+    const formData = new FormData();
+    formData.append('csrf_token', csrfToken);
+
+    const response = await axios<ActionResponse>({
+      method: 'POST',
+      url: `${BASE_ENDPOINT}/${id}`,
+      data: formData,
+      cancelToken: source.token
+    });
+
+    dispatch({
+      type: ActionType.ExcerptActionSuccess,
+      payload: response.data.message
+    });
+  } catch (error) {
+    const axiosError = error as AxiosError;
+
+    let errorMessage = 'Failed to delete excerpt.';
+
+    if (axiosError.response) {
+      errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
+    } else if (axiosError.request) {
+      errorMessage = 'Network error. Please try again.'
+    } else {
+      console.log('Error: ', axiosError.message);
+    }
+
+    dispatch({
+      type: ActionType.ExcerptActionFailure,
+      payload: errorMessage
+    });
+  }
+
+  return () => source.cancel('Post aborted: component unmounted or fetch reset');
 };
