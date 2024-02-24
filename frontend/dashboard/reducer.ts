@@ -10,10 +10,10 @@ export const initialState: AppState = {
 	errorMessage: '',
 	initialFetchLoading: false,
 	initialFetchError: false,
-	publishExcerptResponse: '',
-	publishExcerptProcessing: false,
-	publishExcerptSuccess: false,
-	publishExcerptError: false
+	excerptActionResponse: '',
+	excerptActionProcessing: false,
+	excerptActionSuccess: false,
+	excerptActionError: false
 };
 
 export const reducer = (state: AppState, action: Action): AppState => {
@@ -40,34 +40,35 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				initialFetchLoading: false,
 				initialFetchError: true
 			};
-		case ActionType.PublishExcerptInit:
+		case ActionType.ExcerptActionInit:
 		  return {
 				...state,
-				publishExcerptProcessing: true,
-				publishExcerptError: false
+				excerptActionProcessing: true,
+				excerptActionError: false
 		  };
-		case ActionType.PublishExcerptSuccess:
+		case ActionType.ExcerptActionSuccess:
 		  return {
 				...state,
-				publishExcerptResponse: action.payload,
-				publishExcerptSuccess: true,
-				publishExcerptProcessing: false,
-				publishExcerptError: false
+				excerptActionResponse: action.payload,
+				excerptActionSuccess: true,
+				excerptActionProcessing: false,
+				excerptActionError: false
 		  };
-		case ActionType.PublishExcerptFailure:
+		case ActionType.ExcerptActionFailure:
 		  return {
 				...state,
 				errorMessage: action.payload,
-				publishExcerptProcessing: false,
-				publishExcerptSuccess: false,
-				publishExcerptError: true
+				excerptActionProcessing: false,
+				excerptActionSuccess: false,
+				excerptActionError: true
 		  };
-		case ActionType.ResetPublisherState:
+		case ActionType.ResetActionState:
 			return {
 				...state,
-				publishExcerptProcessing: false,
-				publishExcerptError: false,
-				publishExcerptSuccess: false
+				excerptActionResponse: '',
+				excerptActionProcessing: false,
+				excerptActionError: false,
+				excerptActionSuccess: false
 			};
 		case ActionType.SetAuthorField:
 		  return {

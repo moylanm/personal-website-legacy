@@ -15,10 +15,10 @@ export type AppState = {
 	errorMessage: string;
 	initialFetchLoading: boolean;
 	initialFetchError: boolean;
-	publishExcerptResponse: string;
-	publishExcerptProcessing: boolean;
-	publishExcerptSuccess: boolean;
-	publishExcerptError: boolean;
+	excerptActionResponse: string;
+	excerptActionProcessing: boolean;
+	excerptActionSuccess: boolean;
+	excerptActionError: boolean;
 };
 
 export enum ActionType {
@@ -29,10 +29,10 @@ export enum ActionType {
 	SetWorkField = 'SET_WORK_FIELD',
 	SetBodyField = 'SET_BODY_FIELD',
 	ResetPublishForm = 'RESET_PUBLISH_FORM',
-	PublishExcerptInit = 'PUBLISH_EXCERPT_INIT',
-	PublishExcerptSuccess = 'PUBLISH_EXCERPT_SUCCESS',
-	PublishExcerptFailure = 'PUBLISH_EXCERPT_FAILURE',
-	ResetPublisherState = 'RESET_PUBLISHER_STATE'
+	ExcerptActionInit = 'EXCERPT_ACTION_INIT',
+	ExcerptActionSuccess = 'EXCERPT_ACTION_SUCCESS',
+	ExcerptActionFailure = 'EXCERPT_ACTION_FAILURE',
+	ResetActionState = 'RESET_ACTION_STATE'
 };
 
 type InitialFetchSuccessPayload = {
@@ -49,15 +49,15 @@ export type Action =
 	| { type: ActionType.SetWorkField; payload: string }
 	| { type: ActionType.SetBodyField; payload: string }
 	| { type: ActionType.ResetPublishForm }
-	| { type: ActionType.PublishExcerptInit }
-	| { type: ActionType.PublishExcerptSuccess; payload: string }
-	| { type: ActionType.PublishExcerptFailure; payload: string }
-	| { type: ActionType.ResetPublisherState };
+	| { type: ActionType.ExcerptActionInit }
+	| { type: ActionType.ExcerptActionSuccess; payload: string }
+	| { type: ActionType.ExcerptActionFailure; payload: string }
+	| { type: ActionType.ResetActionState };
 
 export type FetchResponse = {
 	excerpts: Excerpt[];
 };
 
-export type PublishResponse = {
+export type ActionResponse = {
 	message: string;
 };

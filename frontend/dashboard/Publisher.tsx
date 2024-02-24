@@ -19,7 +19,7 @@ const SuccessSnackbar: React.FC<SnackbarProps> = ({
 }) => {
   return (
     <Snackbar
-      open={state.publishExcerptSuccess}
+      open={state.excerptActionSuccess}
       autoHideDuration={5000}
       onClose={handleClose}>
       <Alert
@@ -31,7 +31,7 @@ const SuccessSnackbar: React.FC<SnackbarProps> = ({
           fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
           padding: 0
         }}>
-          {state.publishExcerptResponse}
+          {state.excerptActionResponse}
         </Typography>
       </Alert>
     </Snackbar>
@@ -44,7 +44,7 @@ const ErrorSnackbar: React.FC<SnackbarProps> = ({
 }) => {
   return (
     <Snackbar
-      open={state.publishExcerptError}
+      open={state.excerptActionError}
       autoHideDuration={5000}
       onClose={handleClose}>
       <Alert
@@ -113,7 +113,7 @@ const Publisher: React.FC<PublisherProps> = ({
   };
 
   const handleSnackbarClose = () => {
-    dispatch({ type: ActionType.ResetPublisherState });
+    dispatch({ type: ActionType.ResetActionState });
   };
 
   const resetForm = () => {
@@ -141,7 +141,7 @@ const Publisher: React.FC<PublisherProps> = ({
 
   return (
     <>
-      {state.publishExcerptError && <div className='error-message'>{state.errorMessage}</div>}
+      {state.excerptActionError && <div className='error-message'>{state.errorMessage}</div>}
       <Autocomplete
         freeSolo
         inputValue={state.authorField}
