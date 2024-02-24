@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Action, AppState, Excerpt } from './types';
+import { deleteExcerpt, updateExcerpt } from './api';
 import Accordion from '@mui/material/Accordion';
 import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -44,7 +45,7 @@ const Editor: React.FC<EditorProps> = ({
 
   return (
     <>
-      {state.excerpts.slice(0, displayCount).map((excerpt) => <Item key={excerpt.id} excerpt={excerpt} />)}
+      {state.excerpts.slice(0, displayCount).map((excerpt) => <Item key={excerpt.id} excerpt={excerpt} dispatch={dispatch} />)}
       {displayCount < state.excerpts.length && <div ref={loadMoreRef} className='message'>Loading more...</div>}
     </>
   );
@@ -52,11 +53,34 @@ const Editor: React.FC<EditorProps> = ({
 
 type ItemProps = {
   excerpt: Excerpt;
+  dispatch: React.Dispatch<Action>;
 };
 
 const Item: React.FC<ItemProps> = ({
-  excerpt
+  excerpt,
+  dispatch
 }) => {
+  const authorRef = useRef<HTMLInputElement>();
+  const workRef = useRef<HTMLInputElement>();
+  const bodyRef = useRef<HTMLInputElement>();
+
+  const handleDelete = () => {
+    deleteExcerpt(
+      dispatch,
+      excerpt.id
+    );
+  };
+
+  const handleUpdate = () => {
+    updateExcerpt(
+      dispatch,
+      excerpt.id,
+      authorRef.current!.value,
+      workRef.current!.value,
+      bodyRef.current!.value
+    )
+  };
+
   return (
     <Accordion>
       <AccordionSummary>
@@ -68,13 +92,13 @@ const Item: React.FC<ItemProps> = ({
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <TextField fullWidth label='Author' margin='normal' value={excerpt.author} />
-        <TextField fullWidth label='Work' margin='normal' value={excerpt.work} />
-        <TextField fullWidth multiline rows={10} label='Body' value={excerpt.body} />
+        <TextField fullWidth label='Author' margin='normal' value={excerpt.author} inputRef={authorRef} />
+        <TextField fullWidth label='Work' margin='normal' value={excerpt.work} inputRef={workRef} />
+        <TextField fullWidth multiline rows={10} label='Body' value={excerpt.body} inputRef={bodyRef} />
       </AccordionDetails>
       <AccordionActions>
-        <Button>Delete</Button>
-        <Button>Update</Button>
+        <Button onClick={handleDelete}>Delete</Button>
+        <Button onClick={handleUpdate}>Update</Button>
       </AccordionActions>
     </Accordion>
   );
