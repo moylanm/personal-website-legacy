@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Action, ActionType, AppState, Excerpt } from './types';
-import { deleteExcerpt, updateExcerpt } from './api';
+import { deleteExcerpt, fetchExcerpts, updateExcerpt } from './api';
 import Accordion from '@mui/material/Accordion';
 import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -50,6 +50,10 @@ const Editor: React.FC<EditorProps> = ({
   }, [state.excerpts]);
 
   const handleSnackbarClose = () => {
+    if (state.excerptActionSuccess) {
+      fetchExcerpts(state.renderKey, dispatch);
+    }
+
     dispatch({ type: ActionType.ResetActionState });
   };
 
