@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Action, ActionType, AppState } from './types';
 import { publishExcerpt, fetchExcerpts } from './api';
-import { SuccessSnackbar, ErrorSnackbar } from './Snackbar';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
@@ -35,6 +34,13 @@ const Publisher: React.FC<PublisherProps> = ({
     }, []);
   }, [state.authors, state.works]);
 
+  useEffect(() => {
+    if (state.excerptActionSuccess) {
+      resetForm();
+      fetchExcerpts(state.renderKey, dispatch);
+    }
+  }, [state.excerptActionSuccess]);
+
   const handleAuthorFieldChange = (_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch({
       type: ActionType.SetAuthorField,
@@ -56,19 +62,8 @@ const Publisher: React.FC<PublisherProps> = ({
     });
   };
 
-  const handleSnackbarClose = () => {
-    if (state.excerptActionSuccess) {
-      resetForm();
-      fetchExcerpts(state.renderKey, dispatch);
-    }
-
-    dispatch({ type: ActionType.ResetActionState });
-  };
-
   const resetForm = () => {
-    dispatch({
-      type: ActionType.ResetPublishForm
-    });
+    dispatch({ type: ActionType.ResetPublishForm });
   };
 
   const submitForm = () => {
@@ -135,8 +130,6 @@ const Publisher: React.FC<PublisherProps> = ({
       <Button variant='contained' onClick={resetForm}>Clear</Button>
       <div className='divider' />
       <Button variant='contained' onClick={submitForm}>Publish</Button>
-      <SuccessSnackbar state={state} handleClose={handleSnackbarClose} />
-      <ErrorSnackbar state={state} handleClose={handleSnackbarClose} />
     </>
   );
 };

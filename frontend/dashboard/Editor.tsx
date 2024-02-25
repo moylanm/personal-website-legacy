@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Action, ActionType, AppState, Excerpt } from './types';
+import { Action, AppState, Excerpt } from './types';
 import { deleteExcerpt, fetchExcerpts, updateExcerpt } from './api';
-import { SuccessSnackbar, ErrorSnackbar } from './Snackbar';
 import Accordion from '@mui/material/Accordion';
 import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -48,20 +47,16 @@ const Editor: React.FC<EditorProps> = ({
     };
   }, [state.excerpts]);
 
-  const handleSnackbarClose = () => {
+  useEffect(() => {
     if (state.excerptActionSuccess) {
       fetchExcerpts(state.renderKey, dispatch);
     }
-
-    dispatch({ type: ActionType.ResetActionState });
-  };
+  }, [state.excerptActionSuccess]);
 
   return (
     <>
       {state.excerpts.slice(0, displayCount).map((excerpt) => <Item key={excerpt.id} excerpt={excerpt} dispatch={dispatch} />)}
       {displayCount < state.excerpts.length && <div ref={loadMoreRef} className='message'>Loading more...</div>}
-      <SuccessSnackbar state={state} handleClose={handleSnackbarClose} />
-      <ErrorSnackbar state={state} handleClose={handleSnackbarClose} />
     </>
   );
 };
