@@ -134,7 +134,7 @@ const Publisher: React.FC<PublisherProps> = ({
       />
       <Button variant='contained' onClick={resetForm}>Clear</Button>
       <div className='divider' />
-      <Button variant='contained' onClick={submitForm}>Submit</Button>
+      <Button variant='contained' onClick={submitForm}>Publish</Button>
       <SuccessSnackbar state={state} handleClose={handleSnackbarClose} />
       <ErrorSnackbar state={state} handleClose={handleSnackbarClose} />
     </>
