@@ -49,7 +49,7 @@ const Editor: React.FC<EditorProps> = ({
 
   useEffect(() => {
     if (state.excerptActionSuccess) {
-      fetchExcerpts(state.renderKey, dispatch);
+      fetchExcerpts(dispatch, state.renderKey);
     }
   }, [state.excerptActionSuccess]);
 

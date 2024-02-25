@@ -37,7 +37,7 @@ const Publisher: React.FC<PublisherProps> = ({
   useEffect(() => {
     if (state.excerptActionSuccess) {
       resetForm();
-      fetchExcerpts(state.renderKey, dispatch);
+      fetchExcerpts(dispatch, state.renderKey);
     }
   }, [state.excerptActionSuccess]);
 
