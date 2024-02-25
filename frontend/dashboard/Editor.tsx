@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Action, ActionType, AppState, Excerpt } from './types';
 import { deleteExcerpt, fetchExcerpts, updateExcerpt } from './api';
+import { SuccessSnackbar, ErrorSnackbar } from './Snackbar';
 import Accordion from '@mui/material/Accordion';
 import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -9,8 +10,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -169,61 +168,6 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({
       <Button onClick={handleConfirm}>Delete</Button>
     </DialogActions>
     </Dialog>
-  );
-};
-
-type SnackbarProps = {
-  state: AppState;
-  handleClose: () => void;
-};
-
-const SuccessSnackbar: React.FC<SnackbarProps> = ({
-  state,
-  handleClose
-}) => {
-  return (
-    <Snackbar
-      open={state.excerptActionSuccess}
-      autoHideDuration={5000}
-      onClose={handleClose}>
-      <Alert
-        onClose={handleClose}
-        severity='success'
-        variant='filled'
-      >
-        <Typography sx={{
-          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
-          padding: 0
-        }}>
-          {state.excerptActionResponse}
-        </Typography>
-      </Alert>
-    </Snackbar>
-  );
-};
-
-const ErrorSnackbar: React.FC<SnackbarProps> = ({
-  state,
-  handleClose
-}) => {
-  return (
-    <Snackbar
-      open={state.excerptActionError}
-      autoHideDuration={5000}
-      onClose={handleClose}>
-      <Alert
-        onClose={handleClose}
-        severity='error'
-        variant='filled'
-      >
-        <Typography sx={{
-          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
-          padding: 0
-        }}>
-          {state.errorMessage}
-        </Typography>
-      </Alert>
-    </Snackbar>
   );
 };
 
