@@ -20,7 +20,7 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [activeTab, setActiveTab] = useState<number>(0);
 
-  useInitialFetch(dispatch);
+  useInitialFetch(state.renderKey, dispatch);
 
   const selectTab = (_: React.SyntheticEvent, tabId: number) => {
     setActiveTab(tabId);
@@ -43,7 +43,7 @@ const App = () => {
       <hr />
 
       {activeTab === 0 && <Publisher state={state} dispatch={dispatch} />}
-      {activeTab === 1 && <Editor state={state} dispatch={dispatch} />}
+      {activeTab === 1 && <Editor key={state.renderKey} state={state} dispatch={dispatch} />}
       {activeTab === 2 && <Logs />}
       {activeTab === 3 && <div>Metrics content...</div>}
     </Box>
