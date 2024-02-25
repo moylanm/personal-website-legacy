@@ -115,9 +115,32 @@ const Item: React.FC<ItemProps> = ({
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <TextField fullWidth label='Author' margin='normal' defaultValue={excerpt.author} inputRef={authorRef} />
-          <TextField fullWidth label='Work' margin='normal' defaultValue={excerpt.work} inputRef={workRef} />
-          <TextField fullWidth multiline rows={10} label='Body' margin='normal' defaultValue={excerpt.body} inputRef={bodyRef} />
+          <TextField
+            fullWidth
+            id={`author-${excerpt.id}`}
+            label='Author'
+            margin='normal'
+            defaultValue={excerpt.author}
+            inputRef={authorRef}
+          />
+          <TextField
+            fullWidth
+            id={`work-${excerpt.id}`}
+            label='Work'
+            margin='normal'
+            defaultValue={excerpt.work}
+            inputRef={workRef}
+          />
+          <TextField
+            fullWidth
+            multiline
+            rows={10}
+            id={`body-${excerpt.id}`}
+            label='Body'
+            margin='normal'
+            defaultValue={excerpt.body}
+            inputRef={bodyRef}
+          />
         </AccordionDetails>
         <AccordionActions>
           <Button onClick={handleClickOpenDialog}>Delete</Button>
