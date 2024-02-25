@@ -4,11 +4,15 @@ export const initialState: AppState = {
 	excerpts: [],
 	authors: [],
 	works: {},
+	requests: [],
+	ipAddresses: [],
 	renderKey: 0,
 	authorField: '',
 	workField: '',
 	bodyField: '',
 	errorMessage: '',
+	setupLoading: false,
+	setupError: false,
 	fetchLoading: false,
 	fetchError: false,
 	excerptActionResponse: '',
@@ -19,13 +23,37 @@ export const initialState: AppState = {
 
 export const reducer = (state: AppState, action: Action): AppState => {
 	switch (action.type) {
-		case ActionType.FetchInit:
+		case ActionType.SetupInit:
+		  return {
+				...state,
+				setupLoading: true,
+				setupError: false
+		  };
+		case ActionType.SetupSuccess:
+		  return {
+				...state,
+				excerpts: action.payload.excerpts,
+				authors: action.payload.authors,
+				works: action.payload.works,
+				requests: action.payload.requests,
+				ipAddresses: action.payload.ipAddresses,
+				setupLoading: false,
+				setupError: false,
+		  };
+		case ActionType.SetupError:
+			return {
+				...state,
+				errorMessage: action.payload,
+				setupLoading: false,
+				setupError: true
+		  };
+		case ActionType.ExcerptFetchInit:
 			return {
 				...state,
 				fetchLoading: true,
 				fetchError: false
 			};
-		case ActionType.FetchSuccess:
+		case ActionType.ExcerptFetchSuccess:
 			return {
 				...state,
 				excerpts: action.payload.excerpts,
@@ -35,7 +63,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				fetchLoading: false,
 				fetchError: false
 			}
-		case ActionType.FetchFailure:
+		case ActionType.ExcerptFetchError:
 			return {
 				...state,
 				errorMessage: action.payload,
@@ -56,7 +84,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				excerptActionProcessing: false,
 				excerptActionError: false
 		  };
-		case ActionType.ExcerptActionFailure:
+		case ActionType.ExcerptActionError:
 		  return {
 				...state,
 				errorMessage: action.payload,
