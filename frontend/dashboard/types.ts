@@ -9,12 +9,13 @@ export type AppState = {
 	excerpts: Excerpt[];
 	authors: string[];
 	works: { [author: string]: string[] };
+	renderKey: number;
 	authorField: string;
 	workField: string;
 	bodyField: string;
 	errorMessage: string;
-	initialFetchLoading: boolean;
-	initialFetchError: boolean;
+	fetchLoading: boolean;
+	fetchError: boolean;
 	excerptActionResponse: string;
 	excerptActionProcessing: boolean;
 	excerptActionSuccess: boolean;
@@ -22,9 +23,9 @@ export type AppState = {
 };
 
 export enum ActionType {
-  InitialFetchInit = 'INITIAL_FETCH_INIT',
-  InitialFetchSuccess = 'INITIAL_FETCH_SUCCESS',
-  InitialFetchFailure = 'INITIAL_FETCH_FAILURE',
+  FetchInit = 'FETCH_INIT',
+  FetchSuccess = 'FETCH_SUCCESS',
+  FetchFailure = 'FETCH_FAILURE',
 	SetAuthorField = 'SET_AUTHOR_FIELD',
 	SetWorkField = 'SET_WORK_FIELD',
 	SetBodyField = 'SET_BODY_FIELD',
@@ -35,16 +36,17 @@ export enum ActionType {
 	ResetActionState = 'RESET_ACTION_STATE'
 };
 
-type InitialFetchSuccessPayload = {
+type FetchSuccessPayload = {
 	excerpts: Excerpt[];
 	authors: string[];
 	works: { [author: string]: string[] };
+	renderKey: number;
 };
 
 export type Action =
-	| { type: ActionType.InitialFetchInit }
-	| { type: ActionType.InitialFetchSuccess; payload: InitialFetchSuccessPayload }
-	| { type: ActionType.InitialFetchFailure; payload: string }
+	| { type: ActionType.FetchInit }
+	| { type: ActionType.FetchSuccess; payload: FetchSuccessPayload }
+	| { type: ActionType.FetchFailure; payload: string }
 	| { type: ActionType.SetAuthorField; payload: string }
 	| { type: ActionType.SetWorkField; payload: string }
 	| { type: ActionType.SetBodyField; payload: string }

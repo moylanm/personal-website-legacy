@@ -4,12 +4,13 @@ export const initialState: AppState = {
 	excerpts: [],
 	authors: [],
 	works: {},
+	renderKey: 0,
 	authorField: '',
 	workField: '',
 	bodyField: '',
 	errorMessage: '',
-	initialFetchLoading: false,
-	initialFetchError: false,
+	fetchLoading: false,
+	fetchError: false,
 	excerptActionResponse: '',
 	excerptActionProcessing: false,
 	excerptActionSuccess: false,
@@ -18,27 +19,28 @@ export const initialState: AppState = {
 
 export const reducer = (state: AppState, action: Action): AppState => {
 	switch (action.type) {
-		case ActionType.InitialFetchInit:
+		case ActionType.FetchInit:
 			return {
 				...state,
-				initialFetchLoading: true,
-				initialFetchError: false
+				fetchLoading: true,
+				fetchError: false
 			};
-		case ActionType.InitialFetchSuccess:
+		case ActionType.FetchSuccess:
 			return {
 				...state,
 				excerpts: action.payload.excerpts,
 				authors: action.payload.authors,
 				works: action.payload.works,
-				initialFetchLoading: false,
-				initialFetchError: false
+				renderKey: action.payload.renderKey,
+				fetchLoading: false,
+				fetchError: false
 			}
-		case ActionType.InitialFetchFailure:
+		case ActionType.FetchFailure:
 			return {
 				...state,
 				errorMessage: action.payload,
-				initialFetchLoading: false,
-				initialFetchError: true
+				fetchLoading: false,
+				fetchError: true
 			};
 		case ActionType.ExcerptActionInit:
 		  return {
