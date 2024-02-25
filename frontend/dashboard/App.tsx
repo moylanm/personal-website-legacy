@@ -22,7 +22,7 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [activeTab, setActiveTab] = useState<number>(0);
 
-  useInitialFetch(state.renderKey, dispatch);
+  useInitialFetch(dispatch, state.renderKey);
 
   const selectTab = (_: React.SyntheticEvent, tabId: number) => {
     setActiveTab(tabId);
