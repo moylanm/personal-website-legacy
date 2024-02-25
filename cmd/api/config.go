@@ -25,10 +25,6 @@ type config struct {
 		Burst   int     `yaml:"burst"`
 		Enabled bool    `yaml:"enabled"`
 	} `yaml:"limiter"`
-	Admin struct {
-		Username     string `yaml:"username"`
-		PasswordHash string `yaml:"passwordHash"`
-	} `yaml:"admin"`
 	Cors struct {
 		TrustedOrigins []string `yaml:"trustedOrigins"`
 	} `yaml:"cors"`
@@ -48,8 +44,6 @@ func readConfig(path string) (config, error) {
 		return config{}, fmt.Errorf("failed to unmarshal YAML: %w", err)
 	}
 
-	overrideConfigWithEnv(&cfg)
-
 	dsnPassword, err := getDatabasePasswordFromVault()
 	if err != nil {
 		return config{}, fmt.Errorf("error getting database password from Vault: %w", err)
@@ -61,16 +55,6 @@ func readConfig(path string) (config, error) {
 	}
 
 	return cfg, nil
-}
-
-func overrideConfigWithEnv(cfg *config) {
-	if username := os.Getenv("WEBSITE_USERNAME"); username != "" {
-		cfg.Admin.Username = username
-	}
-
-	if passwordHash := os.Getenv("WEBSITE_PASSWORD_HASH"); passwordHash != "" {
-		cfg.Admin.PasswordHash = passwordHash
-	}
 }
 
 func getDatabasePasswordFromVault() (string, error) {
@@ -119,11 +103,6 @@ func validateConfig(cfg *config) error {
 	}
 	if cfg.Port < 1024 || cfg.Port > 65535 {
 		return fmt.Errorf("port must be between 1024 and 65535")
-	}
-
-	// Validate admin credentials
-	if cfg.Admin.Username == "" || cfg.Admin.PasswordHash == "" {
-		return fmt.Errorf("admin username and password hash are required")
 	}
 
 	// Validate CORS configuration

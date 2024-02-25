@@ -11,8 +11,5 @@ limiter:
     rps: 8
     burst: 16
     enabled: true
-admin:
-    username: ""
-    passwordHash: ""
 cors:
     trustedOrigins: ["https://mylesmoylan.net", "https://www.mylesmoylan.net"]
