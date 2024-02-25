@@ -5,62 +5,11 @@ import { Action, ActionResponse, ActionType, FetchResponse } from './types';
 const BASE_ENDPOINT = 'https://mylesmoylan.net/excerpts';
 
 export const useInitialFetch = (
+  currentRenderKey: number,
   dispatch: React.Dispatch<Action>
 ) => {
   useEffect(() => {
-    const source = axios.CancelToken.source();
-
-    const fetchData = async () => {
-      dispatch({ type: ActionType.InitialFetchInit });
-
-      try {
-        const response = await axios.get<FetchResponse>(`${BASE_ENDPOINT}/json`, {
-          cancelToken: source.token
-        });
-
-        const excerpts = response.data.excerpts;
-        const authors = [...new Set(excerpts.map(excerpt => excerpt.author))];
-        const works = excerpts.reduce((acc, excerpt) => {
-          if (!acc[excerpt.author]) {
-            acc[excerpt.author] = [];
-          }
-
-          if (!acc[excerpt.author].includes(excerpt.work)) {
-            acc[excerpt.author].push(excerpt.work);
-          }
-
-          return acc;
-        }, {});
-
-        dispatch({
-          type: ActionType.InitialFetchSuccess,
-          payload: { excerpts, authors, works }
-        });
-      } catch (error) {
-        const axiosError = error as AxiosError;
-
-        let errorMessage = 'Failed to fetch data.';
-
-        if (axiosError.response) {
-          errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
-        } else if (axiosError.request) {
-          errorMessage = 'Network error. Please try again.';
-        } else {
-          console.log('Error: ', axiosError.message);
-        }
-
-        dispatch({
-          type: ActionType.InitialFetchFailure,
-          payload: errorMessage
-        });
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      source.cancel('Component unmounted, request canceled');
-    };
+    fetchExcerpts(currentRenderKey, dispatch);
   }, [])
 };
 
@@ -214,4 +163,58 @@ export const deleteExcerpt = async (
   }
 
   return () => source.cancel('Post aborted: component unmounted or fetch reset');
+};
+
+export const fetchExcerpts = async (
+  currentRenderKey: number,
+  dispatch: React.Dispatch<Action>
+) => {
+  dispatch({ type: ActionType.FetchInit });
+
+  const source = axios.CancelToken.source();
+
+  try {
+    const response = await axios.get<FetchResponse>(`${BASE_ENDPOINT}/json`, {
+      cancelToken: source.token
+    });
+
+    const excerpts = response.data.excerpts;
+    const authors = [...new Set(excerpts.map(excerpt => excerpt.author))];
+    const works = excerpts.reduce((acc, excerpt) => {
+      if (!acc[excerpt.author]) {
+        acc[excerpt.author] = [];
+      }
+
+      if (!acc[excerpt.author].includes(excerpt.work)) {
+        acc[excerpt.author].push(excerpt.work);
+      }
+
+      return acc;
+    }, {});
+    const renderKey = currentRenderKey + 1;
+
+    dispatch({
+      type: ActionType.FetchSuccess,
+      payload: { excerpts, authors, works, renderKey }
+    });
+  } catch (error) {
+    const axiosError = error as AxiosError;
+
+    let errorMessage = 'Failed to fetch data';
+
+    if (axiosError.response) {
+      errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
+    } else if (axiosError.request) {
+      errorMessage = 'Network error. Please try again.';
+    } else {
+      console.log('Error: ', axiosError.message);
+    }
+
+    dispatch({
+      type: ActionType.FetchFailure,
+      payload: errorMessage
+    });
+  }
+
+  return () => source.cancel('Component unmounted, request canceled');
 };
