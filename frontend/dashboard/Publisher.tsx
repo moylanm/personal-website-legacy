@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Action, ActionType, AppState } from './types';
-import { publishExcerpt } from './api';
+import { publishExcerpt, fetchExcerpts } from './api';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
@@ -58,6 +58,11 @@ const Publisher: React.FC<PublisherProps> = ({
   };
 
   const handleSnackbarClose = () => {
+    if (state.excerptActionSuccess) {
+      resetForm();
+      fetchExcerpts(state.renderKey, dispatch);
+    }
+
     dispatch({ type: ActionType.ResetActionState });
   };
 
@@ -76,17 +81,8 @@ const Publisher: React.FC<PublisherProps> = ({
     );
   };
 
-  if (state.initialFetchError) {
-    return <div className='error-message'>{state.errorMessage}</div>;
-  }
-
-  if (state.initialFetchLoading) {
-    return <div className='message'>Loading...</div>
-  }
-
   return (
     <>
-      {state.excerptActionError && <div className='error-message'>{state.errorMessage}</div>}
       <Autocomplete
         freeSolo
         inputValue={state.authorField}
