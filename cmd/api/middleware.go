@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"crypto/subtle"
 	"fmt"
 	"net/http"
 	"runtime/debug"
@@ -13,7 +12,6 @@ import (
 	"github.com/justinas/nosurf"
 	"github.com/mileusna/useragent"
 	"github.com/tomasen/realip"
-	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/time/rate"
 
 	"mylesmoylan.net/internal/data"
@@ -124,27 +122,6 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 			}
 
 			mu.Unlock()
-		}
-
-		next.ServeHTTP(w, r)
-	})
-}
-
-func (app *application) basicAuth(next http.HandlerFunc) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		username, password, ok := r.BasicAuth()
-
-		if !ok {
-			app.invalidCredentialsResponse(w, r)
-			return
-		}
-
-		usernameMatch := subtle.ConstantTimeCompare([]byte(app.config.Admin.Username), []byte(username)) == 1
-		passwordMatch := bcrypt.CompareHashAndPassword([]byte(app.config.Admin.PasswordHash), []byte(password)) == nil
-
-		if !usernameMatch || !passwordMatch {
-			app.invalidCredentialsResponse(w, r)
-			return
 		}
 
 		next.ServeHTTP(w, r)
