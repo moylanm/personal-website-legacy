@@ -1,9 +1,16 @@
 import { useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
-import { Action, ExcerptActionResponse, ActionType, ExcerptFetchResponse, IPAddress, LogsFetchResponse } from './types';
+import {
+  Action,
+  ExcerptActionResponse,
+  ActionType,
+  ExcerptsFetchResponse,
+  IPAddress,
+  LogsFetchResponse
+} from './types';
 
-const EXCERPT_ENDPOINT = 'https://mylesmoylan.net/excerpts';
-const LOGS_ENDPOINT = 'https://mylesmoylan.net/request-logs';
+const EXCERPTS_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
+const LOGS_ENDPOINT = 'https://mylesmoylan.net/dashboard/request-logs';
 
 export const useInitialFetch = (
   dispatch: React.Dispatch<Action>,
@@ -16,7 +23,7 @@ export const useInitialFetch = (
       dispatch({ type: ActionType.SetupInit });
 
       try {
-        const excerptsResponse = await axios.get<ExcerptFetchResponse>(`${EXCERPT_ENDPOINT}`, {
+        const excerptsResponse = await axios.get<ExcerptsFetchResponse>(`${EXCERPTS_ENDPOINT}`, {
           cancelToken: source.token
         });
 
@@ -95,7 +102,7 @@ export const publishExcerpt = async (
 
     const response = await axios<ExcerptActionResponse>({
       method: 'POST',
-      url: `${EXCERPT_ENDPOINT}`,
+      url: `${EXCERPTS_ENDPOINT}`,
       data: formData,
       cancelToken: source.token
     });
@@ -148,7 +155,7 @@ export const updateExcerpt = async (
 
     const response = await axios<ExcerptActionResponse>({
       method: 'PATCH',
-      url: `${EXCERPT_ENDPOINT}/${id}`,
+      url: `${EXCERPTS_ENDPOINT}/${id}`,
       data: formData,
       cancelToken: source.token
     });
@@ -195,7 +202,7 @@ export const deleteExcerpt = async (
 
     const response = await axios<ExcerptActionResponse>({
       method: 'DELETE',
-      url: `${EXCERPT_ENDPOINT}/${id}`,
+      url: `${EXCERPTS_ENDPOINT}/${id}`,
       data: formData,
       cancelToken: source.token
     });
@@ -235,7 +242,7 @@ export const fetchExcerpts = async (
   const source = axios.CancelToken.source();
 
   try {
-    const response = await axios.get<ExcerptFetchResponse>(`${EXCERPT_ENDPOINT}/json`, {
+    const response = await axios.get<ExcerptsFetchResponse>(`${EXCERPTS_ENDPOINT}/json`, {
       cancelToken: source.token
     });
 
