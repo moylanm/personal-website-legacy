@@ -1,7 +1,6 @@
 import React from 'react';
 import { Request } from './types';
 import { formatDate } from './utils';
-import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
