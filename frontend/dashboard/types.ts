@@ -97,7 +97,7 @@ export type LogsFetchResponse = {
 	requests: Request[];
 }
 
-export type ExcerptFetchResponse = {
+export type ExcerptsFetchResponse = {
 	excerpts: Excerpt[];
 };
 
