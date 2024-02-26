@@ -55,6 +55,7 @@ export enum ActionType {
 	SetWorkField = 'SET_WORK_FIELD',
 	SetBodyField = 'SET_BODY_FIELD',
 	ResetPublishForm = 'RESET_PUBLISH_FORM',
+	SetIPAddresses = 'SET_IP_ADDRESSES',
 	ExcerptActionInit = 'EXCERPT_ACTION_INIT',
 	ExcerptActionSuccess = 'EXCERPT_ACTION_SUCCESS',
 	ExcerptActionError = 'EXCERPT_ACTION_FAILURE',
@@ -88,6 +89,7 @@ export type Action =
 	| { type: ActionType.SetWorkField; payload: string }
 	| { type: ActionType.SetBodyField; payload: string }
 	| { type: ActionType.ResetPublishForm }
+	| { type: ActionType.SetIPAddresses; payload: IPAddress[] }
 	| { type: ActionType.ExcerptActionInit }
 	| { type: ActionType.ExcerptActionSuccess; payload: string }
 	| { type: ActionType.ExcerptActionError; payload: string }

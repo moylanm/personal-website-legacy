@@ -122,6 +122,11 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				workField: '',
 				bodyField: ''
 		  };
+		case ActionType.SetIPAddresses:
+		  return {
+				...state,
+				ipAddresses: action.payload
+		  };
 		default:
 			return state;
 	}
