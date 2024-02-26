@@ -8,7 +8,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Publisher from './Publisher';
 import Editor from './Editor';
-import Logs from './logs/Logs'
+import Logs from './Logs'
 
 const tabStyle = {
   opacity: 1,
@@ -50,7 +50,7 @@ const App = () => {
 
       {activeTab === 0 && <Publisher state={state} dispatch={dispatch} />}
       {activeTab === 1 && <Editor key={state.renderKey} state={state} dispatch={dispatch} />}
-      {activeTab === 2 && <Logs />}
+      {activeTab === 2 && <Logs key={state.renderKey} state={state} dispatch={dispatch} />}
       {activeTab === 3 && <div>Metrics content...</div>}
       <SuccessSnackbar state={state} handleClose={handleSnackbarClose} />
       <ErrorSnackbar state={state} handleClose={handleSnackbarClose} />
