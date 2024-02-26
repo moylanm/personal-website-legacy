@@ -294,3 +294,10 @@ export const fetchLogs = async (
 ) => {
   
 };
+
+export const clearLogs = async (
+  dispatch: React.Dispatch<Action>,
+  currentRenderKey: number
+) => {
+
+};
