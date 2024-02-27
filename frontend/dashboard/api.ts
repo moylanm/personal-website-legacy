@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { handleError, updateIPAddresses } from './utils';
 import {
   Action,
@@ -201,6 +201,7 @@ export const fetchExcerpts = async (
 
       return acc;
     }, {});
+
     const renderKey = currentRenderKey + 1;
 
     dispatch({
@@ -231,6 +232,7 @@ export const fetchLogs = async (
 		const requests = response.data.requests;
 		const uniqueIPAddresses = [...new Set(requests.map(request => request.ipAddress))];
 		const ipAddresses = updateIPAddresses(currentIPAddresses, uniqueIPAddresses);
+
 		const renderKey = currentRenderKey + 1;
 
 		dispatch({
