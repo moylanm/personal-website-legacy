@@ -46,6 +46,7 @@ const Logs: React.FC<LogsProps> = ({
 
   return (
     <>
+      {(state.fetchError || state.clearError) ?? <div className='error-message'>{state.errorMessage}</div>}
       <FilterForm 
         renderKey={state.renderKey}
         ipAddresses={state.ipAddresses}
