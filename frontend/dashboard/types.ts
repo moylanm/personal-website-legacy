@@ -38,6 +38,8 @@ export type AppState = {
 	setupError: boolean;
 	fetchLoading: boolean;
 	fetchError: boolean;
+	clearLoading: boolean;
+	clearError: boolean;
 	excerptActionResponse: string;
 	excerptActionProcessing: boolean;
 	excerptActionSuccess: boolean;
@@ -47,10 +49,16 @@ export type AppState = {
 export enum ActionType {
 	SetupInit = 'SETUP_INIT',
 	SetupSuccess = 'SETUP_SUCCESS',
-	SetupError = 'SETUP_FAILURE',
-  ExcerptFetchInit = 'FETCH_INIT',
-  ExcerptFetchSuccess = 'FETCH_SUCCESS',
-  ExcerptFetchError = 'FETCH_FAILURE',
+	SetupError = 'SETUP_ERROR',
+  ExcerptsFetchInit = 'EXCERPTS_FETCH_INIT',
+  ExcerptsFetchSuccess = 'EXCERPTS_FETCH_SUCCESS',
+  ExcerptsFetchError = 'EXCERPTS_FETCH_ERROR',
+	LogsFetchInit = 'LOGS_FETCH_INIT',
+	LogsFetchSuccess = 'LOGS_FETCH_SUCCESS',
+	LogsFetchError = 'LOGS_FETCH_ERROR',
+	LogsClearInit = 'LOGS_CLEAR_INIT',
+	LogsClearSuccess = 'LOGS_CLEAR_SUCCESS',
+	LogsClearError = 'LOGS_CLEAR_ERROR',
 	SetAuthorField = 'SET_AUTHOR_FIELD',
 	SetWorkField = 'SET_WORK_FIELD',
 	SetBodyField = 'SET_BODY_FIELD',
@@ -58,7 +66,7 @@ export enum ActionType {
 	SetIPAddresses = 'SET_IP_ADDRESSES',
 	ExcerptActionInit = 'EXCERPT_ACTION_INIT',
 	ExcerptActionSuccess = 'EXCERPT_ACTION_SUCCESS',
-	ExcerptActionError = 'EXCERPT_ACTION_FAILURE',
+	ExcerptActionError = 'EXCERPT_ACTION_ERROR',
 	ResetActionState = 'RESET_ACTION_STATE'
 };
 
@@ -71,10 +79,16 @@ type SetupSuccessPayload = {
 	renderKey: number;
 };
 
-type ExcerptFetchSuccessPayload = {
+type ExcerptsFetchSuccessPayload = {
 	excerpts: Excerpt[];
 	authors: string[];
 	works: { [author: string]: string[] };
+	renderKey: number;
+};
+
+type LogsFetchSuccessPayload = {
+	requests: Request[];
+	ipAddresses: IPAddress[];
 	renderKey: number;
 };
 
@@ -82,9 +96,15 @@ export type Action =
 	| { type: ActionType.SetupInit }
 	| { type: ActionType.SetupSuccess; payload: SetupSuccessPayload }
 	| { type: ActionType.SetupError; payload: string }
-	| { type: ActionType.ExcerptFetchInit }
-	| { type: ActionType.ExcerptFetchSuccess; payload: ExcerptFetchSuccessPayload }
-	| { type: ActionType.ExcerptFetchError; payload: string }
+	| { type: ActionType.ExcerptsFetchInit }
+	| { type: ActionType.ExcerptsFetchSuccess; payload: ExcerptsFetchSuccessPayload }
+	| { type: ActionType.ExcerptsFetchError; payload: string }
+	| { type: ActionType.LogsFetchInit }
+	| { type: ActionType.LogsFetchSuccess; payload: LogsFetchSuccessPayload }
+	| { type: ActionType.LogsFetchError; payload: string }
+	| { type: ActionType.LogsClearInit }
+	| { type: ActionType.LogsClearSuccess; payload: number }
+	| { type: ActionType.LogsClearError; payload: string }
 	| { type: ActionType.SetAuthorField; payload: string }
 	| { type: ActionType.SetWorkField; payload: string }
 	| { type: ActionType.SetBodyField; payload: string }
