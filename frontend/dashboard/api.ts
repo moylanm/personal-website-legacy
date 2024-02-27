@@ -10,7 +10,7 @@ import {
   LogsFetchResponse
 } from './types';
 
-const EXCERPTS_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
+const EXCERPTS_ENDPOINT = 'https://mylesmoylan.net/excerpts';
 const LOGS_ENDPOINT = 'https://mylesmoylan.net/dashboard/request-logs';
 
 export const useInitialFetch = (
@@ -24,7 +24,7 @@ export const useInitialFetch = (
       dispatch({ type: ActionType.SetupInit });
 
       try {
-        const excerptsResponse = await axios.get<ExcerptsFetchResponse>(`${EXCERPTS_ENDPOINT}`, {
+        const excerptsResponse = await axios.get<ExcerptsFetchResponse>(`${EXCERPTS_ENDPOINT}/json`, {
           cancelToken: source.token
         });
 
@@ -131,7 +131,7 @@ export const publishExcerpt = async (
     });
   }
 
-  return () => source.cancel('Post aborted: component unmounted or fetch reset');
+  return () => source.cancel('Component unmounted, request canceled');
 };
 
 export const updateExcerpt = async (
@@ -184,7 +184,7 @@ export const updateExcerpt = async (
     });
   }
 
-  return () => source.cancel('Post aborted: component unmounted or fetch reset');
+  return () => source.cancel('Component unmounted, request canceled');
 };
 
 export const deleteExcerpt = async (
@@ -231,7 +231,7 @@ export const deleteExcerpt = async (
     });
   }
 
-  return () => source.cancel('Post aborted: component unmounted or fetch reset');
+  return () => source.cancel('Component unmounted, request canceled');
 };
 
 export const fetchExcerpts = async (
@@ -330,7 +330,7 @@ export const fetchLogs = async (
     });
 	}
 
-	return () => source.cancel('Fetch aborted: component unmounted or fetch reset');
+  return () => source.cancel('Component unmounted, request canceled');
 
 };
 
@@ -380,5 +380,5 @@ export const clearLogs = async (
     });
 	}
 
-	return () => source.cancel('Post aborted: component unmounted or fetch reset');
+  return () => source.cancel('Component unmounted, request canceled');
 };
