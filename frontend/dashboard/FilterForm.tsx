@@ -27,10 +27,10 @@ const FilterForm: React.FC<FormProps> = ({
   <FormControl>
     <List
       subheader={<ListSubheader sx={{ lineHeight: '36px' }}>IP Addresses</ListSubheader>}
-      sx={{ border: '2px solid #CCC', padding: '0px 0px 0px 3px', maxHeight: 200, overflowY: 'scroll' }} dense>
+      sx={{ border: '2px solid #CCC', maxHeight: 200, overflowY: 'scroll' }} dense>
       
       {ipAddresses.map((ipAddress) => (
-        <ListItem disablePadding>
+        <ListItem sx={{ margin: '0px 0px 0px 3px' }} disablePadding>
           <ListItemButton sx={{ padding: 0 }} onClick={() => onIPAddrChange(ipAddress)} dense>
             <ListItemIcon sx={{ minWidth: 0 }}>
               <Checkbox
