@@ -53,7 +53,7 @@ const FilterForm: React.FC<FormProps> = ({
         </ListItem>
       ))}
     </List>
-    <Box sx={{ marginTop: '10px' }}>
+    <Box sx={{ margin: '10px 0px' }}>
       <Button type='button' variant='contained' onClick={onFetchDataClick}>Refetch Data</Button>
       <div className='divider' />
       <Button type='button' variant='contained' onClick={onClearDataClick}>Clear Data</Button>
