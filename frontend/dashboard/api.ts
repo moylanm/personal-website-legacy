@@ -7,7 +7,8 @@ import {
   ActionType,
   ExcerptsFetchResponse,
   IPAddress,
-  LogsFetchResponse
+  LogsFetchResponse,
+  ErrorType
 } from './types';
 
 const EXCERPTS_ENDPOINT = 'https://mylesmoylan.net/excerpts';
@@ -57,7 +58,7 @@ export const useInitialFetch = (
           payload: { excerpts, authors, works, requests, ipAddresses, renderKey }
         });
       } catch (error) {
-        handleError(dispatch, ActionType.SetupError, error);
+        handleError(dispatch, ErrorType.SetupError, error);
       }
     };
 
@@ -98,7 +99,7 @@ export const publishExcerpt = async (
       payload: response.data.message
     });
   } catch (error) {
-    handleError(dispatch, ActionType.ExcerptActionError, error)
+    handleError(dispatch, ErrorType.ExcerptActionError, error)
   }
 
   return () => source.cancel('Component unmounted, request canceled');
@@ -136,7 +137,7 @@ export const updateExcerpt = async (
       payload: response.data.message
     });
   } catch (error) {
-    handleError(dispatch, ActionType.ExcerptActionError, error);
+    handleError(dispatch, ErrorType.ExcerptActionError, error);
   }
 
   return () => source.cancel('Component unmounted, request canceled');
@@ -168,7 +169,7 @@ export const deleteExcerpt = async (
       payload: response.data.message
     });
   } catch (error) {
-    handleError(dispatch, ActionType.ExcerptActionError, error);
+    handleError(dispatch, ErrorType.ExcerptActionError, error);
   }
 
   return () => source.cancel('Component unmounted, request canceled');
@@ -207,7 +208,7 @@ export const fetchExcerpts = async (
       payload: { excerpts, authors, works, renderKey }
     });
   } catch (error) {
-    handleError(dispatch, ActionType.ExcerptsFetchError, error);
+    handleError(dispatch, ErrorType.ExcerptsFetchError, error);
   }
 
   return () => source.cancel('Component unmounted, request canceled');
@@ -237,7 +238,7 @@ export const fetchLogs = async (
 			payload: { requests, ipAddresses, renderKey }
 		});
 	} catch (error) {
-    handleError(dispatch, ActionType.LogsFetchError, error);
+    handleError(dispatch, ErrorType.LogsFetchError, error);
 	}
 
   return () => source.cancel('Component unmounted, request canceled');
@@ -272,7 +273,7 @@ export const clearLogs = async (
 			payload: renderKey
 		});
 	} catch (error) {
-    handleError(dispatch, ActionType.LogsClearError, error);
+    handleError(dispatch, ErrorType.LogsClearError, error);
 	}
 
   return () => source.cancel('Component unmounted, request canceled');
