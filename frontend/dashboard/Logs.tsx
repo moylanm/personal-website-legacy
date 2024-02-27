@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { Action, ActionType, AppState } from './types';
+import { Action, ActionType, AppState, IPAddress } from './types';
 import RequestTable from './RequestTable';
 import FilterForm from './FilterForm';
 import { clearLogs, fetchLogs } from './api';
@@ -14,25 +14,24 @@ const Logs: React.FC<LogsProps> = ({
   dispatch
 }) => {
 
-  const handlFetchDataClick = () => {
+  const handlFetchDataClick = useCallback(() => {
     fetchLogs(dispatch, state.ipAddresses, state.renderKey);
-  };
+  }, [state.ipAddresses, state.renderKey]);
 
-  const handleClearDataClick = () => {
+  const handleClearDataClick = useCallback(() => {
     clearLogs(dispatch, state.renderKey);
-  };
+  }, [state.renderKey]);
 
-  const handleIPAddressChange = (value: string, selected: boolean) => {
+  const handleIPAddressChange = useCallback((ipToChange: IPAddress) => {
     const ipAddresses = state.ipAddresses.map((ip) => {
-      return ip.value === value ? {value: ip.value, selected: !selected} : ip;
+      return ip.value === ipToChange.value ? {value: ip.value, selected: !ipToChange.selected} : ip;
     });
-
 
     dispatch({
       type: ActionType.SetIPAddresses,
       payload: ipAddresses
     });
-  };
+  }, [state.ipAddresses]);
 
   const filteredRequests = useMemo(() => {
     const selectedIPs = state.ipAddresses
@@ -48,7 +47,6 @@ const Logs: React.FC<LogsProps> = ({
     <>
       {(state.fetchError || state.clearError) ?? <div className='error-message'>{state.errorMessage}</div>}
       <FilterForm 
-        renderKey={state.renderKey}
         ipAddresses={state.ipAddresses}
         onIPAddrChange={handleIPAddressChange}
         onFetchDataClick={handlFetchDataClick}
