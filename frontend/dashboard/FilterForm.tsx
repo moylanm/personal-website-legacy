@@ -12,15 +12,13 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 
 type FormProps = {
-  renderKey: number;
   ipAddresses: IPAddress[];
-  onIPAddrChange: (value: string, selected: boolean) => void;
+  onIPAddrChange: (ipToChange: IPAddress) => void;
   onFetchDataClick: () => void;
   onClearDataClick: () => void;
 };
 
 const FilterForm: React.FC<FormProps> = ({
-  renderKey,
   ipAddresses,
   onIPAddrChange,
   onFetchDataClick,
@@ -28,16 +26,12 @@ const FilterForm: React.FC<FormProps> = ({
 }) => (
   <FormControl>
     <List
-      key={renderKey}
       subheader={<ListSubheader sx={{ lineHeight: '36px' }}>IP Addresses</ListSubheader>}
       sx={{ border: '2px solid #CCC', padding: '0px 0px 0px 3px', maxHeight: 200, overflowY: 'scroll' }} dense>
       
       {ipAddresses.map((ipAddress) => (
-        <ListItem
-          key={renderKey}
-          disablePadding
-        >
-          <ListItemButton sx={{ padding: 0 }} onClick={() => onIPAddrChange(ipAddress.value, ipAddress.selected)} dense>
+        <ListItem disablePadding>
+          <ListItemButton sx={{ padding: 0 }} onClick={() => onIPAddrChange(ipAddress)} dense>
             <ListItemIcon sx={{ minWidth: 0 }}>
               <Checkbox
                 id={`list-item-checkbox-${ipAddress.value}`}
@@ -54,7 +48,7 @@ const FilterForm: React.FC<FormProps> = ({
       ))}
     </List>
     <Box sx={{ margin: '10px 0px' }}>
-      <Button type='button' variant='contained' onClick={onFetchDataClick}>Refetch Data</Button>
+      <Button type='button' variant='contained' onClick={onFetchDataClick}>Fetch Data</Button>
       <div className='divider' />
       <Button type='button' variant='contained' onClick={onClearDataClick}>Clear Data</Button>
     </Box>
