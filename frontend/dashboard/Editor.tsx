@@ -13,6 +13,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
+const FONT = 'Roboto, Helvetica, Arial, sans-serif';
 const CHUNK_SIZE = 15;
 
 type EditorProps = {
@@ -108,7 +109,7 @@ const Item: React.FC<ItemProps> = ({
       <Accordion>
         <AccordionSummary>
           <Typography sx={{
-            fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
+            fontStyle: FONT,
             padding: 0
           }}>
             {`${excerpt.id}: ${excerpt.author} - ${excerpt.work}`}
@@ -175,7 +176,7 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({
     </DialogTitle>
     <DialogContent>
       <Typography sx={{
-        fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
+        fontStyle: FONT,
         padding: 0
       }}>
       Are you sure you want to delete this excerpt?

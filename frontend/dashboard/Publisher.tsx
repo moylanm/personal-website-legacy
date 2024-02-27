@@ -6,9 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-const fontStyle = {
-  fontStyle: 'Roboto, Helvetica, Arial, sans-serif'
-}
+const font = 'Roboto, Helvetica, Arial, sans-serif';
 
 type WorkOption = {
   author: string;
@@ -83,7 +81,7 @@ const Publisher: React.FC<PublisherProps> = ({
         onInputChange={handleAuthorFieldChange}
         options={state.authors}
         renderOption={(props, option) => (
-          <Typography {...props} sx={fontStyle}>
+          <Typography {...props} sx={{ fontStyle: font }}>
             {option}
           </Typography>
         )}
@@ -104,7 +102,7 @@ const Publisher: React.FC<PublisherProps> = ({
         groupBy={(option) => option.author}
         getOptionLabel={(option) => typeof option === 'string' ? option : option.work}
         renderOption={(props, option) => (
-          <Typography {...props} sx={fontStyle}>
+          <Typography {...props} sx={{ fontStyle: font }}>
             {option.work}
           </Typography>
         )}

@@ -24,7 +24,6 @@ const FilterForm: React.FC<FormProps> = ({
   onFetchDataClick,
   onClearDataClick
 }) => {
-
   const gridList = useMemo(() => {
     const arr: IPAddress[][] = [];
 
@@ -74,19 +73,19 @@ const GridRow: React.FC<GridRowProps> = ({
     {
       ipAddresses.map((ipAddress) => (
         <Grid item xs={true}>
-          <Item ipAddress={ipAddress} onIPAddrChange={onIPAddrChange} />
+          <RowItem ipAddress={ipAddress} onIPAddrChange={onIPAddrChange} />
         </Grid>
       ))
     }
   </>
 );
 
-type ItemProps = {
+type RowItemProps = {
   ipAddress: IPAddress;
   onIPAddrChange: (ipToChange: IPAddress) => void;
 };
 
-const Item: React.FC<ItemProps> = ({
+const RowItem: React.FC<RowItemProps> = ({
   ipAddress,
   onIPAddrChange
 }) => (
