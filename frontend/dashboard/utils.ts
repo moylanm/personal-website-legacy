@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
-import { Action, IPAddress } from './types';
+import { Action, ErrorType, IPAddress } from './types';
 
-export const handleError = (dispatch: React.Dispatch<Action>, actionType: any, error: any) => {
+export const handleError = (dispatch: React.Dispatch<Action>, actionType: ErrorType, error: any) => {
   const axiosError = error as AxiosError;
   let errorMessage = 'An error occurred';
 

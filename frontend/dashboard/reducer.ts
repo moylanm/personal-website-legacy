@@ -1,4 +1,4 @@
-import { AppState, Action, ActionType } from './types';
+import { AppState, Action, ActionType, ErrorType } from './types';
 
 export const initialState: AppState = {
 	excerpts: [],
@@ -42,7 +42,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				setupLoading: false,
 				setupError: false,
 		  };
-		case ActionType.SetupError:
+		case ErrorType.SetupError:
 			return {
 				...state,
 				errorMessage: action.payload,
@@ -80,7 +80,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				fetchLoading: false,
 				fetchError: false
 		  };
-		case ActionType.LogsFetchError:
+		case ErrorType.LogsFetchError:
 		  return {
 				...state,
 				fetchLoading: false,
@@ -101,14 +101,14 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				clearLoading: false,
 				clearError: false
 		  };
-		case ActionType.LogsClearError:
+		case ErrorType.LogsClearError:
 			return {
 				...state,
 				errorMessage: action.payload,
 				clearLoading: false,
 				clearError: true
 		  };
-		case ActionType.ExcerptsFetchError:
+		case ErrorType.ExcerptsFetchError:
 			return {
 				...state,
 				errorMessage: action.payload,
@@ -129,7 +129,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				excerptActionProcessing: false,
 				excerptActionError: false
 		  };
-		case ActionType.ExcerptActionError:
+		case ErrorType.ExcerptActionError:
 		  return {
 				...state,
 				errorMessage: action.payload,
