@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
+import { updateIPAddresses } from './utils';
 import {
   Action,
   ExcerptActionResponse,
@@ -237,7 +238,7 @@ export const fetchExcerpts = async (
   dispatch: React.Dispatch<Action>,
   currentRenderKey: number
 ) => {
-  dispatch({ type: ActionType.ExcerptFetchInit });
+  dispatch({ type: ActionType.ExcerptsFetchInit });
 
   const source = axios.CancelToken.source();
 
@@ -262,7 +263,7 @@ export const fetchExcerpts = async (
     const renderKey = currentRenderKey + 1;
 
     dispatch({
-      type: ActionType.ExcerptFetchSuccess,
+      type: ActionType.ExcerptsFetchSuccess,
       payload: { excerpts, authors, works, renderKey }
     });
   } catch (error) {
@@ -279,7 +280,7 @@ export const fetchExcerpts = async (
     }
 
     dispatch({
-      type: ActionType.ExcerptFetchError,
+      type: ActionType.ExcerptsFetchError,
       payload: errorMessage
     });
   }
@@ -292,12 +293,92 @@ export const fetchLogs = async (
   currentIPAddresses: IPAddress[],
   currentRenderKey: number
 ) => {
-  
+  dispatch({ type: ActionType.LogsFetchInit });
+
+	const source = axios.CancelToken.source();
+
+	try {
+		const response = await axios.get<LogsFetchResponse>(`${LOGS_ENDPOINT}`, {
+			cancelToken: source.token
+		});
+
+		const requests = response.data.requests;
+		const uniqueIPAddresses = [...new Set(requests.map(request => request.ipAddress))];
+		const ipAddresses = updateIPAddresses(currentIPAddresses, uniqueIPAddresses);
+		const renderKey = currentRenderKey + 1;
+
+		dispatch({
+			type: ActionType.LogsFetchSuccess,
+			payload: { requests, ipAddresses, renderKey }
+		});
+	} catch (error) {
+		const axiosError = error as AxiosError;
+
+    let errorMessage = 'Failed to fetch data.';
+
+    if (axiosError.response) {
+      errorMessage = `Error ${axiosError.response.status}: ${axiosError.response.statusText}`;
+    } else if (axiosError.request) {
+      errorMessage = 'Network error. Please try again.';
+    } else {
+      console.log('Error: ', axiosError.message);
+    }
+
+    dispatch({
+      type: ActionType.LogsFetchError,
+      payload: errorMessage
+    });
+	}
+
+	return () => source.cancel('Fetch aborted: component unmounted or fetch reset');
+
 };
 
 export const clearLogs = async (
   dispatch: React.Dispatch<Action>,
   currentRenderKey: number
 ) => {
+  dispatch({ type: ActionType.LogsClearInit });
 
+	const source = axios.CancelToken.source();
+
+	try {
+		const csrfToken = document.querySelector('input[name="csrf_token"]')!.getAttribute('value')!;
+
+		const formBody = new FormData();
+		formBody.append('csrf_token', csrfToken);
+
+		await axios({
+			method: 'POST',
+			url: `${LOGS_ENDPOINT}`,
+			data: formBody,
+			cancelToken: source.token
+		});
+
+		const renderKey = currentRenderKey + 1;
+
+		dispatch({
+			type: ActionType.LogsClearSuccess,
+			payload: renderKey
+		});
+	} catch (error) {
+		const axiosError = error as AxiosError;
+
+    let errorMessage = 'Failed to clear data.';
+
+    if (axiosError.response) {
+      errorMessage = `Error ${axiosError.response.status}: ${axiosError.response.statusText}`;
+    } else if (axiosError.request) {
+      errorMessage = 'Network error. Please try again.';
+    } else {
+      console.log('Error: ', axiosError.message);
+    }
+
+    dispatch({
+      type: ActionType.LogsClearError,
+      payload: errorMessage
+    });
+	}
+
+	return () => source.cancel('Post aborted: component unmounted or fetch reset');
 };
