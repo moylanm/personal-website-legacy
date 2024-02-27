@@ -15,6 +15,8 @@ export const initialState: AppState = {
 	setupError: false,
 	fetchLoading: false,
 	fetchError: false,
+	clearLoading: false,
+	clearError: false,
 	excerptActionResponse: '',
 	excerptActionProcessing: false,
 	excerptActionSuccess: false,
@@ -47,13 +49,13 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				setupLoading: false,
 				setupError: true
 		  };
-		case ActionType.ExcerptFetchInit:
+		case ActionType.ExcerptsFetchInit:
 			return {
 				...state,
 				fetchLoading: true,
 				fetchError: false
 			};
-		case ActionType.ExcerptFetchSuccess:
+		case ActionType.ExcerptsFetchSuccess:
 			return {
 				...state,
 				excerpts: action.payload.excerpts,
@@ -62,8 +64,51 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				renderKey: action.payload.renderKey,
 				fetchLoading: false,
 				fetchError: false
-			}
-		case ActionType.ExcerptFetchError:
+			};
+		case ActionType.LogsFetchInit:
+		  return {
+				...state,
+				fetchLoading: true,
+				fetchError: false
+		  };
+		case ActionType.LogsFetchSuccess:
+		  return {
+				...state,
+				requests: action.payload.requests,
+				ipAddresses: action.payload.ipAddresses,
+				renderKey: action.payload.renderKey,
+				fetchLoading: false,
+				fetchError: false
+		  };
+		case ActionType.LogsFetchError:
+		  return {
+				...state,
+				fetchLoading: false,
+				fetchError: true
+		  };
+		case ActionType.LogsClearInit:
+		  return {
+				...state,
+				clearLoading: true,
+				clearError: false
+		  };
+		case ActionType.LogsClearSuccess:
+		  return {
+				...state,
+				requests: [],
+				ipAddresses: [],
+				renderKey: action.payload,
+				clearLoading: false,
+				clearError: false
+		  };
+		case ActionType.LogsClearError:
+			return {
+				...state,
+				errorMessage: action.payload,
+				clearLoading: false,
+				clearError: true
+		  };
+		case ActionType.ExcerptsFetchError:
 			return {
 				...state,
 				errorMessage: action.payload,
