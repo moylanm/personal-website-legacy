@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
-import { updateIPAddresses } from './utils';
+import { handleError, updateIPAddresses } from './utils';
 import {
   Action,
   ExcerptActionResponse,
@@ -57,22 +57,7 @@ export const useInitialFetch = (
           payload: { excerpts, authors, works, requests, ipAddresses, renderKey }
         });
       } catch (error) {
-        const axiosError = error as AxiosError;
-
-        let errorMessage = 'Failed to setup state.';
-
-        if (axiosError.response) {
-          errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
-        } else if (axiosError.request) {
-          errorMessage = 'Network error. Please try again.';
-        } else {
-          console.log('Error: ', axiosError.message);
-        }
-
-        dispatch({
-          type: ActionType.SetupError,
-          payload: errorMessage
-        });
+        handleError(dispatch, ActionType.SetupError, error);
       }
     };
 
@@ -113,22 +98,7 @@ export const publishExcerpt = async (
       payload: response.data.message
     });
   } catch (error) {
-    const axiosError = error as AxiosError;
-
-    let errorMessage = 'Failed to publish excerpt.';
-
-    if (axiosError.response) {
-      errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
-    } else if (axiosError.request) {
-      errorMessage = 'Network error. Please try again.'
-    } else {
-      console.log('Error: ', axiosError.message);
-    }
-
-    dispatch({
-      type: ActionType.ExcerptActionError,
-      payload: errorMessage
-    });
+    handleError(dispatch, ActionType.ExcerptActionError, error)
   }
 
   return () => source.cancel('Component unmounted, request canceled');
@@ -166,22 +136,7 @@ export const updateExcerpt = async (
       payload: response.data.message
     });
   } catch (error) {
-    const axiosError = error as AxiosError;
-
-    let errorMessage = 'Failed to update excerpt.';
-
-    if (axiosError.response) {
-      errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
-    } else if (axiosError.request) {
-      errorMessage = 'Network error. Please try again.'
-    } else {
-      console.log('Error: ', axiosError.message);
-    }
-
-    dispatch({
-      type: ActionType.ExcerptActionError,
-      payload: errorMessage
-    });
+    handleError(dispatch, ActionType.ExcerptActionError, error);
   }
 
   return () => source.cancel('Component unmounted, request canceled');
@@ -213,22 +168,7 @@ export const deleteExcerpt = async (
       payload: response.data.message
     });
   } catch (error) {
-    const axiosError = error as AxiosError;
-
-    let errorMessage = 'Failed to delete excerpt.';
-
-    if (axiosError.response) {
-      errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
-    } else if (axiosError.request) {
-      errorMessage = 'Network error. Please try again.'
-    } else {
-      console.log('Error: ', axiosError.message);
-    }
-
-    dispatch({
-      type: ActionType.ExcerptActionError,
-      payload: errorMessage
-    });
+    handleError(dispatch, ActionType.ExcerptActionError, error);
   }
 
   return () => source.cancel('Component unmounted, request canceled');
@@ -267,22 +207,7 @@ export const fetchExcerpts = async (
       payload: { excerpts, authors, works, renderKey }
     });
   } catch (error) {
-    const axiosError = error as AxiosError;
-
-    let errorMessage = 'Failed to fetch data';
-
-    if (axiosError.response) {
-      errorMessage = `Error ${axiosError.response.status} ${axiosError.response.statusText}`;
-    } else if (axiosError.request) {
-      errorMessage = 'Network error. Please try again.';
-    } else {
-      console.log('Error: ', axiosError.message);
-    }
-
-    dispatch({
-      type: ActionType.ExcerptsFetchError,
-      payload: errorMessage
-    });
+    handleError(dispatch, ActionType.ExcerptsFetchError, error);
   }
 
   return () => source.cancel('Component unmounted, request canceled');
@@ -312,22 +237,7 @@ export const fetchLogs = async (
 			payload: { requests, ipAddresses, renderKey }
 		});
 	} catch (error) {
-		const axiosError = error as AxiosError;
-
-    let errorMessage = 'Failed to fetch data.';
-
-    if (axiosError.response) {
-      errorMessage = `Error ${axiosError.response.status}: ${axiosError.response.statusText}`;
-    } else if (axiosError.request) {
-      errorMessage = 'Network error. Please try again.';
-    } else {
-      console.log('Error: ', axiosError.message);
-    }
-
-    dispatch({
-      type: ActionType.LogsFetchError,
-      payload: errorMessage
-    });
+    handleError(dispatch, ActionType.LogsFetchError, error);
 	}
 
   return () => source.cancel('Component unmounted, request canceled');
@@ -362,22 +272,7 @@ export const clearLogs = async (
 			payload: renderKey
 		});
 	} catch (error) {
-		const axiosError = error as AxiosError;
-
-    let errorMessage = 'Failed to clear data.';
-
-    if (axiosError.response) {
-      errorMessage = `Error ${axiosError.response.status}: ${axiosError.response.statusText}`;
-    } else if (axiosError.request) {
-      errorMessage = 'Network error. Please try again.';
-    } else {
-      console.log('Error: ', axiosError.message);
-    }
-
-    dispatch({
-      type: ActionType.LogsClearError,
-      payload: errorMessage
-    });
+    handleError(dispatch, ActionType.LogsClearError, error);
 	}
 
   return () => source.cancel('Component unmounted, request canceled');
