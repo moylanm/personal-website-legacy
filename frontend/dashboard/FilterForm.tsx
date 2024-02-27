@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { IPAddress } from './types';
-import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItem from '@mui/material/ListItem';
@@ -23,21 +23,62 @@ const FilterForm: React.FC<FormProps> = ({
   onIPAddrChange,
   onFetchDataClick,
   onClearDataClick
+}) => {
+
+  const gridList = useMemo(() => {
+    const arr: IPAddress[][] = [];
+
+    for (let i = 0; i < ipAddresses.length; i += 4) {
+      arr.push(ipAddresses.slice(i, i + 4));
+    }
+
+    return arr;
+  }, [ipAddresses])
+
+  return (
+    <>
+      <List
+        subheader={<ListSubheader sx={{ textAlign: 'center', lineHeight: '36px' }}>IP Addresses</ListSubheader>}
+        sx={{ border: '2px solid #CCC', maxHeight: 200, overflowY: 'scroll' }}
+        dense
+      >
+        <Grid container spacing={1}>
+          {
+            gridList.map((ipList) => (
+              <Grid container item spacing={1}>
+                <GridRow ipAddresses={ipList} onIPAddrChange={onIPAddrChange} />
+              </Grid>
+            ))
+          }
+        </Grid>
+      </List>
+      <Box sx={{ margin: '10px 0px' }}>
+        <Button type='button' variant='contained' onClick={onFetchDataClick}>Fetch Data</Button>
+        <div className='divider' />
+        <Button type='button' variant='contained' onClick={onClearDataClick}>Clear Data</Button>
+      </Box>
+    </>
+  );
+}
+
+type GridRowProps = {
+  ipAddresses: IPAddress[];
+  onIPAddrChange: (ipToChange: IPAddress) => void;
+};
+
+const GridRow: React.FC<GridRowProps> = ({
+  ipAddresses,
+  onIPAddrChange
 }) => (
-  <FormControl>
-    <List
-      subheader={<ListSubheader sx={{ textAlign: 'center', lineHeight: '36px' }}>IP Addresses</ListSubheader>}
-      sx={{ border: '2px solid #CCC', maxHeight: 200, overflowY: 'scroll' }}
-      dense
-    >
-      {ipAddresses.map((ipAddress) => <Item ipAddress={ipAddress} onIPAddrChange={onIPAddrChange} /> )}
-    </List>
-    <Box sx={{ margin: '10px 0px' }}>
-      <Button type='button' variant='contained' onClick={onFetchDataClick}>Fetch Data</Button>
-      <div className='divider' />
-      <Button type='button' variant='contained' onClick={onClearDataClick}>Clear Data</Button>
-    </Box>
-  </FormControl>
+  <>
+    {
+      ipAddresses.map((ipAddress) => (
+        <Grid item xs={true}>
+          <Item ipAddress={ipAddress} onIPAddrChange={onIPAddrChange} />
+        </Grid>
+      ))
+    }
+  </>
 );
 
 type ItemProps = {
@@ -49,7 +90,7 @@ const Item: React.FC<ItemProps> = ({
   ipAddress,
   onIPAddrChange
 }) => (
-  <ListItem sx={{ margin: '0px 0px 0px 3px' }} disablePadding>
+  <ListItem sx={{ minWidth: '175px', maxWidth: '175px', margin: '0px 0px 0px 3px' }} disablePadding>
     <ListItemButton sx={{ padding: 0 }} onClick={() => onIPAddrChange(ipAddress)} dense>
       <ListItemIcon sx={{ minWidth: 0 }}>
         <Checkbox
