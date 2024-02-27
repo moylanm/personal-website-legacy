@@ -44,7 +44,7 @@ const FilterForm: React.FC<FormProps> = ({
         <Grid container spacing={1}>
           {
             gridList.map((ipList) => (
-              <Grid container item spacing={1}>
+              <Grid container item spacing={1} sx={{ width: 'initial' }}>
                 <GridRow ipAddresses={ipList} onIPAddrChange={onIPAddrChange} />
               </Grid>
             ))
@@ -89,7 +89,7 @@ const RowItem: React.FC<RowItemProps> = ({
   ipAddress,
   onIPAddrChange
 }) => (
-  <ListItem sx={{ minWidth: '175px', maxWidth: '175px', margin: '0px 0px 0px 3px' }} disablePadding>
+  <ListItem sx={{ width: '190px', margin: '0px 0px 0px 3px' }} disablePadding>
     <ListItemButton sx={{ padding: 0 }} onClick={() => onIPAddrChange(ipAddress)} dense>
       <ListItemIcon sx={{ minWidth: 0 }}>
         <Checkbox
