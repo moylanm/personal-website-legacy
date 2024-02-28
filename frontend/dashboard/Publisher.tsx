@@ -20,26 +20,24 @@ const Publisher: React.FC<PublisherProps> = ({
   state,
   dispatch
 }) => {
-  const worksOptions = useMemo(() => {
-    return state.authors.reduce<WorkOption[]>((acc, author) => {
+  const sortedWorksOptions = useMemo(() => {
+    const worksOptions = state.authors.reduce<WorkOption[]>((acc, author) => {
       state.works[author].forEach(work => {
         acc.push({ author: author, work: work });
       });
 
       return acc;
     }, []);
-  }, [state.authors, state.works]);
 
-  const sortedWorksOptions = useMemo(() => {
     return worksOptions.sort((a, b) => -b.author.localeCompare(a.author));
-  }, [worksOptions]);
+  }, [state.authors, state.works]);
 
   useEffect(() => {
     if (state.excerptActionSuccess) {
       resetForm();
       fetchExcerpts(dispatch, state.renderKey);
     }
-  }, [state.excerptActionSuccess]);
+  }, [dispatch, state.excerptActionSuccess]);
 
   const handleAuthorFieldChange = useCallback((_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch({
