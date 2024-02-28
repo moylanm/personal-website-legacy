@@ -9,6 +9,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Grid from '@mui/material/Grid';
 import DialogTitle from '@mui/material/DialogTitle';
+import TableContainer from '@mui/material/TableContainer';
 
 export const StyledTypography = styled(Typography)({
   fontStyle: 'Roboto, Helvetica, Arial, san-serif',
@@ -55,4 +56,8 @@ export const StyledGrid = styled(Grid)({
 
 export const StyledDialogTitle = styled(DialogTitle)({
   fontSize: '1rem'
+});
+
+export const StyledTableContainer = styled(TableContainer)({
+  margin: '2px calc(-1 * ((100% - 550px) / 2)) 0'
 });

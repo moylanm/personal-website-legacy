@@ -4,9 +4,9 @@ import { formatDate } from './utils';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { StyledTableContainer } from './styled';
 
 interface Column {
   id: 'timestamp' | 'method' | 'path' | 'ipAddress' | 'referer' | 'uaName' | 'uaOS' | 'uaDeviceType' | 'uaDeviceName';
@@ -65,7 +65,7 @@ const columns: readonly Column[] = [
 
 const RequestTable: React.FC<{ requests: Request[] }> = ({ requests }) => {
   return (
-    <TableContainer sx={{ overflowX: 'visible', margin: '2px calc(-1 * ((100% - 550px) / 2)) 0' }}>
+    <StyledTableContainer>
       <Table className='dashboard-table'>
         <TableHead>
           <TableRow>
@@ -84,7 +84,7 @@ const RequestTable: React.FC<{ requests: Request[] }> = ({ requests }) => {
           {requests.map((request) => <Row request={request} />)}
         </TableBody>
       </Table>
-    </TableContainer>
+    </StyledTableContainer>
   );
 };
 
