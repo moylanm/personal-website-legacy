@@ -129,3 +129,8 @@ export type ExcerptsFetchResponse = {
 export type ExcerptActionResponse = {
 	message: string;
 };
+
+export type ErrorResponse = {
+	errors?: { [key: string]: string };
+	error?: string;
+}
