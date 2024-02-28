@@ -1,12 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
 import { Action, ActionType, AppState } from './types';
 import { publishExcerpt, fetchExcerpts } from './api';
+import { StyledTypography } from './styles';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-
-const FONT = 'Roboto, Helvetica, Arial, sans-serif';
 
 type WorkOption = {
   author: string;
@@ -81,9 +79,9 @@ const Publisher: React.FC<PublisherProps> = ({
         onInputChange={handleAuthorFieldChange}
         options={state.authors}
         renderOption={(props, option) => (
-          <Typography {...props} sx={{ fontStyle: FONT }}>
+          <StyledTypography {...props}>
             {option}
-          </Typography>
+          </StyledTypography>
         )}
         renderInput={(authors) => 
           <TextField 
@@ -102,9 +100,9 @@ const Publisher: React.FC<PublisherProps> = ({
         groupBy={(option) => option.author}
         getOptionLabel={(option) => typeof option === 'string' ? option : option.work}
         renderOption={(props, option) => (
-          <Typography {...props} sx={{ fontStyle: FONT }}>
+          <StyledTypography {...props}>
             {option.work}
-          </Typography>
+          </StyledTypography>
         )}
         renderInput={(params) => 
           <TextField

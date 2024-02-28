@@ -2,18 +2,16 @@ import React, { useCallback, useEffect, useRef, useState, Suspense } from 'react
 import { Action, AppState, Excerpt } from './types';
 import { deleteExcerpt, fetchExcerpts, updateExcerpt } from './api';
 import useIntersectionObserver from './useIntersectionObserver';
+import { StyledAccordionSummary, StyledTypography } from './styles';
 import Accordion from '@mui/material/Accordion';
 import AccordionActions from '@mui/material/AccordionActions';
-import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-
-const FONT_STYLE = 'Roboto, Helvetica, Arial, sans-serif';
-const CHUNK_SIZE = 15;
 
 const DeleteDialog = React.lazy(() => import('./DeleteDialog'));
+
+const CHUNK_SIZE = 15;
 
 type EditorProps = {
   state: AppState;
@@ -34,9 +32,7 @@ const Editor: React.FC<EditorProps> = ({
         setDisplayCount(prevCount => Math.min(prevCount + CHUNK_SIZE, state.excerpts.length))
       }
     },
-    {
-      rootMargin: '500px'
-    }
+    { rootMargin: '500px' }
   );
 
   useEffect(() => {
@@ -98,14 +94,11 @@ const Item: React.FC<ItemProps> = React.memo(({
   return (
     <>
       <Accordion>
-        <AccordionSummary sx={{ '&:hover': { backgroundColor: '#F1F3F6' } }}>
-          <Typography sx={{
-            fontStyle: FONT_STYLE,
-            padding: 0
-          }}>
+        <StyledAccordionSummary>
+          <StyledTypography>
             {`${excerpt.id}: ${excerpt.author} - ${excerpt.work}`}
-          </Typography>
-        </AccordionSummary>
+          </StyledTypography>
+        </StyledAccordionSummary>
         <AccordionDetails>
           <TextField
             fullWidth
