@@ -107,7 +107,7 @@ const Item: React.FC<ItemProps> = ({
   return (
     <>
       <Accordion>
-        <AccordionSummary sx={{ '&:hover': '#F1F3F6' }}>
+        <AccordionSummary sx={{ '&:hover': { backgroundColor: '#F1F3F6' } }}>
           <Typography sx={{
             fontStyle: FONT_STYLE,
             padding: 0
