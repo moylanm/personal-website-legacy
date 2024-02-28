@@ -16,11 +16,11 @@ const Logs: React.FC<LogsProps> = ({
 
   const handlFetchDataClick = useCallback(() => {
     fetchLogs(dispatch, state.ipAddresses, state.renderKey);
-  }, [state.ipAddresses, state.renderKey]);
+  }, [dispatch, state.ipAddresses, state.renderKey]);
 
   const handleClearDataClick = useCallback(() => {
     clearLogs(dispatch, state.renderKey);
-  }, [state.renderKey]);
+  }, [dispatch, state.renderKey]);
 
   const handleIPAddressChange = useCallback((ipToChange: IPAddress) => {
     const ipAddresses = state.ipAddresses.map((ip) => {
@@ -31,7 +31,7 @@ const Logs: React.FC<LogsProps> = ({
       type: ActionType.SetIPAddresses,
       payload: ipAddresses
     });
-  }, [state.ipAddresses]);
+  }, [dispatch, state.ipAddresses]);
 
   const filteredRequests = useMemo(() => {
     const selectedIPs = state.ipAddresses
