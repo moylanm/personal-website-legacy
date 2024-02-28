@@ -73,37 +73,25 @@ const GridRow: React.FC<GridRowProps> = ({
     {
       ipAddresses.map((ipAddress) => (
         <Grid item xs={true}>
-          <RowItem ipAddress={ipAddress} onIPAddrChange={onIPAddrChange} />
+          <ListItem sx={{ width: '190px', margin: '0px 0px 0px 3px' }} disablePadding>
+            <ListItemButton sx={{ padding: 0 }} onClick={() => onIPAddrChange(ipAddress)} dense>
+              <ListItemIcon sx={{ minWidth: 0 }}>
+                <Checkbox
+                  id={`list-item-checkbox-${ipAddress.value}`}
+                  edge='start'
+                  checked={ipAddress.selected}
+                  disableRipple
+                />
+              </ListItemIcon>
+              <ListItemText id={`list-item-text-${ipAddress.value}`}>
+                {ipAddress.value}
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
         </Grid>
       ))
     }
   </>
-);
-
-type RowItemProps = {
-  ipAddress: IPAddress;
-  onIPAddrChange: (ipToChange: IPAddress) => void;
-};
-
-const RowItem: React.FC<RowItemProps> = ({
-  ipAddress,
-  onIPAddrChange
-}) => (
-  <ListItem sx={{ width: '190px', margin: '0px 0px 0px 3px' }} disablePadding>
-    <ListItemButton sx={{ padding: 0 }} onClick={() => onIPAddrChange(ipAddress)} dense>
-      <ListItemIcon sx={{ minWidth: 0 }}>
-        <Checkbox
-          id={`list-item-checkbox-${ipAddress.value}`}
-          edge='start'
-          checked={ipAddress.selected}
-          disableRipple
-        />
-      </ListItemIcon>
-      <ListItemText id={`list-item-text-${ipAddress.value}`}>
-        {ipAddress.value}
-      </ListItemText>
-    </ListItemButton>
-  </ListItem>
 );
 
 export default FilterForm;
