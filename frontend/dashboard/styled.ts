@@ -1,4 +1,5 @@
 import { styled } from '@mui/system';
+import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
@@ -10,6 +11,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Grid from '@mui/material/Grid';
 import DialogTitle from '@mui/material/DialogTitle';
 import TableContainer from '@mui/material/TableContainer';
+
+export const StyledTab = styled(Tab)({
+  opacity: 1,
+  '&:hover': {
+    backgroundColor: '#1876D2',
+    color: '#FFFFFF'
+  }
+});
 
 export const StyledTypography = styled(Typography)({
   fontStyle: 'Roboto, Helvetica, Arial, san-serif',

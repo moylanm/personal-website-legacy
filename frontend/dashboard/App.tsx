@@ -9,14 +9,7 @@ import Tab from '@mui/material/Tab';
 import Publisher from './Publisher';
 import Editor from './Editor';
 import Logs from './Logs'
-
-const TAB_STYLE = {
-  opacity: 1,
-  '&:hover': {
-    backgroundColor: '#1876D2',
-    color: '#FFFFFF'
-  }
-}
+import { StyledTab } from './styled';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -40,10 +33,10 @@ const App = () => {
         variant='fullWidth'
         textColor='inherit'
       >
-        <Tab label='Publish' value={0} sx={TAB_STYLE} />
-        <Tab label='Edit' value={1} sx={TAB_STYLE} />
-        <Tab label='Logs' value={2} sx={TAB_STYLE} />
-        <Tab label='Metrics' value={3} sx={TAB_STYLE}/>
+        <StyledTab label='Publish' value={0} />
+        <StyledTab label='Edit' value={1} />
+        <StyledTab label='Logs' value={2} />
+        <StyledTab label='Metrics' value={3} />
       </Tabs>
 
       <hr />

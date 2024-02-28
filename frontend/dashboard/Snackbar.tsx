@@ -3,6 +3,7 @@ import { AppState } from "./types";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
+import { StyledTypography } from './styled';
 
 type SnackbarProps = {
   state: AppState;
@@ -23,12 +24,9 @@ export const SuccessSnackbar: React.FC<SnackbarProps> = ({
         severity='success'
         variant='filled'
       >
-        <Typography sx={{
-          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
-          padding: 0
-        }}>
+        <StyledTypography>
           {state.excerptActionResponse}
-        </Typography>
+        </StyledTypography>
       </Alert>
     </Snackbar>
   );
@@ -48,12 +46,9 @@ export const ErrorSnackbar: React.FC<SnackbarProps> = ({
         severity='error'
         variant='filled'
       >
-        <Typography sx={{
-          fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
-          padding: 0
-        }}>
+        <StyledTypography>
           {state.errorMessage}
-        </Typography>
+        </StyledTypography>
       </Alert>
     </Snackbar>
   );
