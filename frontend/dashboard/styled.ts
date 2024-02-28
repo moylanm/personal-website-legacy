@@ -72,5 +72,6 @@ export const StyledDialogTitle = styled(DialogTitle)({
 });
 
 export const StyledTableContainer = styled(TableContainer)({
+  width: 'initial',
   margin: '2px calc(-1 * ((100% - 550px) / 2)) 0'
 });
