@@ -1,15 +1,18 @@
-import React, { useReducer, useState } from 'react';
+import React, { useCallback, useReducer, useState } from 'react';
 import { ActionType } from './types';
 import { initialState, reducer } from './reducer';
 import { useInitialFetch } from './api';
 import { SuccessSnackbar, ErrorSnackbar } from './Snackbar';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Publisher from './Publisher';
 import Editor from './Editor';
 import Logs from './Logs'
-import { StyledTab } from './styled';
+import { StyledTab, StyledTabsBox } from './styled';
+
+const MemoizedPublisher = React.memo(Publisher);
+const MemoizedEditor = React.memo(Editor);
+const MemoizedLogs = React.memo(Logs);
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -17,16 +20,16 @@ const App = () => {
 
   useInitialFetch(dispatch, state.renderKey);
 
-  const selectTab = (_: React.SyntheticEvent, tabId: number) => {
+  const selectTab = useCallback((_: React.SyntheticEvent, tabId: number) => {
     setActiveTab(tabId);
-  };
+  }, []);
 
-  const handleSnackbarClose = () => {
+  const handleSnackbarClose = useCallback(() => {
     dispatch({ type: ActionType.ResetActionState });
-  };
+  }, [dispatch]);
 
   return (
-    <Box sx={{ backgroundColor: 'inherit' }}>
+    <StyledTabsBox>
       <Tabs
         value={activeTab}
         onChange={selectTab}
@@ -41,13 +44,13 @@ const App = () => {
 
       <hr />
 
-      {activeTab === 0 && <Publisher state={state} dispatch={dispatch} />}
-      {activeTab === 1 && <Editor key={state.renderKey} state={state} dispatch={dispatch} />}
-      {activeTab === 2 && <Logs key={state.renderKey} state={state} dispatch={dispatch} />}
+      {activeTab === 0 && <MemoizedPublisher state={state} dispatch={dispatch} />}
+      {activeTab === 1 && <MemoizedEditor key={`editor-${state.renderKey}`} state={state} dispatch={dispatch} />}
+      {activeTab === 2 && <MemoizedLogs key={`logs-${state.renderKey}`} state={state} dispatch={dispatch} />}
       {activeTab === 3 && <div>Metrics content...</div>}
       <SuccessSnackbar state={state} handleClose={handleSnackbarClose} />
       <ErrorSnackbar state={state} handleClose={handleSnackbarClose} />
-    </Box>
+    </StyledTabsBox>
   );
 };
 
