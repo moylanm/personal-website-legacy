@@ -1,11 +1,10 @@
 import React from 'react';
 import { Excerpt } from './types';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { StyledDialogTitle, StyledTypography } from './styled';
 
 type DeleteDialogProps = {
   excerpt: Excerpt;
@@ -21,25 +20,19 @@ const DeleteDialog: React.FC<DeleteDialogProps> = React.memo(({
   handleConfirm
 }) => {
   return (
-    <Dialog
-    onClose={handleClose}
-    open={open}
-    >
-    <DialogTitle sx={{ fontSize: '1rem' }}>
-      {`${excerpt.id}: ${excerpt.author} - ${excerpt.work}`}
-    </DialogTitle>
-    <DialogContent>
-      <Typography sx={{
-        fontStyle: 'Roboto, Helvetica, Arial, sans-serif',
-        padding: 0
-      }}>
-        Are you sure you want to delete this excerpt?
-      </Typography>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={handleClose}>Cancel</Button>
-      <Button onClick={handleConfirm}>Delete</Button>
-    </DialogActions>
+    <Dialog open={open} onClose={handleClose}>
+      <StyledDialogTitle>
+        {`${excerpt.id}: ${excerpt.author} - ${excerpt.work}`}
+      </StyledDialogTitle>
+      <DialogContent>
+        <StyledTypography>
+          Are you sure you want to delete this excerpt?
+        </StyledTypography>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleConfirm}>Delete</Button>
+      </DialogActions>
     </Dialog>
   );
 });

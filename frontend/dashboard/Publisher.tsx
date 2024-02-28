@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Action, ActionType, AppState } from './types';
 import { publishExcerpt, fetchExcerpts } from './api';
-import { StyledTypography } from './styles';
+import { StyledTypography } from './styled';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState, Suspense } from 'react
 import { Action, AppState, Excerpt } from './types';
 import { deleteExcerpt, fetchExcerpts, updateExcerpt } from './api';
 import useIntersectionObserver from './useIntersectionObserver';
-import { StyledAccordionSummary, StyledTypography } from './styles';
+import { StyledAccordionSummary, StyledTypography } from './styled';
 import Accordion from '@mui/material/Accordion';
 import AccordionActions from '@mui/material/AccordionActions';
 import AccordionDetails from '@mui/material/AccordionDetails';
