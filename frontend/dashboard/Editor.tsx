@@ -179,7 +179,7 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({
         fontStyle: FONT_STYLE,
         padding: 0
       }}>
-      Are you sure you want to delete this excerpt?
+        Are you sure you want to delete this excerpt?
       </Typography>
     </DialogContent>
     <DialogActions>
