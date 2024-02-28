@@ -12,6 +12,10 @@ import Grid from '@mui/material/Grid';
 import DialogTitle from '@mui/material/DialogTitle';
 import TableContainer from '@mui/material/TableContainer';
 
+export const StyledTabsBox = styled(Box)({
+  backgroundColor: 'inherit'
+});
+
 export const StyledTab = styled(Tab)({
   opacity: 1,
   '&:hover': {
