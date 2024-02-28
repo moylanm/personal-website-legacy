@@ -14,12 +14,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 const FONT_STYLE = 'Roboto, Helvetica, Arial, sans-serif';
-const ACCORDION_STYLE = {
-  '&:hover': {
-    backgroundColor: '#F1F3F6'
-  }
-}
-
 const CHUNK_SIZE = 15;
 
 type EditorProps = {
@@ -113,7 +107,7 @@ const Item: React.FC<ItemProps> = ({
   return (
     <>
       <Accordion>
-        <AccordionSummary sx={ACCORDION_STYLE}>
+        <AccordionSummary sx={{ '&:hover': '#F1F3F6' }}>
           <Typography sx={{
             fontStyle: FONT_STYLE,
             padding: 0
