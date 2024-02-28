@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Action, ActionType, AppState } from './types';
 import { publishExcerpt, fetchExcerpts } from './api';
 import { StyledTypography } from './styled';
@@ -30,6 +30,10 @@ const Publisher: React.FC<PublisherProps> = ({
     }, []);
   }, [state.authors, state.works]);
 
+  const sortedWorksOptions = useMemo(() => {
+    return worksOptions.sort((a, b) => -b.author.localeCompare(a.author));
+  }, [worksOptions]);
+
   useEffect(() => {
     if (state.excerptActionSuccess) {
       resetForm();
@@ -37,39 +41,39 @@ const Publisher: React.FC<PublisherProps> = ({
     }
   }, [state.excerptActionSuccess]);
 
-  const handleAuthorFieldChange = (_: React.SyntheticEvent<Element, Event>, value: string) => {
+  const handleAuthorFieldChange = useCallback((_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch({
       type: ActionType.SetAuthorField,
       payload: value
     });
-  };
+  }, [dispatch]);
 
-  const handleWorkFieldChange = (_: React.SyntheticEvent<Element, Event>, value: string) => {
+  const handleWorkFieldChange = useCallback((_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch({
       type: ActionType.SetWorkField,
       payload: value
     });
-  };
+  }, [dispatch]);
 
-  const handleBodyFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBodyFieldChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: ActionType.SetBodyField,
       payload: event.target.value
     });
-  };
+  }, [dispatch]);
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     dispatch({ type: ActionType.ResetPublishForm });
-  };
+  }, [dispatch]);
 
-  const submitForm = () => {
+  const submitForm = useCallback(() => {
     publishExcerpt(
       dispatch,
       state.authorField,
       state.workField,
       state.bodyField
     );
-  };
+  }, [dispatch, state.authorField, state.workField, state.bodyField]);
 
   return (
     <>
@@ -96,7 +100,7 @@ const Publisher: React.FC<PublisherProps> = ({
         freeSolo
         inputValue={state.workField}
         onInputChange={handleWorkFieldChange}
-        options={worksOptions.sort((a, b) => -b.author.localeCompare(a.author))}
+        options={sortedWorksOptions}
         groupBy={(option) => option.author}
         getOptionLabel={(option) => typeof option === 'string' ? option : option.work}
         renderOption={(props, option) => (
