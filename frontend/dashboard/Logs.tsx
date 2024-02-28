@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
 import { Action, ActionType, AppState, IPAddress } from './types';
+import { clearLogs, fetchLogs } from './api';
 import RequestTable from './RequestTable';
 import FilterForm from './FilterForm';
-import { clearLogs, fetchLogs } from './api';
 
 type LogsProps = {
   state: AppState;
