@@ -32,14 +32,14 @@ func (app *application) routes() http.Handler {
 
 	protected := dynamic.Append(app.requireAuthentication)
 
+	router.Handle("/excerpts", protected.ThenFunc(app.createExcerpt)).Methods(http.MethodPost)
+	router.Handle(excerptsPath, protected.ThenFunc(app.updateExcerpt)).Methods(http.MethodPatch)
+	router.Handle(excerptsPath, protected.ThenFunc(app.deleteExcerpt)).Methods(http.MethodDelete)
+
 	router.Handle("/dashboard", protected.ThenFunc(app.dashboard)).Methods(http.MethodGet)
 	router.Handle("/dashboard/request-logs", protected.ThenFunc(app.requestLogsJson)).Methods(http.MethodGet)
 	router.Handle("/dashboard/request-logs", protected.ThenFunc(app.clearRequestLogs)).Methods(http.MethodPost)
 	router.Handle("/logout", protected.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
-
-	router.Handle("/excerpts", protected.ThenFunc(app.createExcerpt)).Methods(http.MethodPost)
-	router.Handle(excerptsPath, protected.ThenFunc(app.updateExcerpt)).Methods(http.MethodPatch)
-	router.Handle(excerptsPath, protected.ThenFunc(app.deleteExcerpt)).Methods(http.MethodDelete)
 
 	standard := alice.New(app.recoverPanic, app.enableCORS, app.rateLimit, secureHeaders)
 
