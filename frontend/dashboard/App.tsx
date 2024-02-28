@@ -3,7 +3,6 @@ import { ActionType } from './types';
 import { initialState, reducer } from './reducer';
 import { useInitialFetch } from './api';
 import { SuccessSnackbar, ErrorSnackbar } from './Snackbar';
-import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Publisher from './Publisher';
 import Editor from './Editor';
