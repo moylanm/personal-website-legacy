@@ -1,12 +1,16 @@
 import { AxiosError } from 'axios';
-import { Action, ErrorType, IPAddress } from './types';
+import { Action, ErrorResponse, ErrorType, IPAddress } from './types';
 
 export const handleError = (dispatch: React.Dispatch<Action>, actionType: ErrorType, error: any) => {
-  const axiosError = error as AxiosError;
+  const axiosError = error as AxiosError<ErrorResponse>;
   let errorMessage = 'An error occurred';
 
   if (axiosError.response) {
-    errorMessage = `Error: ${axiosError.response.status} ${axiosError.response.statusText}`;
+		if (axiosError.response.data.errors) {
+			errorMessage = `Error ${axiosError.response.status}: validation error`;
+		} else {
+			errorMessage = `Error ${axiosError.response.status}: ${axiosError.response.data.error}`;
+		}
   } else if (axiosError.request) {
     errorMessage = 'Network error';
   } else {
