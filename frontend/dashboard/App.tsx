@@ -10,11 +10,11 @@ import Publisher from './Publisher';
 import Editor from './Editor';
 import Logs from './Logs'
 
-const tabStyle = {
+const TAB_STYLE = {
   opacity: 1,
   '&:hover': {
-    backgroundColor: 'transparent',
-    color: '#1876D2'
+    backgroundColor: '#1876D2',
+    color: '#FFFFFF'
   }
 }
 
@@ -40,10 +40,10 @@ const App = () => {
         variant='fullWidth'
         textColor='inherit'
       >
-        <Tab label='Publish' value={0} sx={tabStyle} />
-        <Tab label='Edit' value={1} sx={tabStyle} />
-        <Tab label='Logs' value={2} sx={tabStyle} />
-        <Tab label='Metrics' value={3} sx={tabStyle}/>
+        <Tab label='Publish' value={0} sx={TAB_STYLE} />
+        <Tab label='Edit' value={1} sx={TAB_STYLE} />
+        <Tab label='Logs' value={2} sx={TAB_STYLE} />
+        <Tab label='Metrics' value={3} sx={TAB_STYLE}/>
       </Tabs>
 
       <hr />
