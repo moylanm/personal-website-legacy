@@ -1,58 +1,61 @@
 import React, { useCallback, useMemo } from 'react';
-import { Action, ActionType, AppState, IPAddress } from './types';
+import { Action, ActionType, IPAddress, Request } from './types';
 import { clearLogs, fetchLogs } from './api';
 import RequestTable from './RequestTable';
 import FilterForm from './FilterForm';
 
 type LogsProps = {
-  state: AppState;
   dispatch: React.Dispatch<Action>;
+  renderKey: number;
+  requests: Request[];
+  ipAddresses: IPAddress[];
 }
 
 const Logs: React.FC<LogsProps> = ({
-  state,
-  dispatch
+  dispatch,
+  renderKey,
+  requests,
+  ipAddresses
 }) => {
-  const handlFetchDataClick = useCallback(() => {
-    fetchLogs(dispatch, state.ipAddresses, state.renderKey);
-  }, [dispatch, state.ipAddresses, state.renderKey]);
+  const handlFetchLogsClick = useCallback(() => {
+    fetchLogs(dispatch, ipAddresses, renderKey);
+  }, [dispatch, ipAddresses, renderKey]);
 
-  const handleClearDataClick = useCallback(() => {
-    clearLogs(dispatch, state.renderKey);
-  }, [dispatch, state.renderKey]);
+  const handleClearLogsClick = useCallback(() => {
+    clearLogs(dispatch, renderKey);
+  }, [dispatch, renderKey]);
 
   const handleIPAddressChange = useCallback((ipToChange: IPAddress) => {
-    const ipAddresses = state.ipAddresses.map((ip) => {
+    const newIPAddressState = ipAddresses.map((ip) => {
       return ip.value === ipToChange.value ? {value: ip.value, selected: !ipToChange.selected} : ip;
     });
 
     dispatch({
       type: ActionType.SetIPAddresses,
-      payload: ipAddresses
+      payload: newIPAddressState
     });
-  }, [dispatch, state.ipAddresses]);
+  }, [dispatch, ipAddresses]);
 
   const filteredRequests = useMemo(() => {
-    const selectedIPs = state.ipAddresses
-      .filter((ip) => ip.selected)
-      .map((ip) => ip.value);
+    const selectedIPs = ipAddresses
+    .filter((ip) => ip.selected)
+    .map((ip) => ip.value);
 
-    return state.requests.filter((request) =>
+    return requests.filter((request) =>
       selectedIPs.includes(request.ipAddress)
     );
-  }, [state.requests, state.ipAddresses]);
+  }, [requests, ipAddresses]);
 
   return (
     <>
-      {(state.fetchError || state.clearError) ?? <div className='error-message'>{state.errorMessage}</div>}
       <FilterForm 
-        ipAddresses={state.ipAddresses}
+        ipAddresses={ipAddresses}
         onIPAddrChange={handleIPAddressChange}
-        onFetchDataClick={handlFetchDataClick}
-        onClearDataClick={handleClearDataClick}
+        onFetchDataClick={handlFetchLogsClick}
+        onClearDataClick={handleClearLogsClick}
       />
       {filteredRequests.length > 0
-        ? <RequestTable key={state.renderKey} requests={filteredRequests} />
+        ? <RequestTable key={renderKey} requests={filteredRequests} />
         : <div className='message'>No logs to render...</div>
       }
     </>

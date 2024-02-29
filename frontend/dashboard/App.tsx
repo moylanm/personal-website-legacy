@@ -60,7 +60,14 @@ const App = () => {
           dispatch={dispatch}
           excerpts={state.excerpts}
         />}
-      {activeTab === 2 && <Logs key={`logs-${state.renderKey}`} state={state} dispatch={dispatch} />}
+      {activeTab === 2 &&
+        <Logs
+          key={`logs-${state.renderKey}`}
+          dispatch={dispatch}
+          renderKey={state.renderKey}
+          requests={state.requests}
+          ipAddresses={state.ipAddresses}
+        />}
       {activeTab === 3 && <div>Metrics content...</div>}
 
       {state.excerptActionSuccess &&
