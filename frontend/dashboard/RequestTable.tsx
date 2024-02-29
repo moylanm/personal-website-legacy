@@ -95,9 +95,7 @@ const Row: React.FC<{ request: Request }> = ({ request }) => {
         const value = request[column.id];
         return (
           <TableCell key={column.id} align={column.align}>
-            {column.format
-              ? column.format(value)
-              : value}
+            {column.format ? column.format(value) : value}
           </TableCell>
         );
       })}
