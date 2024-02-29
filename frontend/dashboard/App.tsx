@@ -62,7 +62,6 @@ const App = () => {
         />}
       {activeTab === 2 &&
         <Logs
-          key={`logs-${state.renderKey}`}
           dispatch={dispatch}
           renderKey={state.renderKey}
           requests={state.requests}
