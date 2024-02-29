@@ -54,9 +54,9 @@ const FilterForm: React.FC<FormProps> = ({
         </Grid>
       </StyledList>
       <StyledBox>
-        <Button type='button' variant='contained' onClick={onFetchDataClick}>Fetch Data</Button>
+        <Button type='button' variant='contained' onClick={onFetchDataClick}>Fetch Logs</Button>
         <div className='divider' />
-        <Button type='button' variant='contained' onClick={onClearDataClick}>Clear Data</Button>
+        <Button type='button' variant='contained' onClick={onClearDataClick}>Clear Logs</Button>
       </StyledBox>
     </>
   );
