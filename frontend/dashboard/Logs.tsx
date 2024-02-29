@@ -13,7 +13,6 @@ const Logs: React.FC<LogsProps> = ({
   state,
   dispatch
 }) => {
-
   const handlFetchDataClick = useCallback(() => {
     fetchLogs(dispatch, state.ipAddresses, state.renderKey);
   }, [dispatch, state.ipAddresses, state.renderKey]);
