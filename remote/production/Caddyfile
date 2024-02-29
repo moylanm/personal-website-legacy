@@ -5,6 +5,7 @@
 mylesmoylan.net, www.mylesmoylan.net {
   header {
   	-server
+		Strict-Transport-Security "max-age=31536000; includeSubdomains; preload;"
   }
   reverse_proxy https://mylesmoylan.net:4000 {
     transport http {
