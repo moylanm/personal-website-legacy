@@ -1,28 +1,36 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { Action, ActionType, AppState } from './types';
-import { publishExcerpt, fetchExcerpts } from './api';
+import React, { useCallback, useMemo } from 'react';
+import { Action, ActionType } from './types';
+import { publishExcerpt } from './api';
 import { StyledTypography } from './styled';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 
-type WorkOption = {
+type WorksOption = {
   author: string;
   work: string;
 };
 
 type PublisherProps = {
-  state: AppState;
   dispatch: React.Dispatch<Action>;
+  authors: string[];
+  works: { [author: string]: string[] };
+  authorField: string;
+  workField: string;
+  bodyField: string;
 }
 
 const Publisher: React.FC<PublisherProps> = ({
-  state,
-  dispatch
+  dispatch,
+  authors,
+  works,
+  authorField,
+  workField,
+  bodyField
 }) => {
   const sortedWorksOptions = useMemo(() => {
-    const worksOptions = state.authors.reduce<WorkOption[]>((acc, author) => {
-      state.works[author].forEach(work => {
+    const worksOptions = authors.reduce<WorksOption[]>((acc, author) => {
+      works[author].forEach(work => {
         acc.push({ author: author, work: work });
       });
 
@@ -30,14 +38,7 @@ const Publisher: React.FC<PublisherProps> = ({
     }, []);
 
     return worksOptions.sort((a, b) => -b.author.localeCompare(a.author));
-  }, [state.authors, state.works]);
-
-  useEffect(() => {
-    if (state.excerptActionSuccess) {
-      resetForm();
-      fetchExcerpts(dispatch, state.renderKey);
-    }
-  }, [dispatch, state.excerptActionSuccess]);
+  }, [authors, works]);
 
   const handleAuthorFieldChange = useCallback((_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch({
@@ -67,19 +68,19 @@ const Publisher: React.FC<PublisherProps> = ({
   const submitForm = useCallback(() => {
     publishExcerpt(
       dispatch,
-      state.authorField,
-      state.workField,
-      state.bodyField
+      authorField,
+      workField,
+      bodyField
     );
-  }, [dispatch, state.authorField, state.workField, state.bodyField]);
+  }, [dispatch, authorField, workField, bodyField]);
 
   return (
     <>
       <Autocomplete
         freeSolo
-        inputValue={state.authorField}
+        inputValue={authorField}
         onInputChange={handleAuthorFieldChange}
-        options={state.authors}
+        options={authors}
         renderOption={(props, option) => (
           <StyledTypography {...props}>
             {option}
@@ -96,7 +97,7 @@ const Publisher: React.FC<PublisherProps> = ({
       />
       <Autocomplete
         freeSolo
-        inputValue={state.workField}
+        inputValue={workField}
         onInputChange={handleWorkFieldChange}
         options={sortedWorksOptions}
         groupBy={(option) => option.author}
@@ -121,7 +122,7 @@ const Publisher: React.FC<PublisherProps> = ({
         label='Body'
         margin='normal'
         onChange={handleBodyFieldChange}
-        value={state.bodyField}
+        value={bodyField}
         multiline
         rows={10}
       />

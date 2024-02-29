@@ -1,7 +1,7 @@
-import React, { useCallback, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { ActionType } from './types';
 import { initialState, reducer } from './reducer';
-import { useInitialFetch } from './api';
+import { fetchExcerpts, useInitialFetch } from './api';
 import { StyledTab, StyledTabsBox } from './styled';
 import ResponseSnackbar from './Snackbar';
 import Tabs from '@mui/material/Tabs';
@@ -14,6 +14,12 @@ const App = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   useInitialFetch(dispatch, state.renderKey);
+
+  useEffect(() => {
+    if (state.excerptActionSuccess) {
+      fetchExcerpts(dispatch, state.renderKey);
+    }
+  }, [dispatch, state.excerptActionSuccess]);
 
   const selectTab = useCallback((_: React.SyntheticEvent, tabId: number) => {
     setActiveTab(tabId);
@@ -39,7 +45,15 @@ const App = () => {
 
       <hr />
 
-      {activeTab === 0 && <Publisher state={state} dispatch={dispatch} />}
+      {activeTab === 0 &&
+        <Publisher
+          dispatch={dispatch}
+          authors={state.authors}
+          works={state.works}
+          authorField={state.authorField}
+          workField={state.workField}
+          bodyField={state.bodyField}
+        />}
       {activeTab === 1 && <Editor key={`editor-${state.renderKey}`} state={state} dispatch={dispatch} />}
       {activeTab === 2 && <Logs key={`logs-${state.renderKey}`} state={state} dispatch={dispatch} />}
       {activeTab === 3 && <div>Metrics content...</div>}
