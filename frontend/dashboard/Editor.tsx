@@ -39,7 +39,7 @@ const Editor: React.FC<EditorProps> = ({
     if (state.excerptActionSuccess) {
       fetchExcerpts(dispatch, state.renderKey);
     }
-  }, [state.excerptActionSuccess]);
+  }, [dispatch, state.excerptActionSuccess]);
 
   return (
     <>
