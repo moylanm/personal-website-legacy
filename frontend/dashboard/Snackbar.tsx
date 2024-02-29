@@ -1,55 +1,35 @@
 import React from 'react';
-import { AppState } from "./types";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import Typography from '@mui/material/Typography';
 import { StyledTypography } from './styled';
 
-type SnackbarProps = {
-  state: AppState;
+type ResponseSnackbarProps = {
+  response: string;
+  severity: 'success' | 'error';
   handleClose: () => void;
 };
 
-export const SuccessSnackbar: React.FC<SnackbarProps> = ({
-  state,
+const ResponseSnackbar: React.FC<ResponseSnackbarProps> = ({
+  response,
+  severity,
   handleClose
 }) => {
   return (
     <Snackbar
-      open={state.excerptActionSuccess}
+      open={true}
       autoHideDuration={5000}
       onClose={handleClose}>
       <Alert
         onClose={handleClose}
-        severity='success'
+        severity={severity}
         variant='filled'
       >
         <StyledTypography>
-          {state.excerptActionResponse}
+          {response}
         </StyledTypography>
       </Alert>
     </Snackbar>
   );
 };
 
-export const ErrorSnackbar: React.FC<SnackbarProps> = ({
-  state,
-  handleClose
-}) => {
-  return (
-    <Snackbar
-      open={state.excerptActionError}
-      autoHideDuration={5000}
-      onClose={handleClose}>
-      <Alert
-        onClose={handleClose}
-        severity='error'
-        variant='filled'
-      >
-        <StyledTypography>
-          {state.errorMessage}
-        </StyledTypography>
-      </Alert>
-    </Snackbar>
-  );
-};
+export default ResponseSnackbar;

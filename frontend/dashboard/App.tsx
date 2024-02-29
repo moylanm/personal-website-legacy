@@ -3,7 +3,7 @@ import { ActionType } from './types';
 import { initialState, reducer } from './reducer';
 import { useInitialFetch } from './api';
 import { StyledTab, StyledTabsBox } from './styled';
-import { SuccessSnackbar, ErrorSnackbar } from './Snackbar';
+import ResponseSnackbar from './Snackbar';
 import Tabs from '@mui/material/Tabs';
 import Publisher from './Publisher';
 import Editor from './Editor';
@@ -44,8 +44,10 @@ const App = () => {
       {activeTab === 2 && <Logs key={`logs-${state.renderKey}`} state={state} dispatch={dispatch} />}
       {activeTab === 3 && <div>Metrics content...</div>}
 
-      <SuccessSnackbar state={state} handleClose={handleSnackbarClose} />
-      <ErrorSnackbar state={state} handleClose={handleSnackbarClose} />
+      {state.excerptActionSuccess &&
+        <ResponseSnackbar severity='success' response={state.excerptActionResponse} handleClose={handleSnackbarClose} />}
+      {state.excerptActionError &&
+        <ResponseSnackbar severity='error' response={state.errorMessage} handleClose={handleSnackbarClose} />}
     </StyledTabsBox>
   );
 };
