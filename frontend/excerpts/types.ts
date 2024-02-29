@@ -7,8 +7,8 @@ export type Excerpt = {
 
 export type AppState = {
   excerpts: Excerpt[];
-  uniqueAuthors: string[];
-  authorWorks: { [author: string]: string[] };
+  authors: string[];
+  works: { [author: string]: string[] };
   reverseSort: boolean;
   selectedAuthor: string;
   selectedWork: string,
@@ -32,8 +32,8 @@ export enum ActionType {
 
 type ExcerptsFetchSuccessPayload = {
   excerpts: Excerpt[];
-  uniqueAuthors: string[];
-  authorWorks: { [author: string]: string[] }
+  authors: string[];
+  works: { [author: string]: string[] }
 }
 
 export type Action = 

@@ -2,8 +2,8 @@ import { AppState, Action, ActionType } from "./types";
 
 export const initialState: AppState = {
   excerpts: [],
-  uniqueAuthors: [],
-  authorWorks: {},
+  authors: [],
+  works: {},
   reverseSort: false,
   selectedAuthor: '',
   selectedWork: '',
@@ -26,8 +26,8 @@ export const reducer = (state: AppState, action: Action): AppState => {
       return {
         ...state,
         excerpts: action.payload.excerpts,
-        uniqueAuthors: action.payload.uniqueAuthors,
-        authorWorks: action.payload.authorWorks,
+        authors: action.payload.authors,
+        works: action.payload.works,
         isLoading: false,
         isError: false
       };

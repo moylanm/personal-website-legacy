@@ -19,8 +19,8 @@ const useFetchExcerpts = (
         });
 
         const excerpts = response.data.excerpts;
-        const uniqueAuthors = [...new Set(excerpts.map(excerpt => excerpt.author))];
-        const authorWorks = excerpts.reduce((acc, excerpt) => {
+        const authors = [...new Set(excerpts.map(excerpt => excerpt.author))];
+        const works = excerpts.reduce((acc, excerpt) => {
           if (!acc[excerpt.author]) {
             acc[excerpt.author] = [];
           }
@@ -34,7 +34,7 @@ const useFetchExcerpts = (
 
         dispatch({
           type: ActionType.ExcerptsFetchSuccess,
-          payload: { excerpts, uniqueAuthors, authorWorks }
+          payload: { excerpts, authors, works }
         });
       } catch (error) {
         const axiosError = error as AxiosError;

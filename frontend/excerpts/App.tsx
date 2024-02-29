@@ -74,9 +74,9 @@ const App = () => {
   return (
     <>
       <FilterForm
+        authors={state.authors}
+        works={state.works}
         selectedSortOrder={state.reverseSort}
-        uniqueAuthors={state.uniqueAuthors}
-        authorWorks={state.authorWorks}
         selectedAuthor={state.selectedAuthor}
         selectedWork={state.selectedWork}
         onSortChange={handleSortChange}

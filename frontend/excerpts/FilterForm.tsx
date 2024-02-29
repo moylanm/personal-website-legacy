@@ -24,8 +24,8 @@ type FormProps = {
   selectedSortOrder: boolean;
   selectedAuthor: string;
   selectedWork: string;
-  uniqueAuthors: string[];
-  authorWorks: { [author: string]: string[] }
+  authors: string[];
+  works: { [author: string]: string[] }
   onSortChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onAuthorChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   onWorkChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -37,8 +37,8 @@ const FilterForm: React.FC<FormProps> = ({
   selectedSortOrder,
   selectedAuthor,
   selectedWork,
-  uniqueAuthors,
-  authorWorks,
+  authors,
+  works,
   onSortChange,
   onAuthorChange,
   onWorkChange,
@@ -56,7 +56,7 @@ const FilterForm: React.FC<FormProps> = ({
         <label htmlFor='authorSelect'>Author:</label>
         <select id='authorSelect' value={selectedAuthor} onChange={onAuthorChange}>
           <option value=''>Any</option>
-          {uniqueAuthors.map(author => (
+          {authors.map(author => (
             <option key={author} value={author}>
               {author}
             </option>
@@ -68,7 +68,7 @@ const FilterForm: React.FC<FormProps> = ({
           <label htmlFor='workSelect'>Work:</label>
           <select id='workSelect' value={selectedWork} onChange={onWorkChange}>
             <option value=''>Any</option>
-            {authorWorks[selectedAuthor].map(work => (
+            {works[selectedAuthor].map(work => (
               <option key={work} value={work}>
                 {work}
               </option>
