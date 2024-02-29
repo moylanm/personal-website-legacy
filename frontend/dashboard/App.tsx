@@ -54,7 +54,12 @@ const App = () => {
           workField={state.workField}
           bodyField={state.bodyField}
         />}
-      {activeTab === 1 && <Editor key={`editor-${state.renderKey}`} state={state} dispatch={dispatch} />}
+      {activeTab === 1 &&
+        <Editor
+          key={`editor-${state.renderKey}`}
+          dispatch={dispatch}
+          excerpts={state.excerpts}
+        />}
       {activeTab === 2 && <Logs key={`logs-${state.renderKey}`} state={state} dispatch={dispatch} />}
       {activeTab === 3 && <div>Metrics content...</div>}
 

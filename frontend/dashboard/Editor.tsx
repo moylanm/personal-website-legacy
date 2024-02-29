@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState, Suspense } from 'react';
-import { Action, AppState, Excerpt } from './types';
-import { deleteExcerpt, fetchExcerpts, updateExcerpt } from './api';
+import React, { useCallback, useRef, useState, Suspense } from 'react';
+import { Action, Excerpt } from './types';
+import { deleteExcerpt, updateExcerpt } from './api';
 import useIntersectionObserver from './useIntersectionObserver';
 import { StyledAccordionSummary, StyledTypography } from './styled';
 import Accordion from '@mui/material/Accordion';
@@ -14,13 +14,13 @@ const DeleteDialog = React.lazy(() => import('./DeleteDialog'));
 const CHUNK_SIZE = 15;
 
 type EditorProps = {
-  state: AppState;
   dispatch: React.Dispatch<Action>;
+  excerpts: Excerpt[];
 };
 
 const Editor: React.FC<EditorProps> = ({
-  state,
-  dispatch
+  dispatch,
+  excerpts
 }) => {
   const [displayCount, setDisplayCount] = useState(CHUNK_SIZE);
   const loadMoreRef = useRef(null);
@@ -29,22 +29,16 @@ const Editor: React.FC<EditorProps> = ({
     loadMoreRef,
     (entries) => {
       if (entries[0].isIntersecting) {
-        setDisplayCount(prevCount => Math.min(prevCount + CHUNK_SIZE, state.excerpts.length))
+        setDisplayCount(prevCount => Math.min(prevCount + CHUNK_SIZE, excerpts.length))
       }
     },
     { rootMargin: '500px' }
   );
 
-  useEffect(() => {
-    if (state.excerptActionSuccess) {
-      fetchExcerpts(dispatch, state.renderKey);
-    }
-  }, [dispatch, state.excerptActionSuccess]);
-
   return (
     <>
-      {state.excerpts.slice(0, displayCount).map((excerpt) => <Item key={excerpt.id} excerpt={excerpt} dispatch={dispatch} />)}
-      {displayCount < state.excerpts.length && <div ref={loadMoreRef} className='message'>Loading more...</div>}
+      {excerpts.slice(0, displayCount).map((excerpt) => <Item key={excerpt.id} excerpt={excerpt} dispatch={dispatch} />)}
+      {displayCount < excerpts.length && <div ref={loadMoreRef} className='message'>Loading more...</div>}
     </>
   );
 };
