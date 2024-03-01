@@ -61,7 +61,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				excerpts: action.payload.excerpts,
 				authors: action.payload.authors,
 				works: action.payload.works,
-				renderKey: action.payload.renderKey,
+				renderKey: state.renderKey + 1,
 				fetchLoading: false,
 				fetchError: false
 			};
@@ -76,7 +76,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				...state,
 				requests: action.payload.requests,
 				ipAddresses: action.payload.ipAddresses,
-				renderKey: action.payload.renderKey,
+				renderKey: state.renderKey + 1,
 				fetchLoading: false,
 				fetchError: false
 		  };
@@ -97,7 +97,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
 				...state,
 				requests: [],
 				ipAddresses: [],
-				renderKey: action.payload,
+				renderKey: state.renderKey + 1,
 				clearLoading: false,
 				clearError: false
 		  };

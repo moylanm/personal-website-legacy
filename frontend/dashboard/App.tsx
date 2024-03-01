@@ -13,11 +13,11 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [activeTab, setActiveTab] = useState(0);
 
-  useInitialFetch(dispatch, state.renderKey);
+  useInitialFetch(dispatch);
 
   useEffect(() => {
     if (state.excerptActionSuccess) {
-      fetchExcerpts(dispatch, state.renderKey);
+      fetchExcerpts(dispatch);
     }
   }, [dispatch, state.excerptActionSuccess]);
 

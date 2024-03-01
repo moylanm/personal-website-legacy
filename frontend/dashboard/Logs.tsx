@@ -18,12 +18,12 @@ const Logs: React.FC<LogsProps> = ({
   ipAddresses
 }) => {
   const handlFetchLogsClick = useCallback(() => {
-    fetchLogs(dispatch, ipAddresses, renderKey);
-  }, [dispatch, ipAddresses, renderKey]);
+    fetchLogs(dispatch, ipAddresses);
+  }, [dispatch, ipAddresses]);
 
   const handleClearLogsClick = useCallback(() => {
-    clearLogs(dispatch, renderKey);
-  }, [dispatch, renderKey]);
+    clearLogs(dispatch);
+  }, [dispatch]);
 
   const handleIPAddressChange = useCallback((ipToChange: IPAddress) => {
     const newIPAddressState = ipAddresses.map((ip) => {

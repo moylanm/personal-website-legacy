@@ -79,20 +79,17 @@ type SetupSuccessPayload = {
 	works: { [author: string]: string[] };
 	requests: Request[];
 	ipAddresses: IPAddress[];
-	renderKey: number;
 };
 
 type ExcerptsFetchSuccessPayload = {
 	excerpts: Excerpt[];
 	authors: string[];
 	works: { [author: string]: string[] };
-	renderKey: number;
 };
 
 type LogsFetchSuccessPayload = {
 	requests: Request[];
 	ipAddresses: IPAddress[];
-	renderKey: number;
 };
 
 export type Action =
@@ -106,7 +103,7 @@ export type Action =
 	| { type: ActionType.LogsFetchSuccess; payload: LogsFetchSuccessPayload }
 	| { type: ErrorType.LogsFetchError; payload: string }
 	| { type: ActionType.LogsClearInit }
-	| { type: ActionType.LogsClearSuccess; payload: number }
+	| { type: ActionType.LogsClearSuccess }
 	| { type: ErrorType.LogsClearError; payload: string }
 	| { type: ActionType.SetAuthorField; payload: string }
 	| { type: ActionType.SetWorkField; payload: string }

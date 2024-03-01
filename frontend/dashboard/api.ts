@@ -15,8 +15,7 @@ const EXCERPTS_ENDPOINT = 'https://mylesmoylan.net/excerpts';
 const LOGS_ENDPOINT = 'https://mylesmoylan.net/dashboard/request-logs';
 
 export const useInitialFetch = (
-  dispatch: React.Dispatch<Action>,
-  currentRenderKey: number
+  dispatch: React.Dispatch<Action>
 ) => {
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -51,11 +50,9 @@ export const useInitialFetch = (
         const uniqueIPAddresses = [...new Set(requests.map(request => request.ipAddress))];
         const ipAddresses = uniqueIPAddresses.map(ipAddress => <IPAddress>{value: ipAddress, selected: true});
 
-        const renderKey = currentRenderKey + 1;
-
         dispatch({
           type: ActionType.SetupSuccess,
-          payload: { excerpts, authors, works, requests, ipAddresses, renderKey }
+          payload: { excerpts, authors, works, requests, ipAddresses }
         });
       } catch (error) {
         handleError(dispatch, ErrorType.SetupError, error);
@@ -176,8 +173,7 @@ export const deleteExcerpt = async (
 };
 
 export const fetchExcerpts = async (
-  dispatch: React.Dispatch<Action>,
-  currentRenderKey: number
+  dispatch: React.Dispatch<Action>
 ) => {
   dispatch({ type: ActionType.ExcerptsFetchInit });
 
@@ -202,11 +198,9 @@ export const fetchExcerpts = async (
       return acc;
     }, {});
 
-    const renderKey = currentRenderKey + 1;
-
     dispatch({
       type: ActionType.ExcerptsFetchSuccess,
-      payload: { excerpts, authors, works, renderKey }
+      payload: { excerpts, authors, works }
     });
   } catch (error) {
     handleError(dispatch, ErrorType.ExcerptsFetchError, error);
@@ -217,8 +211,7 @@ export const fetchExcerpts = async (
 
 export const fetchLogs = async (
   dispatch: React.Dispatch<Action>,
-  currentIPAddresses: IPAddress[],
-  currentRenderKey: number
+  currentIPAddresses: IPAddress[]
 ) => {
   dispatch({ type: ActionType.LogsFetchInit });
 
@@ -233,11 +226,9 @@ export const fetchLogs = async (
 		const uniqueIPAddresses = [...new Set(requests.map(request => request.ipAddress))];
 		const ipAddresses = updateIPAddresses(currentIPAddresses, uniqueIPAddresses);
 
-		const renderKey = currentRenderKey + 1;
-
 		dispatch({
 			type: ActionType.LogsFetchSuccess,
-			payload: { requests, ipAddresses, renderKey }
+			payload: { requests, ipAddresses }
 		});
 	} catch (error) {
     handleError(dispatch, ErrorType.LogsFetchError, error);
@@ -248,8 +239,7 @@ export const fetchLogs = async (
 };
 
 export const clearLogs = async (
-  dispatch: React.Dispatch<Action>,
-  currentRenderKey: number
+  dispatch: React.Dispatch<Action>
 ) => {
   dispatch({ type: ActionType.LogsClearInit });
 
@@ -268,11 +258,8 @@ export const clearLogs = async (
 			cancelToken: source.token
 		});
 
-		const renderKey = currentRenderKey + 1;
-
 		dispatch({
-			type: ActionType.LogsClearSuccess,
-			payload: renderKey
+			type: ActionType.LogsClearSuccess
 		});
 	} catch (error) {
     handleError(dispatch, ErrorType.LogsClearError, error);
