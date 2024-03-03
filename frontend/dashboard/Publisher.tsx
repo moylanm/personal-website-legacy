@@ -28,18 +28,6 @@ const Publisher: React.FC<PublisherProps> = ({
   workField,
   bodyField
 }) => {
-  const sortedWorksOptions = useMemo(() => {
-    const worksOptions = authors.reduce<WorksOption[]>((acc, author) => {
-      works[author].forEach(work => {
-        acc.push({ author: author, work: work });
-      });
-
-      return acc;
-    }, []);
-
-    return worksOptions.sort((a, b) => -b.author.localeCompare(a.author));
-  }, [authors, works]);
-
   const handleAuthorFieldChange = useCallback((_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch({
       type: ActionType.SetAuthorField,
@@ -73,6 +61,18 @@ const Publisher: React.FC<PublisherProps> = ({
       bodyField
     );
   }, [dispatch, authorField, workField, bodyField]);
+
+  const sortedWorksOptions = useMemo(() => {
+    const worksOptions = authors.reduce<WorksOption[]>((acc, author) => {
+      works[author].forEach(work => {
+        acc.push({ author: author, work: work });
+      });
+
+      return acc;
+    }, []);
+
+    return worksOptions.sort((a, b) => -b.author.localeCompare(a.author));
+  }, [authors, works]);
 
   return (
     <>
