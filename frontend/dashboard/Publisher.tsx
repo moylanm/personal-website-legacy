@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { Action, ActionType } from './types';
 import { publishExcerpt } from './api';
-import { StyledTypography } from './styled';
+import { StyledTextField, StyledTypography } from './styled';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
@@ -87,7 +87,7 @@ const Publisher: React.FC<PublisherProps> = ({
           </StyledTypography>
         )}
         renderInput={(authors) => 
-          <TextField 
+          <StyledTextField 
             {...authors}
             fullWidth
             id='author'
@@ -108,7 +108,7 @@ const Publisher: React.FC<PublisherProps> = ({
           </StyledTypography>
         )}
         renderInput={(params) => 
-          <TextField
+          <StyledTextField
             {...params}
             fullWidth
             id='work'
@@ -116,7 +116,7 @@ const Publisher: React.FC<PublisherProps> = ({
             margin='normal'
           />}
       />
-      <TextField
+      <StyledTextField
         fullWidth
         id='body'
         label='Body'

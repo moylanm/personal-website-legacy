@@ -11,6 +11,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Grid from '@mui/material/Grid';
 import DialogTitle from '@mui/material/DialogTitle';
 import TableContainer from '@mui/material/TableContainer';
+import TextField from '@mui/material/TextField';
 
 export const StyledTabsBox = styled(Box)({
   backgroundColor: 'inherit'
@@ -27,6 +28,10 @@ export const StyledTab = styled(Tab)({
 export const StyledTypography = styled(Typography)({
   fontStyle: 'Roboto, Helvetica, Arial, san-serif',
   padding: 0
+});
+
+export const StyledTextField = styled(TextField)({
+  backgroundColor: '#FFFFFF'
 });
 
 export const StyledAccordionSummary = styled(AccordionSummary)({
