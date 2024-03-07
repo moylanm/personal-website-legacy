@@ -1,4 +1,5 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 import { Excerpt } from './types';
 
 const excerptsAdapter = createEntityAdapter({
@@ -21,3 +22,9 @@ export const excerptsSlice = createSlice({
 export const {} = excerptsSlice.actions;
 
 export default excerptsSlice.reducer;
+
+export const {
+	selectAll: selectAllExcerpts,
+	selectById: selecteExcerptById,
+	selectIds: selectExcerptIds
+} = excerptsAdapter.getSelectors((state: RootState) => state.excerpts);
