@@ -1,79 +1,21 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import { ActionType } from './types';
-import { initialState, reducer } from './reducer';
-import { fetchExcerpts, useInitialFetch } from './api';
-import { StyledTab, StyledTabsBox } from './styled';
-import ResponseSnackbar from './Snackbar';
-import Tabs from '@mui/material/Tabs';
-import Publisher from './Publisher';
-import Editor from './Editor';
-import Logs from './Logs'
+import React from 'react';
+import { useGetExcerptsQuery } from './features/api/apiSlice';
+import TabBar from './features/tabs/TabBar';
 
 const App = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [activeTab, setActiveTab] = useState(0);
-
-  useInitialFetch(dispatch);
-
-  useEffect(() => {
-    if (state.excerptActionSuccess) {
-      fetchExcerpts(dispatch);
-    }
-  }, [dispatch, state.excerptActionSuccess]);
-
-  const selectTab = useCallback((_: React.SyntheticEvent, tabId: number) => {
-    setActiveTab(tabId);
-  }, []);
-
-  const handleSnackbarClose = useCallback(() => {
-    dispatch({ type: ActionType.ResetActionState });
-  }, [dispatch]);
+  const {
+    isLoading: excerptsLoading,
+    isSuccess: excerptsSuccess,
+    isError: excerptsError,
+    error: excerptsErrorMessage
+  } = useGetExcerptsQuery();
 
   return (
-    <StyledTabsBox>
-      <Tabs
-        value={activeTab}
-        onChange={selectTab}
-        variant='fullWidth'
-        textColor='inherit'
-      >
-        <StyledTab label='Publish' value={0} />
-        <StyledTab label='Edit' value={1} />
-        <StyledTab label='Logs' value={2} />
-        <StyledTab label='Metrics' value={3} />
-      </Tabs>
-
-      <hr />
-
-      {activeTab === 0 &&
-        <Publisher
-          dispatch={dispatch}
-          authors={state.authors}
-          works={state.works}
-          authorField={state.authorField}
-          workField={state.workField}
-          bodyField={state.bodyField}
-        />}
-      {activeTab === 1 &&
-        <Editor
-          key={`editor-${state.renderKey}`}
-          dispatch={dispatch}
-          excerpts={state.excerpts}
-        />}
-      {activeTab === 2 &&
-        <Logs
-          dispatch={dispatch}
-          renderKey={state.renderKey}
-          requests={state.requests}
-          ipAddresses={state.ipAddresses}
-        />}
-      {activeTab === 3 && <div>Metrics content...</div>}
-
-      {state.excerptActionSuccess &&
-        <ResponseSnackbar severity='success' response={state.excerptActionResponse} handleClose={handleSnackbarClose} />}
-      {state.excerptActionError &&
-        <ResponseSnackbar severity='error' response={state.errorMessage} handleClose={handleSnackbarClose} />}
-    </StyledTabsBox>
+    <>
+      {excerptsLoading && <div className='message'>Loading...</div>}
+      {excerptsError && <div className='error-message'>{excerptsErrorMessage.toString()}</div>}
+      {excerptsSuccess && <TabBar />}
+    </>
   );
 };
 
