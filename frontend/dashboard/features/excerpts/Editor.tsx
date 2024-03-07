@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback, Suspense } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectExcerptIds, selecteExcerptById } from './excerptsSlice';
 import { StyledAccordionSummary, StyledTypography } from './style';
-import { RootState } from '../../app/store';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionActions from '@mui/material/AccordionActions';
@@ -14,20 +13,10 @@ const DeleteDialog = React.lazy(() => import('./DeleteDialog'));
 const CHUNK_SIZE = 15;
 
 const Editor = () => {
+  const excerptIds = useAppSelector(selectExcerptIds);
+
   const [displayCount, setDisplayCount] = useState(CHUNK_SIZE);
   const loadMoreRef = useRef(null);
-
-  const dispatch = useDispatch();
-  const excerptIds = useSelector(selectExcerptIds);
-
-  const excerptStatus = useSelector((state: RootState) => state.excerpts.status);
-  const error = useSelector((state: RootState) => state.excerpts.error);
-
-  useEffect(() => {
-    if (excerptStatus === 'idle') {
-      // dispatch(fetchExcerpts())
-    }
-  }, [excerptStatus, dispatch]);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -51,7 +40,6 @@ const Editor = () => {
 
   return (
     <>
-      {excerptStatus === 'failed' && <div className='error-message'>{error}</div>}
       {excerptIds.slice(0, displayCount).map((excerptId) => <Item key={excerptId} excerptId={excerptId} />)}
       {displayCount < excerptIds.length && <div ref={loadMoreRef} className='message'>Loading more...</div>}
     </>
@@ -63,7 +51,8 @@ type ItemProps = {
 };
 
 const Item: React.FC<ItemProps> = ({ excerptId }) => {
-  const excerpt = useSelector((state: RootState) => selecteExcerptById(state, excerptId));
+  const dispatch = useAppDispatch();
+  const excerpt = useAppSelector((state) => selecteExcerptById(state, excerptId));
 
   const [openDialog, setOpenDialog] = useState(false);
 
