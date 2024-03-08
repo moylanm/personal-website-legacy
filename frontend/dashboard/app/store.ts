@@ -1,15 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import excerptsReducer from '../features/excerpts/excerptsSlice';
 import logsReducer from '../features/logs/logsSlice';
-import { apiSlice } from '../features/api/apiSlice';
+import { api } from '../features/api/apiSlice';
 
 const store = configureStore({
   reducer: {
     excerpts: excerptsReducer,
     logs: logsReducer,
-    [apiSlice.reducerPath]: apiSlice.reducer
+    [api.reducerPath]: api.reducer
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware)
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(api.middleware)
 });
 
 export type AppDispatch = typeof store.dispatch;
