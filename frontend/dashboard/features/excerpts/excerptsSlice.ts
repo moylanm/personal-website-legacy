@@ -50,10 +50,13 @@ export const excerptsSlice = createSlice({
 			.addMatcher(api.endpoints.deleteExcerpt.matchRejected, (state) => {
 				state.status = 'failed';
 			})
+			.addMatcher(api.endpoints.deleteExcerpt.matchFulfilled, (state, { payload }) => {
+				state.status = 'succeeded';
+				state.ids.splice(state.ids.indexOf(payload), 1);
+				delete state.entities[payload];
+			})
 	}
 });
-
-export const {} = excerptsSlice.actions;
 
 export default excerptsSlice.reducer;
 
