@@ -21,34 +21,35 @@ export const excerptsSlice = createSlice({
 			.addMatcher(api.endpoints.getExcerpts.matchPending, (state) => {
 				state.status = 'loading';
 			})
-			.addMatcher(api.endpoints.getExcerpts.matchRejected, (state, action) => {
+			.addMatcher(api.endpoints.getExcerpts.matchRejected, (state, { error }) => {
 				state.status = 'failed';
-				state.error = action.error;
+				state.error = error;
 			})
 			.addMatcher(api.endpoints.getExcerpts.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
 				state.ids = payload.map(excerpt => excerpt.id);
 				state.entities = payload.reduce((acc, excerpt) => acc[excerpt.id] = excerpt, {});
 			})
-			.addMatcher(api.endpoints.publishExcerpt.matchRejected, (state, action) => {
+			.addMatcher(api.endpoints.publishExcerpt.matchRejected, (state, { error }) => {
 				state.status = 'failed';
-				state.error = action.error;
+				state.error = error;
 			})
 			.addMatcher(api.endpoints.publishExcerpt.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
 				state.ids.push(payload.id);
 				state.entities[payload.id] = payload;
 			})
-			.addMatcher(api.endpoints.updateExcerpt.matchRejected, (state, action) => {
+			.addMatcher(api.endpoints.updateExcerpt.matchRejected, (state, { error }) => {
 				state.status = 'failed';
-				state.error = action.error;
+				state.error = error;
 			})
 			.addMatcher(api.endpoints.updateExcerpt.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
 				state.entities[payload.id] = payload;
 			})
-			.addMatcher(api.endpoints.deleteExcerpt.matchRejected, (state) => {
+			.addMatcher(api.endpoints.deleteExcerpt.matchRejected, (state, { error }) => {
 				state.status = 'failed';
+				state.error = error;
 			})
 			.addMatcher(api.endpoints.deleteExcerpt.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
