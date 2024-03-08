@@ -4,7 +4,7 @@ import { Request } from '../logs/types';
 
 const csrfToken = () => document.querySelector('input[name="csrf_token"]')!.getAttribute('value')!;
 
-export const apiSlice = createApi({
+export const api = createApi({
 	baseQuery: fetchBaseQuery({ baseUrl: 'https://mylesmoylan.net' }),
 	endpoints: builder => ({
 		getExcerpts: builder.query<Excerpt[], void>({
@@ -32,7 +32,7 @@ export const apiSlice = createApi({
 				return rawResult.excerpt;
 			}
 		}),
-		updateExcerpt: builder.mutation<string, Excerpt>({
+		updateExcerpt: builder.mutation<Excerpt, Excerpt>({
 			query: excerpt => {
 				const formData = new FormData();
 				formData.append('csrf_token', csrfToken());
@@ -47,8 +47,8 @@ export const apiSlice = createApi({
 					body: formData
 				};
 			},
-			transformResponse: (rawResult: { message: string }) => {
-				return rawResult.message;
+			transformResponse: (rawResult: { excerpt: Excerpt }) => {
+				return rawResult.excerpt;
 			}
 		}),
 		deleteExcerpt: builder.mutation<string, number>({
@@ -99,4 +99,4 @@ export const {
 	useDeleteExcerptMutation,
 	useGetLogsQuery,
 	useClearLogsMutation
-} = apiSlice;
+} = api;
