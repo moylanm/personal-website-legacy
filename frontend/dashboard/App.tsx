@@ -1,5 +1,6 @@
 import React from 'react';
-import { useGetExcerptsQuery } from './features/api/apiSlice';
+import { useGetExcerptsQuery, useGetLogsQuery } from './features/api/apiSlice';
+import CircularProgress from '@mui/material/CircularProgress';
 import TabBar from './features/tabs/TabBar';
 
 const App = () => {
@@ -10,11 +11,22 @@ const App = () => {
     error: excerptsErrorMessage
   } = useGetExcerptsQuery();
 
+  const {
+    isLoading: logsLoading,
+    isSuccess: logsSuccess,
+    isError: logsError,
+    error: logsErrorMessage
+  } = useGetLogsQuery();
+
+  const isLoading = excerptsLoading || logsLoading;
+  const isSuccess = excerptsSuccess && logsSuccess;
+
   return (
     <>
-      {excerptsLoading && <div className='message'>Loading...</div>}
+      {isLoading && <CircularProgress />}
       {excerptsError && <div className='error-message'>{excerptsErrorMessage.toString()}</div>}
-      {excerptsSuccess && <TabBar />}
+      {logsError && <div className='error-message'>{logsErrorMessage.toString()}</div>}
+      {isSuccess && <TabBar />}
     </>
   );
 };
