@@ -1,5 +1,5 @@
 export type Excerpt = {
-	id: number;
+	id?: number;
 	author: string;
 	work: string;
 	body: string;
