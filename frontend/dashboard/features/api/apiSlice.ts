@@ -51,7 +51,7 @@ export const api = createApi({
 				return rawResult.excerpt;
 			}
 		}),
-		deleteExcerpt: builder.mutation<string, number>({
+		deleteExcerpt: builder.mutation<number, number>({
 			query: id => {
 				const formData = new FormData();
 				formData.append('csrf_token', csrfToken());
@@ -63,8 +63,8 @@ export const api = createApi({
 					body: formData
 				};
 			},
-			transformResponse: (rawResult: { message: string }) => {
-				return rawResult.message;
+			transformResponse: (rawResult: { id: number }) => {
+				return rawResult.id;
 			}
 		}),
 		getLogs: builder.query<Request[], void>({
