@@ -72,8 +72,31 @@ export const apiSlice = createApi({
 			transformResponse: (rawResult: { requests: Request[] }) => {
 				return rawResult.requests;
 			}
+		}),
+		clearLogs: builder.mutation<string, void>({
+			query: () => {
+				const formData = new FormData();
+				formData.append('csrf_token', csrfToken());
+
+				return {
+					url: '/dashboard/request-logs',
+					method: 'POST',
+					headers: { 'Content-Type': 'multipart/form-data;' },
+					body: formData
+				};
+			},
+			transformResponse: (rawResult: { message: string }) => {
+				return rawResult.message;
+			}
 		})
 	})
 });
 
-export const { useGetExcerptsQuery, useGetLogsQuery } = apiSlice;
+export const {
+	useGetExcerptsQuery,
+	usePublishExcerptMutation,
+	useUpdateExcerptMutation,
+	useDeleteExcerptMutation,
+	useGetLogsQuery,
+	useClearLogsMutation
+} = apiSlice;
