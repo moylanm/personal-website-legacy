@@ -26,10 +26,45 @@ export const apiSlice = createApi({
 					method: 'POST',
 					headers: { 'Content-Type': 'multipart/form-data;' },
 					body: formData,
-				}
+				};
 			},
 			transformResponse: (rawResult: { excerpt: Excerpt }) => {
 				return rawResult.excerpt;
+			}
+		}),
+		updateExcerpt: builder.mutation<string, Excerpt>({
+			query: excerpt => {
+				const formData = new FormData();
+				formData.append('csrf_token', csrfToken());
+				formData.append('author', excerpt.author);
+				formData.append('work', excerpt.work);
+				formData.append('body', excerpt.body);
+
+				return {
+					url: `/excerpts/${excerpt.id}`,
+					method: 'PATCH',
+					headers: { 'Content-Type': 'multipart/form-data;' },
+					body: formData
+				};
+			},
+			transformResponse: (rawResult: { message: string }) => {
+				return rawResult.message;
+			}
+		}),
+		deleteExcerpt: builder.mutation<string, number>({
+			query: id => {
+				const formData = new FormData();
+				formData.append('csrf_token', csrfToken());
+
+				return {
+					url: `/excerpts/${id}`,
+					method: 'DELETE',
+					headers: { 'Content-Type': 'multipart/form-data;' },
+					body: formData
+				};
+			},
+			transformResponse: (rawResult: { message: string }) => {
+				return rawResult.message;
 			}
 		}),
 		getLogs: builder.query<Request[], void>({
