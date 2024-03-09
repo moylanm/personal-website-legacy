@@ -2,6 +2,12 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Excerpt } from '../excerpts/types';
 import { Request } from '../logs/types';
 
+type PublishForm = {
+	author: string;
+	work: string;
+	body: string;
+};
+
 const csrfToken = () => document.querySelector('input[name="csrf_token"]')!.getAttribute('value')!;
 
 export const api = createApi({
@@ -13,13 +19,13 @@ export const api = createApi({
 				return rawResult.excerpts;
 			}
 		}),
-		publishExcerpt: builder.mutation<Excerpt, Excerpt>({
-			query: excerpt => {
+		publishExcerpt: builder.mutation<Excerpt, PublishForm>({
+			query: form => {
 				const formData = new FormData();
 				formData.append('csrf_token', csrfToken());
-				formData.append('author', excerpt.author);
-				formData.append('work', excerpt.work);
-				formData.append('body', excerpt.body);
+				formData.append('author', form.author);
+				formData.append('work', form.work);
+				formData.append('body', form.body);
 
 				return {
 					url: '/excerpts',
