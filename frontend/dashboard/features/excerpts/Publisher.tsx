@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { resetPublishForm, selectAllExcerpts, setAuthorField, setBodyField, setWorkField } from './excerptsSlice';
-import { PublishForm, usePublishExcerptMutation } from '../api/apiSlice';
+import { usePublishExcerptMutation } from '../api/apiSlice';
 import { StyledTypography, StyledTextField } from './style';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
