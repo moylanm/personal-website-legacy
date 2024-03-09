@@ -11,4 +11,7 @@ export type Request = {
 	uaDeviceName: string;
 };
 
-
+export type IPAddress = {
+	value: string;
+	selected: boolean;
+};
