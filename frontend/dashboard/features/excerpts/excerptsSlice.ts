@@ -9,13 +9,31 @@ const excerptsAdapter = createEntityAdapter({
 
 const initialState = excerptsAdapter.getInitialState({
 	status: 'idle',
-	error: null as (SerializedError | null)
+	error: null as (SerializedError | null),
+	authorField: '',
+	workField: '',
+	bodyField: ''
 });
 
 export const excerptsSlice = createSlice({
 	name: 'excerpts',
 	initialState,
-	reducers: {},
+	reducers: {
+		setAuthorField(state, { payload }) {
+			state.authorField = payload;
+		},
+		setWorkField(state, { payload }) {
+			state.workField = payload;
+		},
+		setBodyField(state, { payload }) {
+			state.bodyField = payload;
+		},
+		resetPublishForm(state) {
+			state.authorField = '';
+			state.workField = '';
+			state.bodyField = '';
+		}
+	},
 	extraReducers: (builder) => {
 		builder
 			.addMatcher(api.endpoints.getExcerpts.matchPending, (state) => {
@@ -58,6 +76,13 @@ export const excerptsSlice = createSlice({
 			})
 	}
 });
+
+export const {
+	setAuthorField,
+	setWorkField,
+	setBodyField,
+	resetPublishForm
+} = excerptsSlice.actions;
 
 export default excerptsSlice.reducer;
 
