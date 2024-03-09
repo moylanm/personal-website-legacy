@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { StyledBox, StyledTab } from './style';
 import Tabs from '@mui/material/Tabs';
+import Publisher from '../excerpts/Publisher';
 import Editor from '../excerpts/Editor';
 
-const Tabs = () => {
+const TabBar = () => {
 	const [activeTab, setActiveTab] = useState(0);
 
 	const selectTab = useCallback((_: React.SyntheticEvent, tabId: number) => {
@@ -26,7 +27,7 @@ const Tabs = () => {
 
       <hr />
 
-      {activeTab === 0 && <div>Publisher content...</div>}
+      {activeTab === 0 && <Publisher />}
       {activeTab === 1 && <Editor />}
       {activeTab === 2 && <div>Logs content...</div>}
       {activeTab === 3 && <div>Metrics content...</div>}
@@ -34,4 +35,4 @@ const Tabs = () => {
   );
 }
 
-export default Tabs;
+export default TabBar;
