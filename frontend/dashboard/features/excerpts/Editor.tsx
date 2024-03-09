@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback, Suspense } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectExcerptIds, selecteExcerptById } from './excerptsSlice';
+import { useDeleteExcerptMutation, useUpdateExcerptMutation } from '../api/apiSlice';
 import { StyledAccordionSummary, StyledTypography } from './style';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -51,8 +52,9 @@ type ItemProps = {
 };
 
 const Item: React.FC<ItemProps> = ({ excerptId }) => {
-  const dispatch = useAppDispatch();
   const excerpt = useAppSelector((state) => selecteExcerptById(state, excerptId));
+  const [updateExcerpt] = useUpdateExcerptMutation();
+  const [deleteExcerpt] = useDeleteExcerptMutation();
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -70,12 +72,16 @@ const Item: React.FC<ItemProps> = ({ excerptId }) => {
 
   const handleDelete = useCallback(() => {
     handleCloseDialog();
-
-    // dispatch delete
+    deleteExcerpt(excerptId);
   }, []);
 
   const handleUpdate = useCallback(() => {
-    // dispatch update
+    updateExcerpt({
+      id: excerptId,
+      author: authorRef.current!.value,
+      work: workRef.current!.value,
+      body: bodyRef.current!.value
+    });
   }, []);
 
   return (
