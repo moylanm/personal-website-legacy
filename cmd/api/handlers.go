@@ -151,7 +151,7 @@ func (app *application) deleteExcerpt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"message": "excerpt successfully deleted"})
+	err = app.writeJSON(w, http.StatusOK, envelope{"id": id})
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
