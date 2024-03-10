@@ -9,3 +9,11 @@ export const updateIPAddresses = (existingIPs: IPAddress[], newIPs: string[]): I
 
 	return Array.from(existingIPsMap, ([value, selected]) => ({ value, selected }));
 };
+
+export const formatDate = (dateString: string) => {
+  return Intl.DateTimeFormat(undefined, {
+    dateStyle: 'short',
+    timeStyle: 'medium',
+    hour12: false
+  }).format(Date.parse(dateString));
+};
