@@ -39,10 +39,10 @@ const App = () => {
       {logsError && <div className='error-message'>{logsErrorMessage.toString()}</div>}
       {isSuccess && <TabBar />}
 
-      {status === 'succeeded' &&
+      {(status === 'succeeded' && statusMessage) &&
         <ResponseSnackbar severity='success' response={statusMessage} handleClose={handleSnackbarClose} />}
-      {status === 'failed' &&
-        <ResponseSnackbar severity='error' response={error?.message!} handleClose={handleSnackbarClose} />}
+      {(status === 'failed' && error?.message) &&
+        <ResponseSnackbar severity='error' response={error.message} handleClose={handleSnackbarClose} />}
     </>
   );
 };
