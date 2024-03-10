@@ -9,6 +9,7 @@ const excerptsAdapter = createEntityAdapter({
 
 const initialState = excerptsAdapter.getInitialState({
 	status: 'idle',
+	statusMessage: '',
 	error: null as (SerializedError | null),
 	authorField: '',
 	workField: '',
@@ -32,6 +33,10 @@ export const excerptsSlice = createSlice({
 			state.authorField = '';
 			state.workField = '';
 			state.bodyField = '';
+		},
+		resetStatus(state) {
+			state.status = 'idle';
+			state.statusMessage = '';
 		}
 	},
 	extraReducers: (builder) => {
@@ -54,6 +59,7 @@ export const excerptsSlice = createSlice({
 			})
 			.addMatcher(api.endpoints.publishExcerpt.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
+				state.statusMessage = 'Excerpt successfully created';
 				state.ids.unshift(payload.id);
 				Object.assign(state.entities, {[payload.id]: payload});
 			})
@@ -63,6 +69,7 @@ export const excerptsSlice = createSlice({
 			})
 			.addMatcher(api.endpoints.updateExcerpt.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
+				state.statusMessage = 'Excerpt successfully updated';
 				Object.assign(state.entities, {[payload.id]: payload});
 			})
 			.addMatcher(api.endpoints.deleteExcerpt.matchRejected, (state, { error }) => {
@@ -71,6 +78,7 @@ export const excerptsSlice = createSlice({
 			})
 			.addMatcher(api.endpoints.deleteExcerpt.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
+				state.statusMessage = 'Excerpt successfully deleted';
 				state.ids.splice(state.ids.indexOf(payload), 1);
 				delete state.entities[payload];
 			})
@@ -81,7 +89,8 @@ export const {
 	setAuthorField,
 	setWorkField,
 	setBodyField,
-	resetPublishForm
+	resetPublishForm,
+	resetStatus
 } = excerptsSlice.actions;
 
 export const {
