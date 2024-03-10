@@ -1,7 +1,7 @@
 import React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { StyledTypography } from './styled';
+import { StyledTypography } from './style';
 
 type ResponseSnackbarProps = {
   response: string;
