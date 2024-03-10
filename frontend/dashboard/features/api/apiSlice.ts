@@ -30,7 +30,7 @@ export const api = createApi({
 				return {
 					url: '/excerpts',
 					method: 'POST',
-					headers: { 'Content-Type': 'multipart/form-data;' },
+					headers: { contentType: 'multipart/form-data' },
 					body: formData,
 				};
 			},
@@ -49,7 +49,7 @@ export const api = createApi({
 				return {
 					url: `/excerpts/${excerpt.id}`,
 					method: 'PATCH',
-					headers: { 'Content-Type': 'multipart/form-data;' },
+					headers: { contentType: 'multipart/form-data' },
 					body: formData
 				};
 			},
@@ -65,7 +65,7 @@ export const api = createApi({
 				return {
 					url: `/excerpts/${id}`,
 					method: 'DELETE',
-					headers: { 'Content-Type': 'multipart/form-data;' },
+					headers: { contentType: 'multipart/form-data' },
 					body: formData
 				};
 			},
@@ -87,7 +87,7 @@ export const api = createApi({
 				return {
 					url: '/dashboard/request-logs',
 					method: 'POST',
-					headers: { 'Content-Type': 'multipart/form-data;' },
+					headers: { contentType: 'multipart/form-data' },
 					body: formData
 				};
 			},
