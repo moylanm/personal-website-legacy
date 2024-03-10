@@ -36,7 +36,7 @@ export const logsSlice = createSlice({
 			.addMatcher(api.endpoints.getLogs.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
 				state.ids = payload.map(log => log.id);
-				state.entities = payload.reduce((acc, log) => acc[log.id] = log, {});
+				state.entities = payload.reduce((acc, log) => Object.assign(acc, {[log.id]: log}), {});
 
 				const uniqueIPAddresses = [...new Set(payload.map(log => log.ipAddress))];
 
