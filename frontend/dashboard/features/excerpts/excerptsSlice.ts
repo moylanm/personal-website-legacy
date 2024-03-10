@@ -37,6 +37,7 @@ export const excerptsSlice = createSlice({
 		resetStatus(state) {
 			state.status = 'idle';
 			state.statusMessage = '';
+			state.error = null;
 		}
 	},
 	extraReducers: (builder) => {
