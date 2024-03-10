@@ -42,13 +42,15 @@ func (app *application) createExcerpt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := app.models.Excerpts.Insert(excerpt)
+	id, err := app.models.Excerpts.Insert(excerpt)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusCreated, envelope{"message": "excerpt successfully created"})
+	excerpt.ID = id
+
+	err = app.writeJSON(w, http.StatusCreated, envelope{"excerpt": excerpt})
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}

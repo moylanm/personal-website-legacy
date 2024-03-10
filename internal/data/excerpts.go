@@ -30,7 +30,7 @@ func ValidateExcerpt(v *validator.Validator, excerpt *Excerpt) {
 	v.Check(excerpt.Body != "", "body", "must be provided")
 }
 
-func (e ExcerptModel) Insert(excerpt *Excerpt) error {
+func (e ExcerptModel) Insert(excerpt *Excerpt) (int64, error) {
 	query := `
 		INSERT INTO excerpts (author, work, body)
 		VALUES ($1, $2, $3)`
@@ -40,9 +40,17 @@ func (e ExcerptModel) Insert(excerpt *Excerpt) error {
 	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
 	defer cancel()
 
-	_, err := e.DB.ExecContext(ctx, query, args...)
+	res, err := e.DB.ExecContext(ctx, query, args...)
+	if err != nil {
+		return 0, err
+	}
 
-	return err
+	id, err := res.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }
 
 func (e ExcerptModel) Get(id int64) (*Excerpt, error) {
