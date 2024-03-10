@@ -5,7 +5,6 @@ import (
 	"os"
 	"time"
 
-	vault "github.com/hashicorp/vault/api"
 	"gopkg.in/yaml.v3"
 )
 
@@ -51,31 +50,6 @@ func readConfig(path string) (config, error) {
 	}
 
 	return cfg, nil
-}
-
-func getDatabasePasswordFromVault() (string, error) {
-	config := vault.DefaultConfig()
-	client, err := vault.NewClient(config)
-	if err != nil {
-		return "", fmt.Errorf("error creating Vault client: %w", err)
-	}
-
-	client.SetToken(os.Getenv("VAULT_TOKEN"))
-
-	secret, err := client.Logical().Read("kv/website")
-	if err != nil {
-		return "", fmt.Errorf("error reading secret from Vault: %w", err)
-	}
-	if secret == nil || secret.Data["DB_PASSWORD"] == nil {
-		return "", fmt.Errorf("password not found in Vault")
-	}
-
-	password, ok := secret.Data["DB_PASSWORD"].(string)
-	if !ok {
-		return "", fmt.Errorf("password is not a string")
-	}
-
-	return password, nil
 }
 
 func validateConfig(cfg *config) error {
