@@ -127,7 +127,7 @@ func (app *application) updateExcerpt(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"message": "excerpt successfully updated"})
+	err = app.writeJSON(w, http.StatusOK, envelope{"excerpt": excerpt})
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
