@@ -33,19 +33,17 @@ func ValidateExcerpt(v *validator.Validator, excerpt *Excerpt) {
 func (e ExcerptModel) Insert(excerpt *Excerpt) (int64, error) {
 	query := `
 		INSERT INTO excerpts (author, work, body)
-		VALUES ($1, $2, $3)`
+		VALUES ($1, $2, $3)
+		RETURNING id`
 
 	args := []any{excerpt.Author, excerpt.Work, excerpt.Body}
 
 	ctx, cancel := context.WithTimeout(context.Background(), queryTimeout)
 	defer cancel()
 
-	res, err := e.DB.ExecContext(ctx, query, args...)
-	if err != nil {
-		return 0, err
-	}
+	var id int64
 
-	id, err := res.LastInsertId()
+	err := e.DB.QueryRowContext(ctx, query, args...).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
