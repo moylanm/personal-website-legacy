@@ -54,8 +54,8 @@ export const excerptsSlice = createSlice({
 			})
 			.addMatcher(api.endpoints.publishExcerpt.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
-				state.ids.push(payload.id);
-				state.entities[payload.id] = payload;
+				state.ids.unshift(payload.id);
+				Object.assign(state.entities, {[payload.id]: payload});
 			})
 			.addMatcher(api.endpoints.updateExcerpt.matchRejected, (state, { error }) => {
 				state.status = 'failed';
@@ -63,7 +63,7 @@ export const excerptsSlice = createSlice({
 			})
 			.addMatcher(api.endpoints.updateExcerpt.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
-				state.entities[payload.id] = payload;
+				Object.assign(state.entities, {[payload.id]: payload});
 			})
 			.addMatcher(api.endpoints.deleteExcerpt.matchRejected, (state, { error }) => {
 				state.status = 'failed';
