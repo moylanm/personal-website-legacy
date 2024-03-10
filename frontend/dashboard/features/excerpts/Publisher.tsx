@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { resetPublishForm, selectAllExcerpts, setAuthorField, setBodyField, setWorkField } from './excerptsSlice';
 import { usePublishExcerptMutation } from '../api/apiSlice';
@@ -18,7 +18,7 @@ const Publisher = () => {
   const workField = useAppSelector(state => state.excerpts.workField);
   const bodyField = useAppSelector(state => state.excerpts.bodyField);
 
-  const [publishExcerpt, { isLoading }] = usePublishExcerptMutation();
+  const [publishExcerpt, { isLoading, isSuccess }] = usePublishExcerptMutation();
 
   const handleAuthorFieldChange = useCallback((_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch(setAuthorField(value));
@@ -43,6 +43,12 @@ const Publisher = () => {
       body: bodyField
     });
   }, [publishExcerpt, authorField, workField, bodyField]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      clearForm();
+    }
+  }, [isSuccess])
 
   const authors = useMemo<string[]>(() => {
     return [...new Set(excerpts.map(excerpt => excerpt.author))];
