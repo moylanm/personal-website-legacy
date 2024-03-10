@@ -46,7 +46,7 @@ export const excerptsSlice = createSlice({
 			.addMatcher(api.endpoints.getExcerpts.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
 				state.ids = payload.map(excerpt => excerpt.id);
-				state.entities = payload.reduce((acc, excerpt) => acc[excerpt.id] = excerpt, {});
+				state.entities = payload.reduce((acc, excerpt) => Object.assign(acc, {[excerpt.id]: excerpt}), {})
 			})
 			.addMatcher(api.endpoints.publishExcerpt.matchRejected, (state, { error }) => {
 				state.status = 'failed';
