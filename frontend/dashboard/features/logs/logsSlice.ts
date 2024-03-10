@@ -66,7 +66,7 @@ export const {
 export default logsSlice.reducer;
 
 export const {
-	selectAll: selectAllLogs,
-	selectById: selectLogById,
-	selectIds: selectLogIds
+	selectAll: selectAllRequests,
+	selectById: selectRequestById,
+	selectIds: selectRequestIds
 } = logsAdapter.getSelectors((state: RootState) => state.logs);
