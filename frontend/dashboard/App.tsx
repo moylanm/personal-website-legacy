@@ -1,6 +1,5 @@
 import React from 'react';
 import { useGetExcerptsQuery, useGetLogsQuery } from './features/api/apiSlice';
-import CircularProgress from '@mui/material/CircularProgress';
 import TabBar from './features/tabs/TabBar';
 
 const App = () => {
@@ -23,7 +22,7 @@ const App = () => {
 
   return (
     <>
-      {isLoading && <CircularProgress />}
+      {isLoading && <div className='message'>Loading...</div>}
       {excerptsError && <div className='error-message'>{excerptsErrorMessage.toString()}</div>}
       {logsError && <div className='error-message'>{logsErrorMessage.toString()}</div>}
       {isSuccess && <TabBar />}
