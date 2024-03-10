@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { selectAllRequests } from './logsSlice';
 import FilterForm from './FilterForm';
-import RequestTable from './LogTable';
+import RequestTable from './RequestTable';
 
 const Logs = () => {
 	const requestLogs = useAppSelector(selectAllRequests);
