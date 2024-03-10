@@ -1,12 +1,11 @@
 import React, { useMemo } from 'react';
 import { useAppSelector } from '../../app/hooks';
-import { selectAllLogs } from './logsSlice';
+import { selectAllRequests } from './logsSlice';
 import FilterForm from './FilterForm';
-import LogTable from './LogTable';
-
+import RequestTable from './LogTable';
 
 const Logs = () => {
-	const requestLogs = useAppSelector(selectAllLogs);
+	const requestLogs = useAppSelector(selectAllRequests);
 	const ipAddresses = useAppSelector(state => state.logs.ipAddresses);
 
 	const filteredRequests = useMemo(() => {
@@ -21,7 +20,7 @@ const Logs = () => {
 		<>
 			<FilterForm />
 			{filteredRequests.length > 0
-				? <LogTable requests={filteredRequests} />
+				? <RequestTable requests={filteredRequests} />
 				: <div className='message'>No logs to render...</div>}
 		</>
 	);
