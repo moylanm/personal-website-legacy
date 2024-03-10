@@ -3,6 +3,7 @@ import { StyledBox, StyledTab } from './style';
 import Tabs from '@mui/material/Tabs';
 import Publisher from '../excerpts/Publisher';
 import Editor from '../excerpts/Editor';
+import Logs from '../logs/Logs';
 
 const TabBar = () => {
 	const [activeTab, setActiveTab] = useState(0);
@@ -29,7 +30,7 @@ const TabBar = () => {
 
       {activeTab === 0 && <Publisher />}
       {activeTab === 1 && <Editor />}
-      {activeTab === 2 && <div>Logs content...</div>}
+      {activeTab === 2 && <Logs />}
       {activeTab === 3 && <div>Metrics content...</div>}
     </StyledBox>
   );
