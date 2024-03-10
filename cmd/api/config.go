@@ -44,11 +44,7 @@ func readConfig(path string) (config, error) {
 		return config{}, fmt.Errorf("failed to unmarshal YAML: %w", err)
 	}
 
-	dsnPassword, err := getDatabasePasswordFromVault()
-	if err != nil {
-		return config{}, fmt.Errorf("error getting database password from Vault: %w", err)
-	}
-	cfg.Db.Dsn = fmt.Sprintf(dsnTemplate, dsnPassword)
+	cfg.Db.Dsn = fmt.Sprintf(dsnTemplate, os.Getenv("DB_PASSWORD"))
 
 	if err = validateConfig(&cfg); err != nil {
 		return config{}, fmt.Errorf("invalid configuration: %w", err)
