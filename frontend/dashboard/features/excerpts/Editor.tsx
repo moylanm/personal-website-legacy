@@ -103,7 +103,7 @@ const Item: React.FC<ItemProps> = ({ excerptId }) => {
           />
           <TextField
             fullWidth
-            id={`work-${excerpt.work}`}
+            id={`work-${excerpt.id}`}
             label='Work'
             margin='normal'
             defaultValue={excerpt.work}
