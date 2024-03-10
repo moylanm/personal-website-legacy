@@ -84,10 +84,10 @@ export const {
 	resetPublishForm
 } = excerptsSlice.actions;
 
-export default excerptsSlice.reducer;
-
 export const {
 	selectAll: selectAllExcerpts,
 	selectById: selecteExcerptById,
 	selectIds: selectExcerptIds
 } = excerptsAdapter.getSelectors((state: RootState) => state.excerpts);
+
+export default excerptsSlice.reducer;
