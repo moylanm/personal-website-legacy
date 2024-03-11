@@ -65,10 +65,10 @@ export const {
 	setIPAddressState
 } = logsSlice.actions;
 
-export default logsSlice.reducer;
-
 export const {
 	selectAll: selectAllRequests,
 	selectById: selectRequestById,
 	selectIds: selectRequestIds
 } = logsAdapter.getSelectors((state: RootState) => state.logs);
+
+export default logsSlice.reducer;
