@@ -19,9 +19,11 @@ export const logsSlice = createSlice({
 	initialState,
 	reducers: {
 		setIPAddressState(state, { payload }) {
-			state.ipAddresses = state.ipAddresses.map(ip => {
-				return ip.value === payload.value ? {value: ip.value, selected: !payload.selected} : ip;
-			});
+			const target = state.ipAddresses.find((ip) => ip.value === payload.value);
+
+			if (target) {
+				Object.assign(target, {value: payload.value, selected: !payload.selected});
+			}
 		}
 	},
 	extraReducers: (builder) => {
