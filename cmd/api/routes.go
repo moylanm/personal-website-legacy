@@ -1,6 +1,7 @@
 package main
 
 import (
+	"expvar"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -39,6 +40,7 @@ func (app *application) routes() http.Handler {
 	router.Handle("/dashboard", protected.ThenFunc(app.dashboard)).Methods(http.MethodGet)
 	router.Handle("/dashboard/request-logs", protected.ThenFunc(app.requestLogsJson)).Methods(http.MethodGet)
 	router.Handle("/dashboard/request-logs", protected.ThenFunc(app.clearRequestLogs)).Methods(http.MethodPost)
+	router.Handle("/dashboard/metrics", protected.Then(expvar.Handler())).Methods(http.MethodGet)
 	router.Handle("/logout", protected.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
 
 	standard := alice.New(app.recoverPanic, app.enableCORS, app.rateLimit, secureHeaders)
