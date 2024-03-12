@@ -42,6 +42,8 @@ func main() {
 
 	logger.Info("database connection pool established")
 
+	publishMetrics(db)
+
 	templateCache, err := newTemplateCache()
 	if err != nil {
 		logger.Error("failed to create template cache: ", err)
