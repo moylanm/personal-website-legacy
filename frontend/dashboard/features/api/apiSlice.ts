@@ -94,6 +94,9 @@ export const api = createApi({
 			transformResponse: (rawResult: { message: string }) => {
 				return rawResult.message;
 			}
+		}),
+		getMetrics: builder.query<any, void>({
+			query: () => '/dashboard/metrics'
 		})
 	})
 });
@@ -104,5 +107,6 @@ export const {
 	useUpdateExcerptMutation,
 	useDeleteExcerptMutation,
 	useGetLogsQuery,
-	useClearLogsMutation
+	useClearLogsMutation,
+	useGetMetricsQuery
 } = api;
