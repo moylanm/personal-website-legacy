@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useGetExcerptsQuery, useGetLogsQuery } from './features/api/apiSlice';
+import { useGetExcerptsQuery, useGetLogsQuery, useGetMetricsQuery } from './features/api/apiSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { resetStatus } from './features/excerpts/excerptsSlice';
 import TabBar from './features/tabs/TabBar';
@@ -25,8 +25,15 @@ const App = () => {
     error: logsErrorMessage
   } = useGetLogsQuery();
 
-  const isLoading = excerptsLoading || logsLoading;
-  const isSuccess = excerptsSuccess && logsSuccess;
+  const {
+    isLoading: metricsLoading,
+    isSuccess: metricsSuccess,
+    isError: metricsError,
+    error: metricsErrorMessage
+  } = useGetMetricsQuery();
+
+  const isLoading = excerptsLoading || logsLoading || metricsLoading;
+  const isSuccess = excerptsSuccess && logsSuccess && metricsSuccess;
 
   const handleSnackbarClose = useCallback(() => {
     dispatch(resetStatus());
@@ -37,6 +44,7 @@ const App = () => {
       {isLoading && <div className='message'>Loading...</div>}
       {excerptsError && <div className='error-message'>{excerptsErrorMessage.toString()}</div>}
       {logsError && <div className='error-message'>{logsErrorMessage.toString()}</div>}
+      {metricsError && <div className='error-message'>{metricsErrorMessage.toString()}</div>}
       {isSuccess && <TabBar />}
 
       {(status === 'succeeded' && statusMessage) &&
