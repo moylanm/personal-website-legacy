@@ -38,6 +38,7 @@ export const StyledListItemButton = styled(ListItemButton)({
 });
 
 export const StyledListItemIcon = styled(ListItemIcon)({
+  paddingLeft: '5px',
   minWidth: 0
 });
 
