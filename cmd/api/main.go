@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log/slog"
 	"os"
+	"time"
 
 	"github.com/alexedwards/scs/v2"
 	"mylesmoylan.net/internal/data"
@@ -42,8 +43,6 @@ func main() {
 
 	logger.Info("database connection pool established")
 
-	publishMetrics(db)
-
 	templateCache, err := newTemplateCache()
 	if err != nil {
 		logger.Error("failed to create template cache: ", err)
@@ -57,6 +56,9 @@ func main() {
 		templateCache:  templateCache,
 		sessionManager: newSessionManager(db),
 	}
+
+	startTime = time.Now()
+	publishMetrics(db)
 
 	if err = app.serve(); err != nil {
 		logger.Error(err.Error())
