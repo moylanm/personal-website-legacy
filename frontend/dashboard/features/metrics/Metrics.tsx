@@ -33,6 +33,9 @@ const Metrics = () => {
 								</ListItemText>
 							</ListItem>
 							<ListItem>
+								<ListItemText primary={`Uptime: ${metrics.uptime}`} />
+							</ListItem>
+							<ListItem>
 								<ListItemText primary={`Goroutines: ${metrics.goroutines}`} />
 							</ListItem>
 							{
