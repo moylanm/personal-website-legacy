@@ -23,6 +23,7 @@ export const metricsSlice = createSlice({
 			})
 			.addMatcher(api.endpoints.getMetrics.matchFulfilled, (state, { payload }) => {
 				state.status = 'succeeded';
+				state.entities.uptime = payload['uptime'];
 				state.entities.goroutines = payload['goroutines'];
 				state.entities.database = payload['database'];
 				state.entities.memstats = payload['memstats'];
