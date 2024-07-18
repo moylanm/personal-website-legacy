@@ -1,13 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import excerptsReducer from '../features/excerpts/excerptsSlice';
-import logsReducer from '../features/logs/logsSlice';
 import metricsReducer from '../features/metrics/metricsSlice';
 import { api } from '../features/api/apiSlice';
 
 const store = configureStore({
   reducer: {
     excerpts: excerptsReducer,
-    logs: logsReducer,
     metrics: metricsReducer,
     [api.reducerPath]: api.reducer
   },

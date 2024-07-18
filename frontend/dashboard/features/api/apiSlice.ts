@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Excerpt } from '../excerpts/types';
-import { Request } from '../logs/types';
 
 type PublishForm = {
 	author: string;
@@ -73,28 +72,6 @@ export const api = createApi({
 				return rawResult.id;
 			}
 		}),
-		getLogs: builder.query<Request[], void>({
-			query: () => '/dashboard/request-logs',
-			transformResponse: (rawResult: { requests: Request[] }) => {
-				return rawResult.requests;
-			}
-		}),
-		clearLogs: builder.mutation<string, void>({
-			query: () => {
-				const formData = new FormData();
-				formData.append('csrf_token', csrfToken());
-
-				return {
-					url: '/dashboard/request-logs',
-					method: 'POST',
-					headers: { contentType: 'multipart/form-data' },
-					body: formData
-				};
-			},
-			transformResponse: (rawResult: { message: string }) => {
-				return rawResult.message;
-			}
-		}),
 		getMetrics: builder.query<any, void>({
 			query: () => '/dashboard/metrics'
 		})
@@ -106,7 +83,5 @@ export const {
 	usePublishExcerptMutation,
 	useUpdateExcerptMutation,
 	useDeleteExcerptMutation,
-	useGetLogsQuery,
-	useClearLogsMutation,
 	useGetMetricsQuery
 } = api;

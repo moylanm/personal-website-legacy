@@ -209,32 +209,6 @@ func (app *application) dashboard(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, http.StatusOK, "dashboard.tmpl", data)
 }
 
-func (app *application) requestLogsJson(w http.ResponseWriter, r *http.Request) {
-	requests, err := app.models.Requests.GetAll()
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-		return
-	}
-
-	err = app.writeJSON(w, http.StatusOK, envelope{"requests": requests})
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-	}
-}
-
-func (app *application) clearRequestLogs(w http.ResponseWriter, r *http.Request) {
-	err := app.models.Requests.Clear()
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-		return
-	}
-
-	err = app.writeJSON(w, http.StatusOK, envelope{"message": "requests logs successfully deleted"})
-	if err != nil {
-		app.serverErrorResponse(w, r, err)
-	}
-}
-
 type userLoginForm struct {
 	Email    string
 	Password string

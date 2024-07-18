@@ -3,7 +3,6 @@ import { StyledBox, StyledTab } from './style';
 import Tabs from '@mui/material/Tabs';
 import Publisher from '../excerpts/Publisher';
 import Editor from '../excerpts/Editor';
-import Logs from '../logs/Logs';
 import Metrics from '../metrics/Metrics';
 
 const TabBar = () => {
@@ -23,16 +22,14 @@ const TabBar = () => {
       >
         <StyledTab label='Publish' value={0} />
         <StyledTab label='Edit' value={1} />
-        <StyledTab label='Logs' value={2} />
-        <StyledTab label='Metrics' value={3} />
+        <StyledTab label='Metrics' value={2} />
       </Tabs>
 
       <hr />
 
       {activeTab === 0 && <Publisher />}
       {activeTab === 1 && <Editor />}
-      {activeTab === 2 && <Logs />}
-      {activeTab === 3 && <Metrics />}
+      {activeTab === 2 && <Metrics />}
     </StyledBox>
   );
 }
