@@ -38,8 +38,6 @@ func (app *application) routes() http.Handler {
 	router.Handle(excerptsPath, protected.ThenFunc(app.deleteExcerpt)).Methods(http.MethodDelete)
 
 	router.Handle("/dashboard", protected.ThenFunc(app.dashboard)).Methods(http.MethodGet)
-	router.Handle("/dashboard/request-logs", protected.ThenFunc(app.requestLogsJson)).Methods(http.MethodGet)
-	router.Handle("/dashboard/request-logs", protected.ThenFunc(app.clearRequestLogs)).Methods(http.MethodPost)
 	router.Handle("/dashboard/metrics", protected.Then(expvar.Handler())).Methods(http.MethodGet)
 	router.Handle("/logout", protected.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
 

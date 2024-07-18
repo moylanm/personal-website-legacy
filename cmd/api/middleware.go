@@ -10,11 +10,8 @@ import (
 	"time"
 
 	"github.com/justinas/nosurf"
-	"github.com/mileusna/useragent"
 	"github.com/tomasen/realip"
 	"golang.org/x/time/rate"
-
-	"mylesmoylan.net/internal/data"
 )
 
 func secureHeaders(next http.Handler) http.Handler {
