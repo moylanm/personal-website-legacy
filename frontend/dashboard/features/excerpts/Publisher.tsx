@@ -132,9 +132,9 @@ const Publisher = () => {
         multiline
         rows={10}
       />
-      <Button variant='contained' onClick={clearForm} disabled={isLoading}>Clear</Button>
-      <div className='divider' />
       <Button variant='contained' onClick={submitForm} disabled={isLoading}>Publish</Button>
+      <div className='divider' />
+      <Button variant='contained' onClick={clearForm} disabled={isLoading}>Clear</Button>
     </>
   );
 };
