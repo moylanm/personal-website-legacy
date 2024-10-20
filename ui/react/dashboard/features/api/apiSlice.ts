@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Excerpt } from '../excerpts/types';
+import type { Excerpt } from '../excerpts/types';
 
 type PublishForm = {
 	author: string;
