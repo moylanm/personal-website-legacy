@@ -40,7 +40,7 @@ const Metrics = () => {
 							</ListItem>
 							{
 								Object.entries(metrics.memstats).map(([key, value]) => (
-									<ListItem>
+									<ListItem key={key}>
 										<ListItemText primary={`${key}: ${value}`} />
 									</ListItem>
 								))
@@ -58,7 +58,7 @@ const Metrics = () => {
 							</ListItem>
 							{
 								Object.entries(metrics.database).map(([key, value]) => (
-									<ListItem>
+									<ListItem key={key}>
 										<ListItemText primary={`${key}: ${value}`} />
 									</ListItem>
 								))
