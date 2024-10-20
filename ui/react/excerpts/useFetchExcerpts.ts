@@ -22,7 +22,7 @@ const useFetchExcerpts = (
 
         const excerpts = response.data.excerpts;
         const authors = [...new Set(excerpts.map(excerpt => excerpt.author))];
-        const works = excerpts.reduce((acc, excerpt) => {
+        const works = excerpts.reduce<{ [author: string]: string[] }>((acc, excerpt) => {
           if (!acc[excerpt.author]) {
             acc[excerpt.author] = [];
           }
