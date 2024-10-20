@@ -1,4 +1,5 @@
-import { AppState, Action, ActionType } from "./types";
+import type { AppState, Action } from "./types";
+import { ActionType } from "./types";
 
 export const initialState: AppState = {
   excerpts: [],
