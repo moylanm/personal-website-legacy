@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo, useReducer } from 'react';
+import type React from 'react';
+import { useCallback, useMemo, useReducer } from 'react';
 import List from './List';
 import FilterForm from './FilterForm';
 import useFetchExcerpts from './useFetchExcerpts';
