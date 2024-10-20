@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { resetPublishForm, selectAllExcerpts, setAuthorField, setBodyField, setWorkField } from './excerptsSlice';
 import { usePublishExcerptMutation } from '../api/apiSlice';
