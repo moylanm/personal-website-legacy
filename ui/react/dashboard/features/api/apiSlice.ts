@@ -72,7 +72,7 @@ export const api = createApi({
 				return rawResult.id;
 			}
 		}),
-		getMetrics: builder.query<any, void>({
+		getMetrics: builder.query({
 			query: () => '/dashboard/metrics'
 		})
 	})
