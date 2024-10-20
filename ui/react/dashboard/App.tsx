@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useGetExcerptsQuery, useGetMetricsQuery } from './features/api/apiSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { resetStatus } from './features/excerpts/excerptsSlice';
