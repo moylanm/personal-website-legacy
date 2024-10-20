@@ -30,7 +30,7 @@ const App = () => {
 
   const handleSnackbarClose = useCallback(() => {
     dispatch(resetStatus());
-  }, [dispatch, resetStatus]);
+  }, [dispatch]);
 
   return (
     <>
