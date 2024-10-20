@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Excerpt } from './types';
+import type { Excerpt } from './types';
 
 const CHUNK_SIZE = 7;
 
