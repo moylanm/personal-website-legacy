@@ -23,19 +23,19 @@ const Publisher = () => {
 
   const handleAuthorFieldChange = useCallback((_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch(setAuthorField(value));
-  }, [dispatch, setAuthorField]);
+  }, [dispatch]);
 
   const handleWorkFieldChange = useCallback((_: React.SyntheticEvent<Element, Event>, value: string) => {
     dispatch(setWorkField(value));
-  }, [dispatch, setWorkField]);
+  }, [dispatch]);
 
   const handleBodyFieldChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setBodyField(event.target.value));
-  }, [dispatch, setBodyField]);
+  }, [dispatch]);
 
   const clearForm = useCallback(() => {
     dispatch(resetPublishForm());
-  }, [dispatch, resetPublishForm]);
+  }, [dispatch]);
 
   const submitForm = useCallback(() => {
     publishExcerpt({
@@ -49,7 +49,7 @@ const Publisher = () => {
     if (isSuccess) {
       clearForm();
     }
-  }, [isSuccess])
+  }, [isSuccess, clearForm])
 
   const authors = useMemo<string[]>(() => {
     return [...new Set(excerpts.map(excerpt => excerpt.author))];
