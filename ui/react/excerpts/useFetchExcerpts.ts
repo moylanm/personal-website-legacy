@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
-import axios, { AxiosError } from 'axios';
-import { Action, ActionType, ApiResponse } from './types';
+import axios from 'axios';
+import type { AxiosError } from 'axios';
+import { ActionType } from './types';
+import type { Action, ApiResponse } from './types';
 
 const API_ENDPOINT = 'https://mylesmoylan.net/excerpts/json';
 
