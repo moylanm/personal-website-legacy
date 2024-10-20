@@ -56,7 +56,7 @@ const Publisher = () => {
   }, [excerpts]);
 
   const works = useMemo<{ [author: string]: string[] }>(() => {
-    return excerpts.reduce((acc, excerpt) => {
+    return excerpts.reduce<{ [author: string]: string[] }>((acc, excerpt) => {
       if (!acc[excerpt.author]) {
         acc[excerpt.author] = [];
       }
@@ -71,9 +71,9 @@ const Publisher = () => {
 
   const sortedWorksOptions = useMemo(() => {
     const worksOptions = authors.reduce<WorksOption[]>((acc, author) => {
-      works[author].forEach(work => {
-        acc.push({ author: author, work: work });
-      });
+      for (const work of works[author]) {
+        acc.push({ author: author, work: work })
+      }
 
       return acc;
     }, []);
