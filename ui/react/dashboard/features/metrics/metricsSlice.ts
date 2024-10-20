@@ -1,5 +1,6 @@
-import { createSlice, SerializedError } from "@reduxjs/toolkit";
-import { Metrics } from "./types";
+import type { SerializedError } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import type { Metrics } from "./types";
 import { api } from "../api/apiSlice";
 
 const initialState = {
