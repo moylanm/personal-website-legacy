@@ -47,7 +47,7 @@ const FilterForm: React.FC<FormProps> = ({
 }) => (
   <form>
     <fieldset>
-      <label>Sort By:</label>
+      <legend>Sort By:</legend>
       <RadioButton value='newest' checked={!selectedSortOrder} onChange={onSortChange} label='Newest' />
       <RadioButton value='oldest' checked={selectedSortOrder} onChange={onSortChange} label='Oldest' />
     </fieldset>
