@@ -1,7 +1,8 @@
-import { createEntityAdapter, createSlice, SerializedError } from '@reduxjs/toolkit';
+import type { SerializedError } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { api } from '../api/apiSlice';
-import { RootState } from '../../app/store';
-import { Excerpt } from './types';
+import type { RootState } from '../../app/store';
+import type { Excerpt } from './types';
 
 const excerptsAdapter = createEntityAdapter({
 	sortComparer: (a: Excerpt, b: Excerpt) => a.id - b.id
