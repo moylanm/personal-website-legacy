@@ -2,7 +2,7 @@ const esbuild = require("esbuild");
 
 esbuild
     .build({
-        entryPoints: ["frontend/excerpts/excerpts.tsx"],
+        entryPoints: ["ui/react/excerpts/excerpts.tsx"],
         outdir: "ui/static/js",
         bundle: true,
 	minify: true,
