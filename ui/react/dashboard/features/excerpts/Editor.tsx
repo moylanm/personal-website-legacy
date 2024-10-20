@@ -73,16 +73,16 @@ const Item: React.FC<ItemProps> = ({ excerptId }) => {
   const handleDelete = useCallback(() => {
     handleCloseDialog();
     deleteExcerpt(excerptId);
-  }, []);
+  }, [excerptId, deleteExcerpt, handleCloseDialog]);
 
   const handleUpdate = useCallback(() => {
     updateExcerpt({
       id: excerptId,
-      author: authorRef.current!.value,
-      work: workRef.current!.value,
-      body: bodyRef.current!.value
+      author: authorRef.current?.value ?? '',
+      work: workRef.current?.value ?? '',
+      body: bodyRef.current?.value ?? ''
     });
-  }, []);
+  }, [excerptId, updateExcerpt]);
 
   return (
     <>
