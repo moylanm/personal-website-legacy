@@ -1,5 +1,5 @@
 import React from 'react';
-import { Excerpt } from './types';
+import type { Excerpt } from './types';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
