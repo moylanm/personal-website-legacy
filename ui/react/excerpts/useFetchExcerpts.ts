@@ -63,7 +63,7 @@ const useFetchExcerpts = (
     return () => {
       source.cancel('Component unmounted, request canceled');
     };
-  }, [])
+  }, [dispatch])
 };
 
 export default useFetchExcerpts;
