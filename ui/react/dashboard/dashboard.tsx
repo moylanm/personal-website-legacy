@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import store from './app/store';
 import App from './App';
 
-const root = createRoot(document.getElementById('dashboard-root')!);
+const root = createRoot(document.getElementById('dashboard-root') ?? document.body);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
