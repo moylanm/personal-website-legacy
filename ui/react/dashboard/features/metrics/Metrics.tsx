@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { useGetMetricsQuery } from '../api/apiSlice';
 import Button from '@mui/material/Button';
