@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 import { StyledBox, StyledTab } from './style';
 import Tabs from '@mui/material/Tabs';
 import Publisher from '../excerpts/Publisher';
