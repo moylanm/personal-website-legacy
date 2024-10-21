@@ -12,7 +12,7 @@ const initialState = excerptsAdapter.getInitialState({
 	status: 'idle',
 	statusMessage: '',
 	error: null as (SerializedError | null),
-	reverseSort,
+	reverseSort: false,
 	randomExcerpt: null
 });
 
