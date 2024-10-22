@@ -1,8 +1,8 @@
 import type { SerializedError } from '@reduxjs/toolkit';
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { api } from '../api/apiSlice';
 import type { RootState } from '../../app/store';
 import type { Excerpt } from './types';
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { api } from '../api/apiSlice';
 
 const excerptsAdapter = createEntityAdapter({
 	sortComparer: (a: Excerpt, b: Excerpt) => a.id - b.id
@@ -20,6 +20,10 @@ export const excerptsSlice = createSlice({
 	name: 'excerpts',
 	initialState,
 	reducers: {
+		setRandomExcerpt(state, { payload }) {
+			state.reverseSort = false;
+			state.randomExcerpt = payload;
+		},
 		resetDisplayed(state) {
 			state.reverseSort = false;
 			state.randomExcerpt = null;
