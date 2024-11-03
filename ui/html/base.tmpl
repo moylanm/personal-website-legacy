@@ -2,27 +2,15 @@
 <!doctype html>
 <html lang='en'>
 	<head>
-		<meta charset='utf-8'>
-		<meta name='viewport' content='width=device-width, initial-scale=1'>
-		<title>{{template "title" .}} - mylesmoylan.net</title>
-		<link rel='stylesheet' href='/static/css/main.css'>
-		<link rel='shortcut icon' href='/static/img/favicon.ico' type='image/x-icon'>
-		<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Merriweather&display=swap'>
+		<meta charset='utf-8' />
+		<meta name='viewport' content='width=device-width, initial-scale=1' />
+		<link rel='icon' href='/static/img/favicon.ico' type='image/x-icon' />
+		<link rel='dns-prefetch' href='https://fonts.googleapis.com/css2?family=Merriweather&display=swap' />
 	</head>
 	<body>
-		<header>
-			<h1><a href='/'>mylesmoylan.net</a></h1>
-		</header>
-		{{template "nav" .}}
 		<main>
-			{{with .Flash}}
-				<div class='flash'>{{.}}</div>
-			{{end}}
 			{{template "main" .}}
 		</main>
-		<footer>
-			Powered by <a href='https://golang.org/'>Go</a> and <a href='https://react.dev/'>React</a> in {{.CurrentYear}}
-		</footer>
 	</body>
 </html>
 {{end}}

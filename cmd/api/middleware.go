@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
-	"strings"
 	"sync"
 	"time"
 
@@ -16,16 +15,6 @@ import (
 
 func secureHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var unsafeInline string
-
-		if strings.HasPrefix(r.URL.Path, "/dashboard") {
-			unsafeInline = "'unsafe-inline'"
-		} else {
-			unsafeInline = ""
-		}
-
-		w.Header().Set("Content-Security-Policy",
-			fmt.Sprintf("default-src 'self'; connect-src 'self' https://www.mylesmoylan.net https://mylesmoylan.net; object-src 'none'; style-src 'self' %s fonts.googleapis.com; font-src fonts.gstatic.com", unsafeInline))
 
 		w.Header().Set("Referrer-Policy", "origin-when-cross-origin")
 		w.Header().Set("X-Content-Type-Options", "nosniff")

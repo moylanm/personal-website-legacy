@@ -20,24 +20,17 @@ func (app *application) routes() http.Handler {
 
 	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf, app.authenticate)
 
-	router.Handle("/about", dynamic.ThenFunc(app.about)).Methods(http.MethodGet)
 	router.Handle("/", dynamic.ThenFunc(app.home)).Methods(http.MethodGet)
-
-	excerptsPath := "/excerpts/{id:[0-9]+}"
-	router.Handle(excerptsPath, dynamic.ThenFunc(app.showExcerpt)).Methods(http.MethodGet)
-	router.Handle("/excerpts", dynamic.ThenFunc(app.listExcerpts)).Methods(http.MethodGet)
 	router.Handle("/excerpts/json", dynamic.ThenFunc(app.listExcerptsJson)).Methods(http.MethodGet)
-
-	router.Handle("/login", dynamic.ThenFunc(app.userLogin)).Methods(http.MethodGet)
 	router.Handle("/login", dynamic.ThenFunc(app.userLoginPost)).Methods(http.MethodPost)
 
 	protected := dynamic.Append(app.requireAuthentication)
 
+	excerptsPath := "/excerpts/{id:[0-9]+}"
 	router.Handle("/excerpts", protected.ThenFunc(app.createExcerpt)).Methods(http.MethodPost)
 	router.Handle(excerptsPath, protected.ThenFunc(app.updateExcerpt)).Methods(http.MethodPatch)
 	router.Handle(excerptsPath, protected.ThenFunc(app.deleteExcerpt)).Methods(http.MethodDelete)
 
-	router.Handle("/dashboard", protected.ThenFunc(app.dashboard)).Methods(http.MethodGet)
 	router.Handle("/dashboard/metrics", protected.Then(expvar.Handler())).Methods(http.MethodGet)
 	router.Handle("/logout", protected.ThenFunc(app.userLogoutPost)).Methods(http.MethodPost)
 

@@ -2,20 +2,21 @@
   "name": "js",
   "version": "1.0.0",
   "scripts": {
-    "buildDashboard": "node esbuild_dashboard.js",
-    "buildExcerpts": "node esbuild_excerpts.js"
+    "react": "node esbuild.js"
   },
   "dependencies": {
-    "axios": "^1.6.5",
+    "@types/react-router-dom": "^5.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-markdown": "^9.0.1"
+    "react-markdown": "^9.0.1",
+    "react-router-dom": "^6.27.0",
+    "react-toggle-dark-mode": "^1.1.1"
   },
   "devDependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.11",
-    "@mui/material": "^5.15.10",
+    "@mui/icons-material": "^6.1.5",
+    "@mui/material": "^6.1.5",
     "@reduxjs/toolkit": "^2.2.1",
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
